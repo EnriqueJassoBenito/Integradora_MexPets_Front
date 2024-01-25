@@ -1,62 +1,81 @@
 <template>
-  <div class="card-container">
-    <b-card v-for="animal in animals" :key="animal.id" :title="animal.name" :img-src="animal.image" img-alt="Animal Image"
-      class="mb-3 custom-card">
-      <p class="card-text">{{ animal.description }}</p>
-      <b-button @click="adoptAnimal(animal.id)" variant="success">Adoptar</b-button>
-    </b-card>
-  </div>
+  <div><h1 id="sol" center>Solicitud adopción</h1>
+    <b-card bg-variant="light" style="max-width: 50rem;" class="mx-auto">
+    <b-form-group
+      label-cols-lg="3"
+      label="Ingresa información"
+      label-size="lg"
+      label-class="font-weight-bold pt-0"
+      class="mb-0"
+      
+    >
+      <b-form-group
+        label="Nombre:"
+        label-for="name"
+        label-cols-sm="3"
+        label-align-sm="right"
+        required
+      >
+        <b-form-input id="name"></b-form-input>
+      </b-form-group>
+      <b-form-group
+        label="Correo:"
+        label-for="email"
+        label-cols-sm="3"
+        label-align-sm="right"
+        required
+      >
+        <b-form-input id="email"></b-form-input>
+      </b-form-group>
+      <b-form-group
+        label="Telefono:"
+        label-for="phone"
+        label-cols-sm="3"
+        label-align-sm="right"
+        required
+      >
+        <b-form-input id="phone"></b-form-input>
+      </b-form-group>
+      <b-form-group
+        label="Ciudad:"
+        label-for="nested-city"
+        label-cols-sm="3"
+        label-align-sm="right"
+        required
+      >
+        <b-form-input id="nested-city"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label="Estado:"
+        label-for="nested-state"
+        label-cols-sm="3"
+        label-align-sm="right"
+      >
+        <b-form-input id="nested-state"></b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        label="Pais:"
+        label-for="nested-country"
+        label-cols-sm="3"
+        label-align-sm="right"
+      >
+        <b-form-input id="nested-country"></b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-form-group>
+  </b-card></div>
+  
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      animals: [
-        {
-          id: 1,
-          name: 'Perro',
-          image: 'https://example.com/dog.jpg',
-          description: 'Un perro juguetón y amigable en busca de un hogar.',
-        },
-        {
-          id: 2,
-          name: 'Gato',
-          image: 'https://example.com/cat.jpg',
-          description: 'Un gato tranquilo y cariñoso esperando ser adoptado.',
-        },
-        {
-          id: 3,
-          name: 'Perro',
-          image: 'https://example.com/cat.jpg',
-          description: 'Perro amable',
-        },
-        // Agrega más animales según sea necesario
-      ],
-    };
-  },
-  methods: {
-    adoptAnimal(animalId) {
-      // Lógica para manejar la adopción del animal (puede ser una llamada a la API, etc.)
-      alert(`¡Has adoptado al animal con ID ${animalId}!`);
-    },
-  },
-};
+
+}
 </script>
 
-<style scoped>
-.card-container {
-  display: flex;
-  flex-direction: row-reverse;
-  /* Dirección de derecha a izquierda */
-  justify-content: space-between;
-  /* Espaciado entre las tarjetas */
-  padding: 15px;
-  /* Espaciado alrededor del contenedor */
-}
+<style>
 
-.custom-card {
-  max-width: 300px;
-  width: 100%;
-  /* Hace que cada tarjeta ocupe todo el ancho disponible */
-}</style>
+</style>
