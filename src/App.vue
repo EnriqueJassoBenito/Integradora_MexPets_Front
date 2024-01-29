@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-<!--<template>
-<router-view></router-view>
-</template>-->
-
 <template>
-    <div class="container-fluid">
-        <!-- Comienza el navbar -->
+    <!--<div class="container-fluid">
         <div class="row">
             <div class="col">
                 <navbar />
@@ -17,29 +11,20 @@
                 <router-view></router-view>
             </div>
         </div>
-    </div>
+    </div>-->
+    <login/>
 </template>
 
 <script>
-import Navbar from './components/navigation/Navbar.vue';
+import Navbar from "./components/navigation/Navbar.vue"
+import Login from "./components/auth/Login.vue"
 
 export default {
     components: {
         'navbar': Navbar,
+        'login': Login,
     },
 }
 </script>
 
 <style scoped></style>
-=======
-<script setup>
-</script>
-
-<template>
-<router-view></router-view>
-</template>
-
-<style scoped>
-
-</style>
->>>>>>> 62d95421bf37c3a84cd62b9c2f6df3fdb836c5a5
