@@ -4,7 +4,7 @@
   <b-card bg-variant="light" style="max-width: 50rem;" class="mx-auto">
     <b-form-group
       label-cols-lg="3"
-      label="Ingresa la información"
+      label="Ingresa información"
       label-size="lg"
       label-class="font-weight-bold pt-0"
       class="mb-0"
@@ -68,6 +68,11 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form-group>
   </b-card>
+
+
+
+
+  
 </div>
 </template>
 

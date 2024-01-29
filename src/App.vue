@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--<template>
 <router-view></router-view>
 </template>-->
@@ -30,3 +31,15 @@ export default {
 </script>
 
 <style scoped></style>
+=======
+<script setup>
+</script>
+
+<template>
+<router-view></router-view>
+</template>
+
+<style scoped>
+
+</style>
+>>>>>>> 62d95421bf37c3a84cd62b9c2f6df3fdb836c5a5
