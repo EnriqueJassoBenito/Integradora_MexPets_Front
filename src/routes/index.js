@@ -14,41 +14,50 @@ const routes = [
         component: () => import("../components/inicio.vue"),
     },
     {
-        path: "/Login",
-        component: () => import("../components/RegistroUser.vue"),
+        path: "/login",
+        component: () => import("../components/auth/Login.vue"),
     },
     ,
     {
-        path: "/inicio",
-        component: () => import("../components/inicio.vue"),
+        path: '/',
+        component:{
+            render(c){
+                return c('router-view');
+            },
+        },
         children: [
             {
-                path: "/RegistroAnimales",
-                name: "RegistroAnimales",
-                component: () => import("../components/RegistroAnimales.vue")
+                path:'/inicio',
+                name: 'inicio',
+                component: () => import('../components/Inicio.vue')
             },
             {
-                path: "/RegistroCategorias",
-                name: "RegistroCategorias",
-                component: () => import("../components/RegistroCategorias.vue")
+                path:'/animals',
+                name: 'animals',
+                component: () => import('../components/screens/RegistrarAnimales.vue')
             },
             {
-                path: "/GestionAdmin",
-                name: "GestionAdmin",
-                component: () => import("../components/GestionAdmin.vue")
+                path:'/category',
+                name: 'category',
+                component: () => import('../components/screens/Categorias.vue')
             },
             {
-                path: "/SolicitudAdopcion",
-                name: "SolicitudAdopcion",
-                component: () => import("../components/SolicitudAdopcion.vue")
+                path:'/tips',
+                name: 'tips',
+                component: () => import('../components/screens/Tips.vue')
             },
             {
-                path: "/CrearCuenta",
-                name: "CrearCuenta",
-                component: () => import("../components/CrearCuenta.vue")
+                path:'/adoption',
+                name: 'adoption',
+                component: () => import('../components/screens/Adopciones.vue')
+            },
+            {
+                path:'/users',
+                name: 'users',
+                component: () => import('../components/screens/Usuario.vue')
             },
         ]
-    },
+    }
 
 ]
 
