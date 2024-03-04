@@ -10,6 +10,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
     "feather-icons": "^4.29.1",
+    "sweetalert2": "^11.10.5",
     "vue": "^2.7.16",
     "vue-router": "^2.8.1"
   },

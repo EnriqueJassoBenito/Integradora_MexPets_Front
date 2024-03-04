@@ -1,17 +1,13 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-col>
-                <navbar />
-            </b-col>
+            <navbar />
         </b-row>
 
         <b-row>
-            <b-col>
-                <router-view></router-view>
-            </b-col>
+            <router-view></router-view>
         </b-row>
-                
+
     </b-container>
     <!--<register/>-->
 </template>

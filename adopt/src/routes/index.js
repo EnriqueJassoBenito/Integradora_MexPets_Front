@@ -11,7 +11,7 @@ const routes = [
     },
     {
         path: "/",
-        component: () => import("../components/inicio.vue"),
+        component: () => import("../components/auth/Login.vue"),
     },
     {
         path: "/login",
@@ -35,11 +35,11 @@ const routes = [
             },
         },
         children: [
-            /*{
-                path:'/inicio',
-                name: 'inicio',
-                component: () => import('../components/screens')
-            },*/
+            {
+                path:'/home',
+                name: 'home',
+                component: () => import('../components/Home.vue')
+            },
             {
                 path:'/animals',
                 name: 'animals',
@@ -48,7 +48,7 @@ const routes = [
             {
                 path:'/category',
                 name: 'category',
-                component: () => import('../components/screens/Categorias.vue')
+                component: () => import('../components/screens/Category.vue')
             },
             {
                 path:'/tips',
@@ -61,9 +61,9 @@ const routes = [
                 component: () => import('../components/screens/Adopciones.vue')
             },
             {
-                path:'/users',
-                name: 'users',
-                component: () => import('../components/screens/Usuario.vue')
+                path:'/profile',
+                name: 'profile',
+                component: () => import('../components/screens/Profile.vue')
             },
         ]
     }
