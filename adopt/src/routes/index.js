@@ -1,5 +1,4 @@
 import VueRouter from "vue-router";
-
 import Vue from "vue";
 
 Vue.use(VueRouter);
@@ -14,10 +13,6 @@ const routes = [
         component: () => import("../components/auth/Login.vue"),
     },
     {
-        path: "/login",
-        component: () => import("../components/auth/Login.vue"),
-    },
-    {
         path:'/register',
         name: 'register',
         component: () => import('../components/auth/Register.vue')
@@ -28,12 +23,8 @@ const routes = [
         component: () => import('../components/auth/ChangePassword.vue')
     },
     {
-        path: '/',
-        component:{
-            render(c){
-                return c('router-view');
-            },
-        },
+        path: '/inicio',
+        component: () => import('../components/navigation/Navbar.vue'), // Carga Home como componente principal
         children: [
             {
                 path:'/home',
@@ -67,8 +58,7 @@ const routes = [
             },
         ]
     }
-
 ]
 
 const router = new VueRouter({routes, })
-export default router; 
+export default router;

@@ -1,5 +1,31 @@
 <template>
   <div fluid>
+    <div >
+      <b-carousel
+        id="carousel-fade"
+        :interval="3000"
+        style="text-shadow: 0px 0px 2px #000;"
+        fade
+        img-width="1024"
+        img-height="480px"
+      >
+        <b-carousel-slide
+          caption="Cambia tu y"
+          img-src="https://picsum.photos/1024/480/?image=10"
+          style="height: 500px;"
+        ></b-carousel-slide>
+        <b-carousel-slide
+          caption="Second Slide"
+          img-src="https://picsum.photos/1024/480/?image=12"
+          style="height: 500px;"
+        ></b-carousel-slide>
+        <b-carousel-slide
+          caption="Third Slide"
+          img-src="https://picsum.photos/1024/480/?image=22"
+          style="height: 500px;"
+        ></b-carousel-slide>
+      </b-carousel>
+</div>
     <div class="row">
       <b-navbar class="navbar" toggleable="md" type="dark" variant="info">
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

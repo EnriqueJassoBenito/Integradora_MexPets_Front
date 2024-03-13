@@ -1,10 +1,11 @@
 <template>
+      <b-container fluid>
     <b-navbar class="navbar" toggleable="md" type="dark">
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-navbar-brand href="#">
-            <img src="../../assets/dd.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-            Adoptes
+            <img src="../../assets/dd.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
+            MexPets
         </b-navbar-brand>
 
         <b-collapse id="nav-collapse" is-nav>
@@ -23,7 +24,12 @@
                     :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
             </b-navbar-nav>
         </b-collapse>
+       
     </b-navbar>
+    <b-row>
+        <router-view />
+    </b-row>
+</b-container>
 </template>
 
 <script>
@@ -43,8 +49,9 @@ export default {
 
 <style scoped>
 .navbar {
-    background-color: #80BD43;
+    background-color: #3D4284;
     padding-top: 10px;
+    width: 100%;
 }
 
 .navbar-nav .nav-item.active {

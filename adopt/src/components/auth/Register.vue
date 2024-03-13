@@ -60,11 +60,6 @@
             </div>
         </div>
 
-        <!-- Segunda mitad con imagen universal -->
-        <div class="image-container">
-            <img src="../../assets/LoginImage.jpg" alt="login" class="img-fluid"
-                style="object-fit: cover; width: 80%; height: 80%;">
-        </div>
     </div>
 </template>
 

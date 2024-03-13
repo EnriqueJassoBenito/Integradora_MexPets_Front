@@ -12,6 +12,7 @@
     "feather-icons": "^4.29.1",
     "sweetalert2": "^11.10.5",
     "vue": "^2.7.16",
+    "vue-flux": "^7.0.0-beta.5",
     "vue-router": "^2.8.1"
   },
   "devDependencies": {
