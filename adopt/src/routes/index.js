@@ -24,7 +24,7 @@ const routes = [
     },
     {
         path: '/inicio',
-        component: () => import('../components/navigation/Navbar.vue'), // Carga Home como componente principal
+        component: () => import('../components/navigation/Navbar.vue'), 
         children: [
             {
                 path:'/home',

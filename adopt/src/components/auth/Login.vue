@@ -4,8 +4,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-center mb-5">
-                        <img src="../../assets/nnnn.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
-                        <h2 class="card-title">Mi cuenta</h2>
+                        <img src="../../assets/dd.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
+                        <h2 class="card-title white">Mi cuenta</h2>
                     </div>
                     <form @submit.prevent="login">
                         <div class="mb-3">

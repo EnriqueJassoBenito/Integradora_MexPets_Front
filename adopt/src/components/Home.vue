@@ -1,33 +1,16 @@
 <template>
   <div fluid>
-    <div >
-      <b-carousel
-        id="carousel-fade"
-        :interval="3000"
-        style="text-shadow: 0px 0px 2px #000;"
-        fade
-        img-width="1024"
-        img-height="480px"
-      >
-        <b-carousel-slide
-          caption="Cambia tu y"
-          img-src="https://picsum.photos/1024/480/?image=10"
-          style="height: 500px;"
-        ></b-carousel-slide>
-        <b-carousel-slide
-          caption="Second Slide"
-          img-src="https://picsum.photos/1024/480/?image=12"
-          style="height: 500px;"
-        ></b-carousel-slide>
-        <b-carousel-slide
-          caption="Third Slide"
-          img-src="https://picsum.photos/1024/480/?image=22"
-          style="height: 500px;"
-        ></b-carousel-slide>
-      </b-carousel>
+    <div>
+      <vue-flux
+   :options="fluxOptions"
+   :images="fluxImages"
+   :transitions="fluxTransitions"
+   ref="slider" style="height:400px">
+      <flux-pagination ></flux-pagination>
+</vue-flux>
 </div>
     <div class="row">
-      <b-navbar class="navbar" toggleable="md" type="dark" variant="info">
+      <b-navbar class="navbar" toggleable="md" type="dark" >
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="mx-auto">
@@ -120,14 +103,20 @@
 </template>
 
 <script>
+import { VueFlux, FluxPagination, Transitions } from 'vue-flux';
+
 export default {
+  components: {
+      VueFlux,
+      FluxPagination
+   },
   data() {
     return {
       selectedOption: null,
       animals: [
         {
           id: 1,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
+          image: "https://ichef.bbci.co.uk/ace/ws/800/cpsprodpb/15665/production/_107435678_perro1.jpg", 
           name: "Mittens",
           city: "Ciudad1",
           breed: "Gato",
@@ -138,7 +127,7 @@ export default {
         },
         {
           id: 2,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
+          image: "https://purina.com.mx/sites/default/files/styles/webp/public/2022-10/purina-10-datos-curiosos-sobre-los-gatos.png.webp?itok=D7RZ4o6C", // Reemplaza con las URL reales de las imágenes
           name: "Mittens",
           city: "Ciudad1",
           breed: "Perro",
@@ -149,7 +138,7 @@ export default {
         },
         {
           id: 3,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
+          image: "https://www.santevet.es/uploads/images/es_ES/razas/gato_callejero_seguro_santevet.jpeg", // Reemplaza con las URL reales de las imágenes
           name: "Mittens",
           city: "Ciudad1",
           breed: "Gato",
@@ -160,29 +149,7 @@ export default {
         },
         {
           id: 4,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
-          name: "Mittens",
-          city: "Ciudad1",
-          breed: "Gato",
-          size: "Pequeño",
-          age: "2 años",
-          gender: "Macho",
-          personality: "Juguetón",
-        },
-        {
-          id: 5,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
-          name: "Mittens",
-          city: "Ciudad1",
-          breed: "Gato",
-          size: "Pequeño",
-          age: "2 años",
-          gender: "Macho",
-          personality: "Juguetón",
-        },
-        {
-          id: 1,
-          image: "https://placekitten.com/300/200", // Reemplaza con las URL reales de las imágenes
+          image: "https://www.ngenespanol.com/wp-content/uploads/2023/12/descubren-que-los-humanos-influimos-en-el-color-de-ojos-de-los-perros-770x431.jpg", // Reemplaza con las URL reales de las imágenes
           name: "Mittens",
           city: "Ciudad1",
           breed: "Gato",
@@ -192,6 +159,13 @@ export default {
           personality: "Juguetón",
         },
       ],
+      fluxOptions: {
+         autoplay: true
+      },
+      fluxImages: [ 'https://static.fundacion-affinity.org/cdn/farfuture/wfzHUAPksUOWePuvajegv_W_DwdxDophyz5qyiV1EiY/mtime:1528830294/sites/default/files/la-adopcion-una-nueva-oportunidad-a-las-mascotas-abandonadas.jpg', 'https://s1.elespanol.com/2023/01/16/curiosidades/mascotas/734186624_230172285_1006x260.jpg', 'https://www.myhappypet.es/sites/spmhp/files/perros_y_gatos.jpg' ],
+      fluxTransitions: {
+         transitionSwipe: Transitions.transitionSwipe,
+      }
     };
   },
   methods: {
@@ -199,7 +173,6 @@ export default {
       this.selectedOption = option;
     },
     adoptAnimal(animalId) {
-      // Lógica para adoptar el animal con el ID especificado
       console.log("Adoptar animal con ID:", animalId);
     },
   },
@@ -208,7 +181,7 @@ export default {
 
 <style scoped>
 .navbar {
-  background-color: #72B2E1;
+  background-color: #6A4000;
   padding-top: 10px;
 }
 

@@ -1,10 +1,11 @@
 <template>
-      <b-container fluid>
+      <b-container  fluid style="margin: 0; padding: 0;">
+
     <b-navbar class="navbar" toggleable="md" type="dark">
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-navbar-brand href="#">
-            <img src="../../assets/dd.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
+            <img src="../../assets/logomexx.png" alt="Logo" width="80" height="80" class="d-inline-block align-top">
             MexPets
         </b-navbar-brand>
 
@@ -49,13 +50,21 @@ export default {
 
 <style scoped>
 .navbar {
-    background-color: #3D4284;
+    background-color: #81B622;
     padding-top: 10px;
     width: 100%;
 }
 
 .navbar-nav .nav-item.active {
-    background-color: #639B87;
+    background-color: #F0BB00;
     border-radius: 10px 10px 0px 0px;
+}
+#btn_adopt{
+    align-items: right;
+    margin-left: 1000px;
+    margin-bottom: 10px;
+}
+#btn_dar{
+    align-items: left;
 }
 </style>

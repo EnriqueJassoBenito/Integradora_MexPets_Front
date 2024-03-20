@@ -1,8 +1,6 @@
 <template>
     <b-container fluid>
-        <!-- Fila principal con dos columnas -->
         <b-row>
-            <!-- Columna para la imagen de fondo -->
             <b-col class="background-image" :style="{ height: backgroundImageHeight }">
                 <!-- Contenido del fondo aquí -->
             </b-col>
