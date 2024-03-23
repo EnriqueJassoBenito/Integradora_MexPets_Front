@@ -22,6 +22,7 @@ const routes = [
         name: 'changePassword',
         component: () => import('../components/auth/ChangePassword.vue')
     },
+    
     {
         path: '/inicio',
         component: () => import('../components/navigation/Navbar.vue'), 
@@ -30,6 +31,11 @@ const routes = [
                 path:'/home',
                 name: 'home',
                 component: () => import('../components/Home.vue')
+            },
+            {
+                path:'/landingPage',
+                name: 'landingPage',
+                component: () => import('../components/LandingPage.vue')
             },
             {
                 path:'/animals',

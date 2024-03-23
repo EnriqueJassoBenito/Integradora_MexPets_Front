@@ -162,7 +162,7 @@ export default {
       fluxOptions: {
          autoplay: true
       },
-      fluxImages: [ 'https://static.fundacion-affinity.org/cdn/farfuture/wfzHUAPksUOWePuvajegv_W_DwdxDophyz5qyiV1EiY/mtime:1528830294/sites/default/files/la-adopcion-una-nueva-oportunidad-a-las-mascotas-abandonadas.jpg', 'https://s1.elespanol.com/2023/01/16/curiosidades/mascotas/734186624_230172285_1006x260.jpg', 'https://www.myhappypet.es/sites/spmhp/files/perros_y_gatos.jpg' ],
+      fluxImages: [ 'https://static.fundacion-affinity.org/cdn/farfuture/wfzHUAPksUOWePuvajegv_W_DwdxDophyz5qyiV1EiY/mtime:1528830294/sites/default/files/la-adopcion-una-nueva-oportunidad-a-las-mascotas-abandonadas.jpg', 'https://s1.elespanol.com/2023/01/16/curiosidades/mascotas/734186624_230172285_1006x260.jpg', 'https://www.myhappypet.es/sites/spmhp/files/perros_y_gatos.jpg','https://images.hola.com/imagenes/mascotas/20220505209260/loro-pajaro-longevo/1-84-256/istock-loro-t.jpg?tx=w_1200' ],
       fluxTransitions: {
          transitionSwipe: Transitions.transitionSwipe,
       }

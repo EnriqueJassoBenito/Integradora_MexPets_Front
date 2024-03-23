@@ -5,7 +5,7 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-navbar-brand href="#">
-            <img src="../../assets/logomexx.png" alt="Logo" width="80" height="80" class="d-inline-block align-top">
+            <img src="../../assets/logomexx.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
             MexPets
         </b-navbar-brand>
 
@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 .navbar {
-    background-color: #81B622;
+    background-color: #392915;
     padding-top: 10px;
     width: 100%;
 }
