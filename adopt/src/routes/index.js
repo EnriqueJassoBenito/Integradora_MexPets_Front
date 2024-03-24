@@ -8,7 +8,6 @@ const routes = [
         path: "*",
         component: () => import("../views/ErrorPages/Error404.vue"),
     },
-   
     {
         path: '/changePassword',
         name: 'changePassword',
@@ -16,15 +15,31 @@ const routes = [
     },
     {
         path: '/',
-        name: 'landingPage',
-        component: () => import('../components/LandingPage.vue')
+        component: () => import('../components/navigation/NavbarLanding.vue'),
+        children: [
+            {
+                path: '',
+                name: 'landingPage',
+                component: () => import('../components/LandingPage.vue')
+            },
+            {
+                path: "/login",
+                name: "login",
+                component: () => import("../components/auth/Login.vue"),
+            },
+            {
+                path: '/register',
+                name: 'register',
+                component: () => import('../components/auth/Register.vue')
+            },
+        ]
     },
     {
         path: '/inicio',
         component: () => import('../components/navigation/Navbar.vue'),
         children: [
             {
-                path: '/home',
+                path: 'home-inicio',
                 name: 'home',
                 component: () => import('../components/Home.vue')
             },
@@ -59,18 +74,38 @@ const routes = [
                 name: 'nosotros',
                 component: () => import('../components/screens/Nosotros.vue')
             },
+
+        ],
+
+        
+    },
+    {
+        path: '/admin',
+        component: () => import('../components/admin/navegation/NavbarAdmin.vue'),
+        children: [
             {
-                path: "/login",
-                name: "login",
-                component: () => import("../components/auth/Login.vue"),
+                path: 'admin-home',
+                name: 'admin-home',
+                component: () => import('../components/Home.vue')
             },
             {
-                path: '/register',
-                name: 'register',
-                component: () => import('../components/auth/Register.vue')
+                path: 'admin-moderators',
+                name: 'admin-moderators',
+                component: () => import('../components/admin/screens/Moderators.vue')
+            },
+            {
+                path: 'admin-users',
+                name: 'admin-users',
+                component: () => import('../components/admin/screens/Users.vue')
+            },
+            {
+                path: 'admin-profile',
+                name: 'admin-profile',
+                component: () => import('../components/screens/Profile.vue')
             },
         ]
-    }
+    },
+
 ]
 
 const router = new VueRouter({ routes, })
