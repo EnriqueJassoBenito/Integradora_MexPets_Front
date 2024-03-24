@@ -1,5 +1,6 @@
 <template>
-    <div class="login-container">
+    <div fluid style="margin: 0; padding: 0;">
+        <div class="login-container">
         <div class="login-form">
             <div class="text-center mb-5">
                 <h2 class="card-title">Registro</h2>
@@ -60,7 +61,8 @@
             </div>
         </div>
 
-    </div>
+    </div></div>
+    
 </template>
 
 <script>

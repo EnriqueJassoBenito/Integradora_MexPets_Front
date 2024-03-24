@@ -15,7 +15,7 @@ const routes = [
     },
     {
         path: '/',
-        component: () => import('../components/navigation/NavbarLanding.vue'),
+        component: () => import('../components/navigation/NavbarMain.vue'),
         children: [
             {
                 path: '',

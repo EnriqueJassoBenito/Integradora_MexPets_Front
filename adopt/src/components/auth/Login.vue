@@ -1,4 +1,5 @@
 <template>
+    <div fluid style="margin: 0; padding: 0;">
     <div class="login-container">
         <div class="login-form">
             <div class="card">
@@ -35,6 +36,7 @@
         </div>
 
     </div>
+</div>
 </template>
 
 <script>
