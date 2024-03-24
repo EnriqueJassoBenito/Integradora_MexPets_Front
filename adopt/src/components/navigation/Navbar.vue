@@ -1,10 +1,9 @@
 <template>
       <b-container  fluid style="margin: 0; padding: 0;">
-
     <b-navbar class="navbar" toggleable="md" type="dark">
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-navbar-brand href="#">
+        <b-navbar-brand :to="{ path: '/' }">
             <img src="../../assets/logomexx.png" alt="Logo" width="50" height="50" class="d-inline-block align-top">
             MexPets
         </b-navbar-brand>
@@ -12,7 +11,7 @@
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="mx-auto">
                 <b-nav-item :to="{ name: 'home' }" @click="selectOption('home')"
-                    :class="{ 'active': selectedOption === 'home' }">Nosotros</b-nav-item>
+                    :class="{ 'active': selectedOption === 'home' }">Adopción</b-nav-item>
                 <b-nav-item :to="{ name: 'animals' }" @click="selectOption('animals')"
                     :class="{ 'active': selectedOption === 'animals' }">Mascotas</b-nav-item>
                 <b-nav-item :to="{ name: 'category' }" @click="selectOption('category')"
@@ -22,7 +21,7 @@
                 <b-nav-item :to="{ name: 'adoption' }" @click="selectOption('adoption')"
                     :class="{ 'active': selectedOption === 'adoption' }">Adopción</b-nav-item>
                 <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
-                    :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
+                    :class="{ 'active': selectedOption === 'profile' }" >Mi cuenta</b-nav-item>
             </b-navbar-nav>
         </b-collapse>
        
@@ -58,6 +57,9 @@ export default {
 .navbar-nav .nav-item.active {
     background-color: #F0BB00;
     border-radius: 10px 10px 0px 0px;
+}
+.navbar-nav .nav-item {
+  margin-right: 30px; 
 }
 #btn_adopt{
     align-items: right;

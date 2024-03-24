@@ -5,7 +5,6 @@
         </b-row>
 
     </b-container>
-    <!--<register/>-->
 </template>
 
 <script>
