@@ -18,6 +18,8 @@
                   :class="{ 'active': selectedOption === 'admin-users' }">Usuarios</b-nav-item>
               <b-nav-item :to="{ name: 'admin-profile' }" @click="selectOption('admin-profile')"
                   :class="{ 'active': selectedOption === 'admin-profile' }" >Mi cuenta</b-nav-item>
+                  <b-nav-item :to="{ name: 'admin-profile' }" @click="selectOption('admin-profile')"
+                  :class="{ 'active': selectedOption === 'admin-profile' }" >Mi cuenta</b-nav-item>
           </b-navbar-nav>
       </b-collapse>
      
