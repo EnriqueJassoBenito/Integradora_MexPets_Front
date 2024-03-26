@@ -10,12 +10,21 @@
 
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="ml-md-auto">
-                <b-nav-item :to="{ name: 'nosotros' }" @click="selectOption('nosotros')"
-                    :class="{ 'active': selectedOption === 'nosotros' }">Nosotros</b-nav-item>
+                    <b-nav-item-dropdown
+      id="my-nav-dropdown"
+      text="Acerca de"
+      toggle-class="nav-link-custom"
+      right
+    >
+    <b-dropdown-item @click="scrollToBottom">Misión</b-dropdown-item>
+    <b-dropdown-divider></b-dropdown-divider>
+      <b-dropdown-item :to="{ name: 'nosotros' }" @click="selectOption('nosotros')"
+                    :class="{ 'active': selectedOption === 'nosotros' }">Nosotros</b-dropdown-item>
+    </b-nav-item-dropdown>
                 <b-nav-item :to="{ name: 'tips' }" @click="selectOption('tips')"
-                    :class="{ 'active': selectedOption === 'tips' }">Tips</b-nav-item>
+                    :class="{ 'active': selectedOption === 'tips' }"><b-icon icon="star-fill" animation="spin" font-scale="1"></b-icon> Tips</b-nav-item>
                 <b-nav-item :to="{ name: 'login' }" @click="selectOption('login')"
-                    :class="{ 'active': selectedOption === 'login' }">Mi cuenta</b-nav-item>
+                    :class="{ 'active': selectedOption === 'login' }"><b-icon icon="person-circle"></b-icon>  Mi cuenta</b-nav-item>
             </b-navbar-nav>
         </b-collapse>
     </b-navbar>
@@ -27,7 +36,11 @@
 
 <script>
 export default {
-
+  methods: {
+    scrollToBottom() {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  }
 }
 </script>
 
@@ -44,7 +57,7 @@ export default {
     border-radius: 10px 10px 0px 0px;
 }
 .navbar-nav .nav-item {
-  margin-right: 30px; 
+  margin-right: 50px; 
 
 }
 @media (min-width: 768px) {
