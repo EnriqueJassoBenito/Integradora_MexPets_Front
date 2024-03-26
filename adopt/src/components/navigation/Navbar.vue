@@ -18,8 +18,6 @@
                     :class="{ 'active': selectedOption === 'category' }">Categorías</b-nav-item>
                 <b-nav-item :to="{ name: 'tips' }" @click="selectOption('tips')"
                     :class="{ 'active': selectedOption === 'tips' }">Tips</b-nav-item>
-                <b-nav-item :to="{ name: 'adoption' }" @click="selectOption('adoption')"
-                    :class="{ 'active': selectedOption === 'adoption' }">Adopción</b-nav-item>
                 <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
                     :class="{ 'active': selectedOption === 'profile' }" >Mi cuenta</b-nav-item>
             </b-navbar-nav>

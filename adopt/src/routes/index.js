@@ -74,7 +74,21 @@ const routes = [
                 name: 'nosotros',
                 component: () => import('../components/screens/Nosotros.vue')
             },
-
+            {
+                path: '/Perros',
+                name: 'dogs',
+                component: () => import('../components/screens/Categories/Dogs.vue')
+            },
+            {
+                path: '/Gatos',
+                name: 'cats',
+                component: () => import('../components/screens/Categories/Cats.vue')
+            },
+            {
+                path: '/Conejos',
+                name: 'bunny',
+                component: () => import('../components/screens/Categories/Bunny.vue')
+            },
         ],
 
         

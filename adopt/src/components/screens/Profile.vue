@@ -2,15 +2,9 @@
     <b-container fluid>
         <b-row>
             <b-col class="background-image" :style="{ height: backgroundImageHeight }">
-                <!-- Contenido del fondo aquí -->
             </b-col>
-
-            <!-- Columna para el perfil y la información personal -->
             <b-col>
-                <!-- Perfil con imagen circular -->
                 <b-avatar class="profile-image" :src="imageUrl" alt="Profile Image"></b-avatar>
-
-                <!-- Información personal -->
                 <b-form @submit.prevent="guardarInformacion">
                     <h2>Información Personal</h2>
 

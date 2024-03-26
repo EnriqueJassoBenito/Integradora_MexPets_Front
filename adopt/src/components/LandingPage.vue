@@ -1,34 +1,45 @@
 <template>
   <div class="page-container">
-  <div class="background-image-container" style="overflow:hidden;">
-    <h1 class="title">MEXPETS</h1>
-    <h2 class="slogan">"Transformando vidas, una pata a la vez."</h2>
-    <button  class="btnAdoptar">Adoptar</button>
-    <button class="btnDar">Dar en adopción</button>
+    <div class="background-image-container" style="overflow:hidden;">
+      <h1 class="title">MEXPETS</h1>
+      <h2 class="slogan">"Transformando vidas, una pata a la vez."</h2>
+      <button class="btnAdoptar" @click="adop">Adoptar</button>
+      <button class="btnDar" @click="dar">Dar en adopción</button>
 
-  </div>
-  <div class="yellow-space">
-    <div class="row" >
-      <div class="col" style="margin-top:40px; margin-left: 25px">
-        <img src="../assets/finalPage.webp" width="70%" style="margin-bottom: 30px;">
-        <h6>En 2022 registró la cifra más alta de delitos de maltrato animal de los últimos cuatro años</h6>
-        <h6>En México, más del 70% de los perros se encuentra en una situación de calle, mientras que para el caso de los gatos es más del 60%.</h6>
-     
-      </div>
-      <div class="col" style="margin-top:20px; ;">
-        <h5>Misión:</h5>
-        <h6>Nos esforzamos por promover la adopción responsable, educar a la comunidad sobre el bienestar animal y trabajar incansablemente para reducir el número de animales sin hogar. Creemos en el poder transformador del amor y la compasión, y estamos comprometidos a cambiar vidas, una pata a la vez.</h6>
-        <img src="../assets/perro.webp" width="70%" style="margin-bottom: 30px;">
-        <h1>Se parte del cambio</h1>
+    </div>
+    <div class="yellow-space">
+      <div class="row">
+        <div class="col" style="margin-top:40px; margin-left: 25px">
+          <img src="../assets/finalPage.webp" width="70%" style="margin-bottom: 30px;">
+          <h6>En 2022 registró la cifra más alta de delitos de maltrato animal de los últimos cuatro años</h6>
+          <h6>En México, más del 70% de los perros se encuentra en una situación de calle, mientras que para el caso de
+            los gatos es más del 60%.</h6>
+
+        </div>
+        <div class="col" style="margin-top:20px; ;">
+          <h5>Misión:</h5>
+          <h6>Nos esforzamos por promover la adopción responsable, educar a la comunidad sobre el bienestar animal y
+            trabajar incansablemente para reducir el número de animales sin hogar. Creemos en el poder transformador del
+            amor y la compasión, y estamos comprometidos a cambiar vidas, una pata a la vez.</h6>
+          <img src="../assets/perro.webp" width="70%" style="margin-bottom: 30px;">
+          <h1>Se parte del cambio</h1>
+        </div>
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    adop() {
+      this.$router.push({ name: 'home' });
+    },
+    dar() {
+      this.$router.push({ name: 'animals' });
+    }
+  }
 }
 </script>
 
