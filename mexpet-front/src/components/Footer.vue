@@ -18,11 +18,15 @@ export default {
 </script>
 
 <style scoped>
+
 .footer {
-  text-align: center;
   background-color: #2B2F33;
-  color: white;
-  padding: 20px;
+  position: fixed;
+  bottom: 0; /*Corregir*/
+  left: 0;
   width: 100%;
+  color: white;
+  padding: 20px 0; 
+  text-align: center;
 }
 </style>

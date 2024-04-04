@@ -2,6 +2,7 @@
     <b-container fluid>
         <b-row>
             <div class="gridCard">
+                <b-breadcrumb :items="items"></b-breadcrumb>
                 <b-card bg-variant="light">
                     <div class="contentCenter">
                         <img src="../components/icons/BrownLogo.png" id="iconLogin" class="iconLogo my-2" width="20%">
@@ -63,6 +64,22 @@ export default {
             password: "",
             error: false,
             error_msg: "",
+            items: [
+                {
+                    text: 'Home',
+                    href: '',
+                    to: 'landing'
+                },
+
+                {
+                    text: 'Iniciar Sesión',
+                    href: '#',
+                    to: 'Login'
+
+                }
+
+            ]
+
         }
 
     },

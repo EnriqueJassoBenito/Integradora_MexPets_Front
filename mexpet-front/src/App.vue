@@ -3,14 +3,14 @@
         <b-row>
             <b-col>
                 <div>
-                   <!--<transition name="fade" mode="out-in">--> 
+                   <transition name="fade" mode="out-in">
                         <router-view></router-view>
-                    <!--</transition>
+                    </transition>
                     <transition name="fade">
                         <div v-if="loading" class="overlay">
                             <spinner></spinner>
                         </div>
-                    </transition>-->
+                    </transition>
                 </div>
             </b-col>
         </b-row>
