@@ -25,8 +25,8 @@
         </b-row>
         <b-row>
             <b-col cols-md="6">
-                <h1 class="slogan">CONVIERTETE</h1>
-                <h1 class="sloganVariant">EN EL MEJOR LIDER</h1>
+                <h1 class="slogan">CONVIÉRTETE</h1>
+                <h1 class="sloganVariant">EN EL MEJOR LÍDER</h1>
                 <h1 class="slogan">DE TU PROPIA</h1>
                 <h1 class="slogan">MANADA</h1>
                 <b-button class="btnLanding" variant="dark" @click="Adopt">Adoptar</b-button>

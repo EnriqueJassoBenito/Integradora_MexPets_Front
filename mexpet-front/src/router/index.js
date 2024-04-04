@@ -5,45 +5,53 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '*',
-        component:()=> import("../views/ErrorPage/Error404.vue")
-    },
-    {
         path: '/',
-        name: 'landing',
-        component:()=> import("../components/LandingPage.vue"),
-        
-    },
-    {
-        path: '/navbar',
-        name: 'navbar',
-        component:()=> import("../components/Navbar.vue")
-    },
-    {
-        path: '/adopt',
-        name: 'adopt',
-        component:()=> import("../components/Adopt.vue")
-    },
-    {
-        path: '/adopter',
-        name: 'adopter',
-        component:()=> import("../components/Adopter.vue")
-    },
-    {
-        path: '/aboutus',
-        name: 'aboutus',
-        component:()=> import("../components/AboutUs.vue")
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component:()=> import("../components/Login.vue")
-    },
-    {
-        path: '/register',
-        name: 'register',
-        component:()=> import("../components/Register.vue")
-    }
+        redirect: '/landing'
+    },{
+        path: '/',
+        component:{
+            render(c){
+                return c('router-view');
+            },
+        },
+        children:[
+            {
+                path: '/landing',
+                name: 'landing',
+                component:()=> import("../components/LandingPage.vue"),
+                
+            },
+            {
+                path: '/adopt',
+                name: 'adopt',
+                component:()=> import("../components/Adopt.vue")
+            },
+            {
+                path: '/adopter',
+                name: 'adopter',
+                component:()=> import("../components/Adopter.vue")
+            },
+            {
+                path: '/aboutus',
+                name: 'aboutus',
+                component:()=> import("../components/AboutUs.vue")
+            },
+            {
+                path: '/login',
+                name: 'login',
+                component:()=> import("../components/Login.vue")
+            },
+            {
+                path: '/register',
+                name: 'register',
+                component:()=> import("../components/Register.vue")
+            },
+            {
+                path: '*',
+                component:()=> import("../views/ErrorPage/Error404.vue")
+            },
+        ]
+    }        
 ]
 
 const router = new VueRouter({routes, })

@@ -4,9 +4,7 @@
             <b-col>
                 <div>
                    <!--<transition name="fade" mode="out-in">--> 
-                        <router-view>
-
-                        </router-view>
+                        <router-view></router-view>
                     <!--</transition>
                     <transition name="fade">
                         <div v-if="loading" class="overlay">
@@ -24,7 +22,7 @@ import Spinner from './components/Spinner.vue';
 
 export default {
     components: {
-        Spinner
+        Spinner,
     },
     data() {
         return {
@@ -32,14 +30,12 @@ export default {
         }
     },
     created() {
-        // Suscribirse a eventos de router para mostrar el spinner cuando se inicia la navegación
         this.$router.beforeEach((to, from, next) => {
             this.loading = true
             next()
         })
 
         this.$router.afterEach(() => {
-            // Ocultar el spinner cuando la navegación ha finalizado
             this.loading = false
         })
     }
