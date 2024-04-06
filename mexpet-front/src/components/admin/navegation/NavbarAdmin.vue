@@ -1,5 +1,5 @@
 <template>
-    <b-container  fluid style="margin: 0; padding: 0;">
+    <div class="row">
   <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
     <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -18,7 +18,7 @@
   <b-row>
   <router-view />
 </b-row>
-</b-container>
+</div>
 </template>
 
 <script>
