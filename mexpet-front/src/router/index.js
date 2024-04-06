@@ -7,7 +7,24 @@ const routes = [
     {
         path: '/',
         redirect: '/landing'
-    },{
+    },
+    {
+        path: '/admin',
+        component: () => import('../components/admin/navegation/NavbarAdmin.vue'),
+        children: [
+            {
+                path: 'admin-users',
+                name: 'admin-users',
+                component: () => import('../components/admin/screens/Users.vue')
+            },
+            {
+                path: 'admin-categories',
+                name: 'admin-categories',
+                component: () => import('../components/admin/screens/Categories.vue')
+            },
+        ]
+    },     
+    {
         path: '/',
         component:{
             render(c){
@@ -51,7 +68,8 @@ const routes = [
                 component:()=> import("../views/ErrorPage/Error404.vue")
             },
         ]
-    }        
+    },
+   
 ]
 
 const router = new VueRouter({routes, })
