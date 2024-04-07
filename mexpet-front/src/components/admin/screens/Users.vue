@@ -49,13 +49,13 @@
           <b-form-group label="Apellido Materno">
             <b-form-input v-model="nuevoModerador.lastnameMatern"></b-form-input>
           </b-form-group>
-          <b-form-group label="Telefono">
+          <b-form-group label="Teléfono">
             <b-form-input v-model="nuevoModerador.phoneNumber"></b-form-input>
           </b-form-group>
-          <b-form-group label="Email">
+          <b-form-group label="Correo electrónico">
             <b-form-input v-model="nuevoModerador.email"></b-form-input>
           </b-form-group>
-          <b-form-group label="Password">
+          <b-form-group label="Contraseña">
             <b-form-input v-model="nuevoModerador.password"></b-form-input>
           </b-form-group>
           <b-form-group label="" class="mb-2">
@@ -109,7 +109,7 @@
           { key: 'email', label: 'Correo' },
           { key: 'location', label: 'Lugar' },
           { key: 'phoneNumber', label: 'Teléfono' },
-          { key: 'rol.nrol', label: 'Role' },
+          { key: 'rol.nrol', label: 'Rol' },
           { key: 'more', label: '' }
         ],
         mostrarModal: false,
