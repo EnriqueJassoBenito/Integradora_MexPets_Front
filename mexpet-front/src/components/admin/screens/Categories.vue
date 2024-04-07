@@ -120,34 +120,6 @@ export default {
     this.consultPersonality();
   },
   methods: {
-    async consultPersonality() {
-      try {
-        this.loading = true;
-        const result = await service.onGetAllPersonality();
-        this.personality = result.map(item => ({
-          id: item.id,
-          personalityPet: item.personalityPet
-        }));
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error");
-      }
-    },
-    async updatePersonality(id, personalityPet) {
-      try {
-        await service.onUpdatePersonality(id, personalityPet);
-        this.closeModal();
-        this.consultPersonality();
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Personalidad actualizada correctamente '
-        });
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error");
-      }
-    },
     fetchData() {
       axios.get('http://localhost:8080/api/type-pet/')
         .then(response => {
