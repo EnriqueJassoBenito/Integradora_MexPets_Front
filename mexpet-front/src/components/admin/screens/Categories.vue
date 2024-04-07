@@ -1,86 +1,87 @@
 <template>
   <div class="centered-container">
-    <b-alert variant="success" v-model="showSuccessAlert" :auto-hide-delay="2000" class="right">
-      Personalidad de mascota agregada correctamente
-    </b-alert>
-    <b-alert variant="success" v-model="showSuccessAlert2" :auto-hide-delay="2000" class="right">
-      Raza de mascota agregada correctamente
-    </b-alert>
-    <b-alert variant="success" v-model="showAlert" :auto-hide-delay="2000" class="right">
-      Tipo de mascota agregado correctamente
-    </b-alert>
-
     <h2>Administración de Categorías</h2>
-    <div class="eliminar" @drop="dropToDelete" @dragover="dragOverHandler">
+    <div class="delete" @drop="dropToDelete" @dragover="dragOverHandler">
       Arrastra aquí para eliminar
     </div>
-
     <div class="categories-container">
-      <div class="cuadro-blanco">
+      <div class="white-box">
+
         <div class="title-and-button">
           <h2>Tipo de mascota</h2>
-          <b-button variant="success" v-b-modal.my-modal style="margin-left:10px; height:30%; ">+</b-button>
+          <b-button variant="success" @click="openModalType(null)" style="margin-left:10px; height:30%; ">+</b-button>
         </div>
         <div class="draggable-list">
-          <div v-for="(tipo, index) in tipoMascotas" :key="index" class="draggable-item" draggable="true"
-            @dragstart="dragStartHandler(index, 'tipoMascotas', $event)">
-            {{ tipo.type }}
+          <div v-for="(type, index) in typePet" :key="index" class="draggable-item" draggable="true"
+            @dragstart="dragStartHandler(index, 'tp', $event)">
+            {{ type.type }}
+            <b-button variant="warning" size="sm" @click="updateDataType(type.id)">Editar</b-button>
           </div>
         </div>
-        <b-modal id="my-modal" v-model="modalVisible" centered title="Agregar Tipo de Mascota" modal-footer hide-footer>
-          <form @submit.prevent="addTypePets" style="display: flex; flex-direction: column;">
-            <label for="nuevoTipo">Ingresa tipo:</label>
-            <input type="text" id="nuevoTipo" v-model="nuevoTipo" required>
-            <b-button type="submit" variant="primary" style="margin-top:15px;">Agregar Tipo</b-button>
+        <b-modal id="modal-type" v-model="showModalType" centered :title="modalTitle" modal-footer hide-footer>
+          <form @submit.prevent="addOrUpdateType" style="display: flex; flex-direction: column;">
+            <b-form-group label="Tipo de animal">
+              <b-form-input v-model="updateDataType.type"></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary" style="margin-top:15px;" @click="addOrUpdateType">
+              {{ !updateDataType.id ? 'Agregar Tipo' : 'Actualizar Tipo' }}
+            </b-button>                       
           </form>
         </b-modal>
-
       </div>
+
       <div class="spacer"></div>
-      <div class="cuadro-blanco">
+
+      <div class="white-box">
         <div class="title-and-button">
           <h2>Raza de mascota</h2>
-          <b-button variant="success" v-b-modal.modal-raza-mascota style="margin-left:10px; height:30%;">+</b-button>
+          <b-button variant="success" @click="openModalRace(null)" style="margin-left:10px; height:30%;">+</b-button>
         </div>
         <div class="draggable-list">
-          <div v-for="(raza, index) in raceMascotas" :key="index" class="draggable-item" draggable="true"
-            @dragstart="dragStartHandler(index, 'raceMascotas', $event)">
-            {{ raza.racePet }}
+          <div v-for="(race, index) in race" :key="index" class="draggable-item" draggable="true"
+            @dragstart="dragStartHandler(index, 'rm', $event)">
+            {{ race.racePet }}
+            <b-button variant="warning" size="sm" @click="updateRace(race.id, race.racePet)">Editar</b-button>
           </div>
         </div>
-        <b-modal id="modal-raza-mascota" v-model="modalRazaMascotaVisible" centered title="Agregar Raza de Mascota"
-          modal-footer hide-footer>
-          <form @submit.prevent="addRace" style="display: flex; flex-direction: column;">
-            <label for="nombreRaza">Nombre de la Raza:</label>
-            <input type="text" id="nombreRaza" v-model="nuevaRaza" required>
-            <b-button type="submit" variant="primary" style="margin-top:15px;">Agregar Raza</b-button>
+        <b-modal id="modal-raza-mascota" v-model="showModalRace" centered :title="modalTitle" modal-footer hide-footer>
+          <form @submit.prevent="addOrUpdateRace" style="display: flex; flex-direction: column;">
+            <b-form-group label="Nombre de la Raza">
+              <b-form-input v-model="updateDataRace.racePet"></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary" style="margin-top:15px;">
+              {{ !updateDataRace.id ? 'Agregar Raza' : 'Actualizar Raza' }}
+            </b-button>
           </form>
         </b-modal>
-
       </div>
       <div class="spacer"></div>
 
-
-      <div class="cuadro-blanco">
+      <div class="white-box">
         <div class="title-and-button">
           <h2>Personalidad</h2>
-          <b-button variant="success" v-b-modal.modal-personalidad-mascota
+          <b-button variant="success" @click="openModalPersonality(null)"
             style="margin-left:10px; height:30%;">+</b-button>
         </div>
         <div class="draggable-list">
-          <div v-for="(personalidad, index) in personalidadMascotas" :key="index" class="draggable-item"
-            draggable="true" @dragstart="dragStartHandler(index, 'personalidadMascotas', $event)">
-            {{ personalidad.personalityPet }}
+          <div v-for="(personal, index) in personality" :key="index" class="draggable-item" draggable="true"
+            @dragstart="dragStartHandler(index, 'pm', $event)">
+            {{ personal.personalityPet }}
+            <b-button variant="warning" size="sm" @click="updateDataPersonality(personal.id)">Editar</b-button>
           </div>
         </div>
-        <b-modal id="modal-personalidad-mascota" v-model="modalPersonalidadMascotaVisible" centered
-          title="Agregar Personalidad de Mascota" modal-footer hide-footer>
-          <form @submit.prevent="addPersonalityPets" style="display: flex; flex-direction: column;">
-            <label for="nuevaPersonalidad">Nombre de la Personalidad:</label>
-            <input type="text" id="nuevaPersonalidad" v-model="nuevaPersonalidad" required>
-            <b-button type="submit" variant="primary" style="margin-top:15px;">Agregar Personalidad</b-button>
+        <b-modal id="modal-personalidad-mascota" v-model="showModalPersonality" centered :title="modalTitle" modal-footer
+          hide-footer>
+          <form @submit.prevent="addOrUpdatePersonality" style="display: flex; flex-direction: column;">
+            <b-form-group label="Nombre de la personalidad">
+              <b-form-input v-model="updateDataPersonality.personalityPet"></b-form-input>
+            </b-form-group>
+            <b-button type="submit" variant="primary" style="margin-top:15px;">
+              {{ !updateDataPersonality.id ? 'Agregar Personalidad' : 'Actualizar Personalidad' }}
+            </b-button>
           </form>
         </b-modal>
+
       </div>
     </div>
   </div>
@@ -88,148 +89,325 @@
 
 <script>
 import service from '../../../service/CategoryService';
-import axios from 'axios';
+import Swal from 'sweetalert2';
+
 export default {
   data() {
     return {
       fields: [],
-      tipoMascotas: [],
-      raceMascotas: [],
-      personalidadMascotas: [],
       camposTabla: [
         { key: 'type', label: 'Tipo' }
       ],
-      modalVisible: false,
-      modalRazaMascotaVisible: false,
-      modalPersonalidadMascotaVisible: false,
-      nuevoTipo: '',
-      nuevaRaza: '',
-      nuevaPersonalidad: '',
       draggedItem: null,
       draggedItemIndex: null,
       draggedItemType: null,
-      showSuccessAlert: false,
-      showAlert: false,
-      showSuccessAlert2: false,
+      race: [],
+      personality: [],
+      typePet: [],
+      loading: false,
+      showModalType: false,
+      showModalRace: false,
+      showModalPersonality: false,
+      updateDataPersonality: {
+        id: "",
+        personalityPet: ""
+      },
+      updateDataRace: {
+        id: "",
+        racePet: "",
+      },
+      updateDataType: {
+        id: "",
+        type: ""
+      },
+      modalTitle: ""
     };
   },
   mounted() {
-    this.fetchData();
-    this.fetchDataRaze();
-    this.fetchDataPersonality();
     this.consultPersonality();
+    this.consultRace();
+    this.consultType();
   },
   methods: {
-    fetchData() {
-      axios.get('http://localhost:8080/api/type-pet/')
-        .then(response => {
-          this.tipoMascotas = response.data.data;
-        })
-        .catch(error => {
-          console.error('Error al obtener los datos de tipo mascotas:', error);
-        });
-    },
-    fetchDataRaze() {
-      axios.get('http://localhost:8080/api/race/')
-        .then(response => {
-          this.raceMascotas = response.data.data;
-        })
-        .catch(error => {
-          console.error('Error al obtener los datos de razas de mascotas:', error);
-        });
-    },
-    fetchDataPersonality() {
-      axios.get('http://localhost:8080/api/personality/')
-        .then(response => {
-          this.personalidadMascotas = response.data.data;
-        })
-        .catch(error => {
-          console.error('Error al obtener los datos de personalidad de mascotas:', error);
-        });
-    },
-    openModal() {
-      if (tipo === 'tipo-mascota') {
-        this.modalVisible = true;
-        this.nuevoTipo = '';
-      } else if (tipo === 'raza-mascota') {
-        this.modalRazaMascotaVisible = true;
-        this.nuevaRaza = '';
-      } else if (tipo === 'personalidad-mascota') {
-        this.modalPersonalidadMascotaVisible = true;
-        this.nuevaPersonalidad = '';
+    openModalType(type) {
+      if (type === null) {
+        this.updateDataType = { id: "", type: "" };
+        this.modalTitle = "Agregar tipo";
+      } else {
+        this.updateDataType = { id: "", type: "" };
+        this.modalTitle = "Editar tipo";
       }
+      this.showModalType = true;
+      this.showModalRace = false;
+      this.showModalPersonality = false;
+    },
+    openModalRace(race) {
+      if (race === null) {
+        this.updateDataRace = { id: "", racePet: "" };
+        this.modalTitle = "Agregar Raza";
+      } else {
+        this.updateDataRace = { ...race };
+        this.modalTitle = "Editar Raza";
+      }
+      this.showModalType = false;
+      this.showModalRace = true;
+      this.showModalPersonality = false;
+    },
+    openModalPersonality(personality) {
+      if (personality === null) {
+        this.updateDataPersonality = { id: "", personalityPet: "" };
+        this.modalTitle = "Agregar Personalidad";
+      } else {
+        this.updateDataPersonality = { ...personality };
+        this.modalTitle = "Editar Personalidad";
+      }
+      this.showModalType = false;
+      this.showModalRace = false;
+      this.showModalPersonality = true;
+    },
+
+    addOrUpdateType() {
+      if (!this.updateDataType.id) {
+        this.insertType();
+      } else {
+        this.updateType(this.updateDataType.id, this.updateDataType.type);
+      }
+    },
+    async insertType() {
+      try {
+        await service.onInsertTypePet(this.updateDataType.type);
+        this.closeModal();
+        this.consultType();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Tipo de animal agregado correctamente '
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async consultType() {
+      try {
+        this.loading = true;
+        const result = await service.onGetAllType();
+        this.typePet = result.map(item => ({
+          id: item.id,
+          type: item.type
+        }));
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async updateType(id, type) {
+      try {
+        await service.onUpdateType(id, type);
+        this.closeModal();
+        this.consultType();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Tipo de animal actualizado correctamente: ' + type
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async deleteType(id) {
+      try {
+        await service.onDeleteType(id);
+        this.consultType();
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+
+    async addOrUpdatePersonality() {
+      if (!this.updateDataPersonality.id) {
+        await this.insertPersonality();
+      } else {
+        await this.updatePersonality(this.updateDataPersonality.id, this.updateDataPersonality.personalityPet);
+      }
+      this.closeModal();
+      this.consultPersonality();
+    },
+    async insertPersonality() {
+      try {
+        await service.onInsertPersonality(this.updateDataPersonality.personalityPet);
+        this.closeModal();
+        this.consultPersonality();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Personalidad agregada correctamente '
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+
+    async consultPersonality() {
+      try {
+        this.loading = true;
+        const result = await service.onGetAllPersonality();
+        this.personality = result.map(item => ({
+          id: item.id,
+          personalityPet: item.personalityPet
+        }));
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async updatePersonality(id, personalityPet) {
+      try {
+        await service.onUpdatePersonality(id, personalityPet);
+        this.closeModal();
+        this.consultPersonality();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Personalidad actualizada correctamente '
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async deletePersonality(id) {
+      try {
+        await service.onDeletePersonality(id);
+        this.consultPersonality();
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+
+    async addOrUpdateRace() {
+      if (!this.updateDataRace.id) {
+        await this.insertRace();
+      } else {
+        await this.updateRace(this.updateDataRace.id, this.updateDataRace.racePet);
+      }
+      this.closeModal();
+      this.consultRace();
+    },
+    async insertRace() {
+      try {
+        await service.onInsertRace(this.updateDataRace.racePet);
+        this.closeModal();
+        this.consultRace();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Raza agregadad correctamente'
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async consultRace() {
+      try {
+        this.loading = true;
+        const result = await service.onGetAllRace();
+        this.race = result.map(item => ({
+          id: item.id,
+          racePet: item.racePet
+        }));
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      } finally {
+        this.loading = false;
+      }
+    },
+    async updateRace(id, racePet) {
+      try {
+        await service.onUpdateRace(id, racePet);
+        this.closeModal();
+        this.consultRace();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Raza actualizada correctamente '
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+    async deleteRace(id) {
+      try {
+        await service.onDeleteRace(id);
+        this.consultRace();
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+      }
+    },
+
+    async confirmDelete() {
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo',
+        cancelButtonText: 'Cancelar'
+      });
+      return result.isConfirmed;
+    },
+    openModal(id) {
+      if (id === null) {
+        this.updateDataPersonality = {
+          id: "",
+          racePet: "",
+        };
+        this.modalTitle = "Insertar Raza";
+      } else {
+        const race = this.race.find(item => item.id === id);
+        this.updateDataPersonality = {
+          id: race.id,
+          racePet: race.racePet,
+        };
+        this.modalTitle = "Editar Raza";
+      }
+      this.showModal = true;
     },
     closeModal() {
-      this.modalVisible = false;
-      this.modalRazaMascotaVisible = false;
-      this.modalPersonalidadMascotaVisible = false;
+      this.showModalType = false;
+      this.showModalRace = false;
+      this.showModalPersonality = false;
     },
-    addTypePets() {
-      axios.post('http://localhost:8080/api/type-pet/', { type: this.nuevoTipo })
-        .then(response => {
-          if (response.data.error) {
-            alert(response.data.message);
-            console.error(response.data.message);
-          } else {
-            this.tipoMascotas.push(response.data.data);
-            this.showAlert = true;
-            setTimeout(() => {
-              this.showAlert = false;
-            }, 3000);
-            this.closeModal();
-          }
-        })
-        .catch(error => {
-          console.error('Error al agregar el nuevo tipo:', error);
-        });
-    },
-    addPersonalityPets() {
-      axios.post('http://localhost:8080/api/personality/', { personalityPet: this.nuevaPersonalidad })
-        .then(response => {
-          if (response.data.error) {
-            alert(response.data.message);
-            console.error(response.data.message);
-          } else {
-            this.personalidadMascotas.push(response.data.data);
-            this.showSuccessAlert = true;
-            setTimeout(() => {
-              this.showSuccessAlert = false;
-            }, 3000);
-            this.closeModal();
-          }
-        })
-        .catch(error => {
-          console.error('Error al agregar el nuevo personalidad:', error);
-        });
-    },
-    addRace() {
-      if (!this.nuevaRaza) {
-        alert('Por favor ingresa el nombre de la raza.');
-        return;
-      }
 
-      axios.post('http://localhost:8080/api/race/', { racePet: this.nuevaRaza })
-        .then(response => {
-          if (response.data.error) {
-            alert(response.data.message);
-            console.error(response.data.message);
-            this.showErrorAlert = true;
-          } else {
-            this.raceMascotas.push(response.data.data);
-            this.showSuccessAlert2 = true;
-
-            setTimeout(() => {
-              this.showSuccessAlert2 = false;
-            }, 2000);
-
-            this.closeModal();
-          }
-        })
-        .catch(error => {
-          console.error('Error al agregar la nueva raza:', error);
-          this.showErrorAlert = true;
-        });
-    },
     dragStartHandler(index, type, event) {
       event.dataTransfer.setData("text/plain", index.toString());
       event.dataTransfer.setData("type", type);
@@ -237,69 +415,36 @@ export default {
     dragOverHandler(event) {
       event.preventDefault();
     },
-    dropToDelete(event) {
+
+    async dropToDelete(event) {
       event.preventDefault();
-
       const index = parseInt(event.dataTransfer.getData("text/plain"));
-
       const draggedItemType = event.dataTransfer.getData("type");
-      if (draggedItemType === 'tipoMascotas') {
-        const typeId = this.tipoMascotas[index].id;
-        if (window.confirm("¿Estás seguro de que deseas eliminar este tipo de mascota?")) {
-          axios.delete(`http://localhost:8080/api/type-pet/${typeId}`)
-            .then(response => {
-              if (response.data.success) {
-                this.tipoMascotas.splice(index, 1);
-              } else {
-                console.error(response.data.message);
-              }
-            })
-            .catch(error => {
-              console.error('Error al eliminar el tipo de mascota:', error);
-            });
+      if (draggedItemType === 'tp') {
+        const typeId = this.typePet[index].id;
+        const confirmed = await this.confirmDelete();
+        if (confirmed) {
+          await this.deleteType(typeId);
         }
-      } else if (draggedItemType === 'raceMascotas') {
-        const raceId = this.raceMascotas[index].id;
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta raza de mascota?")) {
-          axios.delete(`http://localhost:8080/api/race/${raceId}`)
-            .then(response => {
-              if (response.data.success) {
-                this.raceMascotas.splice(index, 1);
-              } else {
-                console.error(response.data.message);
-              }
-            })
-            .catch(error => {
-              console.error('Error al eliminar la raza de mascota:', error);
-            });
+      } else if (draggedItemType === 'rm') {
+        const raceId = this.race[index].id;
+        const confirmed = await this.confirmDelete();
+        if (confirmed) {
+          await this.deleteRace(raceId);
         }
-      } else if (draggedItemType === 'personalidadMascotas') {
-        const personalityId = this.personalidadMascotas[index].id;
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta personalidad de mascota?")) {
-          axios.delete(`http://localhost:8080/api/personality/${personalityId}`)
-            .then(response => {
-              if (response.data.success) {
-                this.personalidadMascotas.splice(index, 1);
-              } else {
-                console.error(response.data.message);
-              }
-            })
-            .catch(error => {
-              console.error('Error al eliminar la personalidad de mascota:', error);
-            });
+      } else if (draggedItemType === 'pm') {
+        const personalityId = this.personality[index].id;
+        const confirmed = await this.confirmDelete();
+        if (confirmed) {
+          await this.deletePersonality(personalityId);
         }
       }
-    }
-
-
-
-
-
+    },
   }
 };
 </script>
 <style>
-.cuadro-blanco {
+.white-box {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -342,7 +487,7 @@ export default {
   background-color: #e9e9e9;
 }
 
-.eliminar {
+.delete {
   margin-top: 20px;
   padding: 10px;
   border: 2px dashed rgb(158, 19, 19);
@@ -353,7 +498,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 
 .right {
