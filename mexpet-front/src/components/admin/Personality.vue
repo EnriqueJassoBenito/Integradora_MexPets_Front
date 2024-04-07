@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <b-button @click="openModal(null)" variant="primary">Agregar</b-button>
+        <b-button @click="openModal(null)" variant="succes">Agregar</b-button>
         <b-table :items="personality" :fields="fields">
             <template v-slot:cell(actions)="{ item }">
                 <b-button @click="openModal(item.id)" variant="primary">Editar</b-button>

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Spinner from './components/Spinner.vue';
+import Spinner from './components/shared/plugins/Spinner.vue';
 
 export default {
     components: {

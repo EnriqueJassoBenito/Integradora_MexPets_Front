@@ -56,16 +56,16 @@ const routes = [
             {
                 path: '/login',
                 name: 'login',
-                component:()=> import("../components/Login.vue")
+                component:()=> import("../components/auth/Login.vue")
             },
             {
                 path: '/register',
                 name: 'register',
-                component:()=> import("../components/Register.vue")
+                component:()=> import("../components/auth/Register.vue")
             },
             {
                 path: '*',
-                component:()=> import("../views/ErrorPage/Error404.vue")
+                component:()=> import("../components/shared/plugins/Error404.vue")
             },
         ]
     },
