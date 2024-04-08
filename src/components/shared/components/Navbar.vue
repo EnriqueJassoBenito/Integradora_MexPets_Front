@@ -7,11 +7,11 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'landing' }">Home</b-nav-item>
-          <b-nav-item :to="{ name: 'landing' }">Adoptar</b-nav-item>
-          <b-nav-item :to="{ name: 'landing' }">Dar en adopción</b-nav-item>
-          <b-nav-item :to="{ name: 'landing' }">Categorías</b-nav-item>
-          <b-nav-item :to="{ name: 'landing' }">Recomendaciones</b-nav-item>
-          <b-nav-item :to="{ name: 'landing' }">Perfil</b-nav-item>
+          <b-nav-item :to="{ name: 'adoption' }">Adoptar</b-nav-item>
+          <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
+          <b-nav-item :to="{ name: 'categories' }">Categorías</b-nav-item>
+          <b-nav-item :to="{ name: 'recomendation' }">Recomendaciones</b-nav-item>
+          <b-nav-item :to="{ name: 'profile' }">Perfil</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
