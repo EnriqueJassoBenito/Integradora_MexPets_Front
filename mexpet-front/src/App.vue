@@ -3,14 +3,14 @@
         <b-row>
             <b-col>
                 <div>
-                   <transition name="fade" mode="out-in">
+                    <transition name="fade" mode="out-in">
                         <router-view></router-view>
                     </transition>
-                    <transition name="fade">
+                    <!--<transition name="fade">
                         <div v-if="loading" class="overlay">
                             <spinner></spinner>
                         </div>
-                    </transition>
+                    </transition>-->
                 </div>
             </b-col>
         </b-row>
@@ -26,20 +26,21 @@ export default {
     },
     data() {
         return {
-            loading: false
-        }
+            loading: false,
+        };
     },
     created() {
-        this.$router.beforeEach((to, from, next) => {
-            this.loading = true
-            next()
-        })
+        const router = this.$router;
+        router.beforeEach((to, from, next) => {
+            this.loading = true;
+            next();
+        });
 
-        this.$router.afterEach(() => {
-            this.loading = false
-        })
-    }
-}
+        router.afterEach(() => {
+            this.loading = false;
+        });
+    },
+};
 </script>
 
 <style>

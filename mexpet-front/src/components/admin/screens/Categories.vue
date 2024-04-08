@@ -24,8 +24,8 @@
               <b-form-input v-model="updateDataType.type"></b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary" style="margin-top:15px;" @click="addOrUpdateType">
-              {{ !updateDataType.id ? 'Agregar Tipo' : 'Actualizar Tipo' }}
-            </b-button>                       
+              {{ !updateDataType.id ? 'Agregar' : 'Actualizar' }}
+            </b-button>
           </form>
         </b-modal>
       </div>
@@ -70,8 +70,8 @@
             <b-button variant="warning" size="sm" @click="updateDataPersonality(personal.id)">Editar</b-button>
           </div>
         </div>
-        <b-modal id="modal-personalidad-mascota" v-model="showModalPersonality" centered :title="modalTitle" modal-footer
-          hide-footer>
+        <b-modal id="modal-personalidad-mascota" v-model="showModalPersonality" centered :title="modalTitle"
+          modal-footer hide-footer>
           <form @submit.prevent="addOrUpdatePersonality" style="display: flex; flex-direction: column;">
             <b-form-group label="Nombre de la personalidad">
               <b-form-input v-model="updateDataPersonality.personalityPet"></b-form-input>
@@ -134,13 +134,14 @@ export default {
         this.updateDataType = { id: "", type: "" };
         this.modalTitle = "Agregar tipo";
       } else {
-        this.updateDataType = { id: "", type: "" };
+        this.updateDataType = { ...type };
         this.modalTitle = "Editar tipo";
       }
       this.showModalType = true;
       this.showModalRace = false;
       this.showModalPersonality = false;
     },
+
     openModalRace(race) {
       if (race === null) {
         this.updateDataRace = { id: "", racePet: "" };

@@ -17,7 +17,6 @@
                 <b-button class="mt-3" type="button" @click="closeModal" variant="secondary">Cancelar</b-button>
             </form>
         </b-modal>
-        
     </b-container>
 </template>
 

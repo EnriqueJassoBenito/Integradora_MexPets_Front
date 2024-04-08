@@ -10,7 +10,7 @@ const routes = [
     },
     {
         path: '/admin',
-        component: () => import('../components/admin/navegation/NavbarAdmin.vue'),
+        component: () => import('../components/shared/components/NavbarAdmin.vue'),
         children: [
             {
                 path: 'admin-users',
@@ -18,12 +18,33 @@ const routes = [
                 component: () => import('../components/admin/screens/Users.vue')
             },
             {
-                path: 'admin-categories',
-                name: 'admin-categories',
+                path: 'categories',
+                name: 'categories',
                 component: () => import('../components/admin/screens/Categories.vue')
             },
         ]
-    },     
+    }, 
+    {
+        path: '/moderator',
+        component: () => import('../components/shared/components/NavbarModerator.vue'),
+        children: [
+            {
+                path: 'moderator-profile',
+                name: 'moderator-profile',
+                component: () => import('../components/moderator/ModeratorProfile.vue')
+            },
+            {
+                path: 'awaiting-requests',
+                name: 'awaiting-requests',
+                component: () => import('../components/moderator/AwaitingRequests.vue')
+            },
+            {
+                path: 'management',
+                name: 'management',
+                component: () => import('../components/moderator/Management.vue')
+            },
+        ]
+    },    
     {
         path: '/',
         component:{
