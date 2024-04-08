@@ -29,8 +29,8 @@ const routes = [
         component: () => import('../components/shared/components/NavbarModerator.vue'),
         children: [
             {
-                path: 'moderator-profile',
-                name: 'moderator-profile',
+                path: 'profile',
+                name: 'profile',
                 component: () => import('../components/moderator/ModeratorProfile.vue')
             },
             {
@@ -70,8 +70,8 @@ const routes = [
                 component:()=> import("../components/Adopter.vue")
             },
             {
-                path: '/aboutus',
-                name: 'aboutus',
+                path: '/about-us',
+                name: 'about-us',
                 component:()=> import("../components/AboutUs.vue")
             },
             {

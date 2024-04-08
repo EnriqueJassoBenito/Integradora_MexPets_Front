@@ -8,8 +8,8 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>
-                    <b-nav-item :to="{ name: 'moderator-profile' }" @click="selectOption('moderator-profile')"
-                        :class="{ 'active': selectedOption === 'moderator-profile' }">Perfil</b-nav-item>
+                    <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
+                        :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
                     <b-nav-item :to="{ name: 'awaiting-requests' }" @click="selectOption('awaiting-requests')"
                         :class="{ 'active': selectedOption === 'awaiting-requests' }">Solicitudes pendientes</b-nav-item>
                     <b-nav-item :to="{ name: 'management' }" @click="selectOption('management')"
