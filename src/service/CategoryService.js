@@ -71,7 +71,6 @@ const onUpdatePersonality = async (id, personalityPet) => {
             id,
             personalityPet
         });
-        //console.log(response.data);
         return response.data;
     } catch (error) {
         throw(error);

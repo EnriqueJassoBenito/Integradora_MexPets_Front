@@ -4,22 +4,20 @@
       <h2>Administración de Usuarios</h2>
       <div class="row">
         <div class="col">
-          <b-form-input v-model="filtroBusqueda" placeholder="Buscar..."></b-form-input>
+          <b-form-input v-model="userSerch" placeholder="Buscar..."></b-form-input>
         </div>
         <div class="col">
-          <b-form-select v-model="filtroRol" :options="opcionesRoles" placeholder="Filtrar por Rol"
+          <b-form-select v-model="rolFilter" :options="optionRol" placeholder="Filtrar por Rol"
             style="height:38px; border-radius: 5px;"></b-form-select>
         </div>
         <div class="col">
-          <b-button variant="success" @click="mostrarModalAgregarModeradorFn" class="ml-auto">Agregar
+          <b-button variant="success" @click="showModalAddModeratorFn" class="ml-auto">Agregar
             Moderador</b-button>
         </div>
       </div>
-      <b-table striped hover :items="filteredItems" :fields="fields" style="width: 1000px; margin-top: 20px;">
+      <b-table striped hover :items="filteredItems" :fields="fields" style="width: 1300px; margin-top: 20px;">
         <template v-slot:cell(username)="row">
-          <div draggable="true" @dragstart="dragStartHandler(row.item)">
             {{ row.item.username }}
-          </div>
         </template>
         <template v-slot:cell(nombre)="row">
           {{ row.item.nombre }} {{ row.item.lastname }} {{ row.item.lastnameMatern }}
@@ -36,29 +34,33 @@
         <template v-slot:cell(rol)="row">
           {{ row.item.rol }}
         </template>
+        <template v-slot:cell(actions)="row">
+          <b-button variant="warning" size="sm" @click="openModalType(type)" style="margin-right:10px;height: 35px;"><b-icon icon="pencil-square"></b-icon></b-button>
+          <b-button @click="editarUsuario(row.item)" variant="success">Habilitar</b-button>
 
+        </template>
       </b-table>
     </div>
 
-    <b-modal v-model="mostrarModalAgregarModerador" title="Agregar Moderador" hide-footer>
-      <form @submit.prevent="agregarModerador">
+    <b-modal v-model="showModalAddModerator" title="Agregar Moderador" hide-footer>
+      <form @submit.prevent="addModerator">
         <b-form-group label="Nombre">
-          <b-form-input v-model="nuevoModerador.nombre"></b-form-input>
+          <b-form-input v-model="newModerator.nombre"></b-form-input>
         </b-form-group>
         <b-form-group label="Apellido Paterno">
-          <b-form-input v-model="nuevoModerador.lastname"></b-form-input>
+          <b-form-input v-model="newModerator.lastname"></b-form-input>
         </b-form-group>
         <b-form-group label="Apellido Materno">
-          <b-form-input v-model="nuevoModerador.lastnameMatern"></b-form-input>
+          <b-form-input v-model="newModerator.lastnameMatern"></b-form-input>
         </b-form-group>
         <b-form-group label="Teléfono">
-          <b-form-input v-model="nuevoModerador.phoneNumber"></b-form-input>
+          <b-form-input v-model="newModerator.phoneNumber"></b-form-input>
         </b-form-group>
         <b-form-group label="Correo electrónico">
-          <b-form-input v-model="nuevoModerador.email"></b-form-input>
+          <b-form-input v-model="newModerator.email"></b-form-input>
         </b-form-group>
         <b-form-group label="Contraseña">
-          <b-form-input v-model="nuevoModerador.password"></b-form-input>
+          <b-form-input v-model="newModerator.password"></b-form-input>
         </b-form-group>
         <b-form-group label="" class="mb-2">
           <b-button type="submit" variant="primary" style="margin-top: 20px;">Guardar</b-button>
@@ -68,20 +70,20 @@
       </form>
     </b-modal>
 
-    <b-modal v-model="mostrarModalInformacion" title="Información del Usuario" hide-footer>
+    <b-modal v-model="showModalInfo" title="Información del Usuario" hide-footer>
       <div>
-        <p><strong>Nombre:</strong> {{ usuarioSeleccionado.nombre }}</p>
-        <p><strong>Email:</strong> {{ usuarioSeleccionado.email }}</p>
+        <p><strong>Nombre:</strong> {{ userSelect.nombre }}</p>
+        <p><strong>Email:</strong> {{ userSelect.email }}</p>
       </div>
     </b-modal>
 
-    <b-modal v-model="mostrarModal" title="Editar Usuario" hide-footer>
+    <b-modal v-model="showModal" title="Editar Usuario" hide-footer>
       <form @submit.prevent="guardar">
         <b-form-group label="Nombre">
-          <b-form-input v-model="usuarioEditado.nombre"></b-form-input>
+          <b-form-input v-model="userEdit.nombre"></b-form-input>
         </b-form-group>
         <b-form-group label="Email">
-          <b-form-input v-model="usuarioEditado.email"></b-form-input>
+          <b-form-input v-model="userEdit.email"></b-form-input>
         </b-form-group>
         <b-form-group label="" class="mb-2">
           <b-button type="submit" variant="primary" style="margin-top: 20px;">Guardar Cambios</b-button>
@@ -95,14 +97,15 @@
 
 <script>
 import axios from 'axios';
-
+import service from '../../../service/UsersService';
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
-      listaUsuarios: [],
-      filtroRol: 'All',
-      filtroBusqueda: '',
-      opcionesRoles: ['All', 'ADMIN', 'MODE', 'CLIENTE'],
+      usersList: [],
+      rolFilter: 'All',
+      userSerch: '',
+      optionRol: ['All', 'ADMIN', 'MODE'],
       fields: [
         { key: 'nameUser', label: 'Username' },
         { key: 'name', label: 'Nombre' },
@@ -112,77 +115,61 @@ export default {
         { key: 'location', label: 'Lugar' },
         { key: 'phoneNumber', label: 'Teléfono' },
         { key: 'rol.nrol', label: 'Rol' },
-        { key: 'more', label: '' }
+        { key: 'actions', label: 'Acciones' }
+        
       ],
-      mostrarModal: false,
-      mostrarModalInformacion: false,
-      mostrarModalAgregarModerador: false,
-      usuarioEditado: { name: '', email: '' },
-      usuarioEditadoIndex: null,
-      usuarioSeleccionado: { name: '', email: '' },
-      nuevoModerador: { name: '', email: '' }
+      showModal: false,
+      showModalInfo: false,
+      showModalAddModerator: false,
+      userEdit: { name: '', email: '' },
+      userEditIndex: null,
+      userSelect: { name: '', email: '' },
+      newModerator: { name: '', email: '' }
     };
   },
   created() {
-    this.fetchUsuarios();
+    this.consultTypeUsers();
   },
   computed: {
     filteredItems() {
-      let usuariosFiltrados = this.listaUsuarios;
-      if (this.filtroRol !== 'All') {
-        usuariosFiltrados = usuariosFiltrados.filter(usuario => usuario.rol && usuario.rol.nrol === this.filtroRol);
+      let usersFilter = this.usersList;
+      if (this.rolFilter !== 'All') {
+        usersFilter = usersFilter.filter(user => user.rol && user.rol.nrol === this.rolFilter);
       }
-      if (this.filtroBusqueda.trim() !== '') {
-        const busqueda = this.filtroBusqueda.toLowerCase();
-        usuariosFiltrados = usuariosFiltrados.filter(usuario =>
-          usuario.name.toLowerCase().includes(busqueda) ||
-          usuario.email.toLowerCase().includes(busqueda) ||
-          usuario.phoneNumber.includes(busqueda) ||
-          (usuario.rol && usuario.rol.nrol.toLowerCase().includes(busqueda))
+      if (this.userSerch.trim() !== '') {
+        const busqueda = this.userSerch.toLowerCase();
+        usersFilter = usersFilter.filter(user =>
+          user.name.toLowerCase().includes(busqueda) ||
+          user.email.toLowerCase().includes(busqueda) ||
+          user.phoneNumber.includes(busqueda) ||
+          (user.rol && user.rol.nrol.toLowerCase().includes(busqueda))
         );
       }
 
-      return usuariosFiltrados;
+      return usersFilter;
     }
   },
   methods: {
-    async fetchUsuarios() {
-      try {
-        const response = await axios.get('http://localhost:8080/api/user/');
-        if (response.data && response.data.data) {
-          this.listaUsuarios = response.data.data;
-        }
-      } catch (error) {
-        console.error('Error fetching usuarios:', error);
-      }
+    async consultTypeUsers() {
+  try {
+    this.loading = true;
+    const result = await service.getAllUsers();
+    this.usersList = result;
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error");
+  }
+},
+closeModalAddModerator() {
+      this.showModalAddModerator = false;
+      this.newModerator = { name: '', email: '' };
     },
-    cerrarModalAgregarModerador() {
-      this.mostrarModalAgregarModerador = false;
-      this.nuevoModerador = { name: '', email: '' };
+    showModalAddModeratorFn() {
+      this.showModalAddModerator = true;
     },
-    mostrarModalAgregarModeradorFn() {
-      this.mostrarModalAgregarModerador = true;
-    },
-    agregarModerador() {
-      this.listaUsuarios.push(this.nuevoModerador);
-      this.cerrarModalAgregarModerador();
-    },
-    dragStartHandler(usuario) {
-      event.dataTransfer.setData("usuario", JSON.stringify(usuario));
-    },
-    dropHandler(event) {
-      event.preventDefault();
-      const usuario = JSON.parse(event.dataTransfer.getData("usuario"));
-      this.eliminarUsuario(usuario);
-    },
-    eliminarUsuario(usuario) {
-      const index = this.listaUsuarios.findIndex(u => u.id === usuario.id);
-      if (index !== -1) {
-        this.listaUsuarios.splice(index, 1);
-      }
-    },
-    dragOverHandler(event) {
-      event.preventDefault();
+    addModerator() {
+      this.usersList.push(this.newModerator);
+      this.closeModalAddModerator();
     }
   }
 };

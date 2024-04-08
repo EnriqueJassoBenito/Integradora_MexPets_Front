@@ -9,15 +9,20 @@
 
         <div class="title-and-button">
           <h2>Tipo de mascota</h2>
-          <b-button variant="success" @click="openModalType(null)" style="margin-left:10px; height:30%; ">+</b-button>
+          <b-button variant="success" @click="openModalType(null)" style="margin-left:10px; height:30%; "><b-icon icon="plus"></b-icon></b-button>
         </div>
         <div class="draggable-list">
           <div v-for="(type, index) in typePet" :key="index" class="draggable-item" draggable="true"
-            @dragstart="dragStartHandler(index, 'tp', $event)">
-            {{ type.type }}
-            <b-button variant="warning" size="sm" @click="updateDataType(type.id)">Editar</b-button>
+          @dragstart="dragStartHandler(index, 'tp', $event)">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ type.type }}</span>
+            <span>
+              <b-button variant="warning" size="sm" @click="openModalType(type)"><b-icon icon="pencil-square"></b-icon></b-button>
+            </span>
+         </div>
           </div>
         </div>
+
         <b-modal id="modal-type" v-model="showModalType" centered :title="modalTitle" modal-footer hide-footer>
           <form @submit.prevent="addOrUpdateType" style="display: flex; flex-direction: column;">
             <b-form-group label="Tipo de animal">
@@ -35,13 +40,17 @@
       <div class="white-box">
         <div class="title-and-button">
           <h2>Raza de mascota</h2>
-          <b-button variant="success" @click="openModalRace(null)" style="margin-left:10px; height:30%;">+</b-button>
+          <b-button variant="success" @click="openModalRace(null)" style="margin-left:10px; height:30%;"><b-icon icon="plus"></b-icon></b-button>
         </div>
         <div class="draggable-list">
           <div v-for="(race, index) in race" :key="index" class="draggable-item" draggable="true"
             @dragstart="dragStartHandler(index, 'rm', $event)">
-            {{ race.racePet }}
-            <b-button variant="warning" size="sm" @click="updateRace(race.id, race.racePet)">Editar</b-button>
+            <div class="d-flex justify-content-between align-items-center">
+            <span>{{ race.racePet }}</span>
+            <span>
+            <b-button variant="warning" size="sm" @click="openModalRace(race)"><b-icon icon="pencil-square"></b-icon></b-button>
+          </span>
+          </div>
           </div>
         </div>
         <b-modal id="modal-raza-mascota" v-model="showModalRace" centered :title="modalTitle" modal-footer hide-footer>
@@ -61,14 +70,20 @@
         <div class="title-and-button">
           <h2>Personalidad</h2>
           <b-button variant="success" @click="openModalPersonality(null)"
-            style="margin-left:10px; height:30%;">+</b-button>
+            style="margin-left:10px; height:30%;"><b-icon icon="plus"></b-icon></b-button>
         </div>
         <div class="draggable-list">
           <div v-for="(personal, index) in personality" :key="index" class="draggable-item" draggable="true"
-            @dragstart="dragStartHandler(index, 'pm', $event)">
-            {{ personal.personalityPet }}
-            <b-button variant="warning" size="sm" @click="updateDataPersonality(personal.id)">Editar</b-button>
+          @dragstart="dragStartHandler(index, 'pm', $event)">
+           <div class="d-flex justify-content-between align-items-center">
+             <span>{{ personal.personalityPet }}</span>
+             <span>
+             <b-button variant="warning" size="sm" @click="openModalPersonality(personal)">
+            <b-icon icon="pencil-square"></b-icon>
+           </b-button>
+            </span>
           </div>
+        </div>
         </div>
         <b-modal id="modal-personalidad-mascota" v-model="showModalPersonality" centered :title="modalTitle"
           modal-footer hide-footer>
@@ -175,20 +190,33 @@ export default {
       }
     },
     async insertType() {
-      try {
-        await service.onInsertTypePet(this.updateDataType.type);
-        this.closeModal();
-        this.consultType();
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Tipo de animal agregado correctamente '
-        });
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error");
-      }
-    },
+  try {
+    const existingType = this.typePet.find(item => item.type === this.updateDataType.type);
+    if (!existingType) {
+      await service.onInsertTypePet(this.updateDataType.type);
+      this.updateDataType.type = "";
+      this.closeModal();
+      this.consultType();
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Tipo de animal agregado correctamente'
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Advertencia',
+        text: 'Este tipo de animal ya existe',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error");
+  }
+}
+,
     async consultType() {
       try {
         this.loading = true;
@@ -313,20 +341,32 @@ export default {
       this.consultRace();
     },
     async insertRace() {
-      try {
-        await service.onInsertRace(this.updateDataRace.racePet);
-        this.closeModal();
-        this.consultRace();
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Raza agregadad correctamente'
-        });
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Error");
-      }
-    },
+  try {
+    const existingRace = this.race.find(item => item.racePet === this.updateDataRace.racePet);
+    if (!existingRace) {
+      await service.onInsertRace(this.updateDataRace.racePet);
+      this.closeModal();
+      this.consultRace();
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Raza agregada correctamente'
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Advertencia',
+        text: 'Esta raza ya existe',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error");
+  }
+}
+,
     async consultRace() {
       try {
         this.loading = true;
