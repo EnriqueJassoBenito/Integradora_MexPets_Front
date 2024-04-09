@@ -17,8 +17,10 @@
                                     <b-row>
                                         <b-form-group>
                                             <h6 class="mt-4">Nombre <span class="obligationText">*</span></h6>
-                                            <b-form-input id="inputName" class="inputName" v-model="name" type="text"
+                                            <b-form-input v-validate="'required:true|alpha_spaces'" id="inputName"
+                                                class="inputName" v-model="name" type="text"
                                                 placeholder="Nombre genérico" required>
+                                                {{ errors.first('name') }}
                                             </b-form-input>
                                         </b-form-group>
                                     </b-row>
@@ -27,8 +29,10 @@
                                             <b-form-group>
                                                 <h6 class="mt-4">Apellido Paterno <span class="obligationText">*</span>
                                                 </h6>
-                                                <b-form-input id="inputLastName1" v-model="lastName1" type="text"
+                                                <b-form-input v-validate="'required:true|alpha_spaces'"
+                                                    id="inputLastName" v-model="lastName" type="text"
                                                     placeholder="Apellido P genérico" required>
+                                                    {{ errors.first('lastName') }}
                                                 </b-form-input>
                                             </b-form-group>
                                         </b-col>
@@ -38,7 +42,8 @@
                                                     <h6 class="mt-4">Apellido Materno <span
                                                             class="obligationText">*</span>
                                                     </h6>
-                                                    <b-form-input id="inputLastName2" v-model="lastName2" type="text"
+                                                    <b-form-input v-validate="'required:false|alpha_spaces'"
+                                                        id="inputLastName2" v-model="lastNameM" type="text"
                                                         placeholder="Apellido M genérico" required>
                                                     </b-form-input>
                                                 </b-form-group>
@@ -49,8 +54,8 @@
                                         <b-col cols="6">
                                             <b-form-group>
                                                 <h6 class="mt-4">Teléfono <span class="obligationText">*</span></h6>
-                                                <b-form-input id="inputPhone" v-model="phone" type="text"
-                                                    placeholder="7771234567" required>
+                                                <b-form-input v-validate="'required|digits:10'" id="inputPhone"
+                                                    v-model="phone" type="text" placeholder="7771234567" required>
                                                 </b-form-input>
                                             </b-form-group>
                                         </b-col>
@@ -58,8 +63,8 @@
                                             <div>
                                                 <b-form-group>
                                                     <h6 class="mt-4">Estado <span class="obligationText">*</span></h6>
-                                                    <b-form-select v-model="selected"
-                                                        :options="options"></b-form-select>
+                                                    <b-form-select v-model="selected" :options="options"
+                                                        required></b-form-select>
                                                 </b-form-group>
                                             </div>
                                         </b-col>
@@ -68,8 +73,9 @@
                                         <b-form-group>
                                             <h6 class="mt-4">Nombre de usuario <span class="obligationText">*</span>
                                             </h6>
-                                            <b-form-input id="inputUserName" class="inputUserName" v-model="userName"
-                                                type="text" placeholder="Nombre de usuario genérico" required>
+                                            <b-form-input v-validate="'required|alpha_dash'" id="inputUserName"
+                                                class="inputUserName" v-model="userName" type="text"
+                                                placeholder="Nombre de usuario genérico" required>
                                             </b-form-input>
                                         </b-form-group>
                                     </b-row>
@@ -77,9 +83,10 @@
                                         <b-form-group>
                                             <h6 class="mt-4">Contraseña <span class="obligationText">*</span></h6>
                                             <b-input-group>
-                                                <b-form-input :type="inputType" id="inputPassword" class="inputPassword"
-                                                    v-model="password" type="password" placeholder="***********"
-                                                    required>
+                                                <b-form-input v-validate="'required|alpha_dash|min:7'" type="password"
+                                                    id="inputPassword" class="inputPassword" v-model="password"
+                                                    placeholder="***********"
+                                                    :class="{ 'is-danger': errors.has('password') }" required>
                                                 </b-form-input>
                                                 <b-input-group-append>
                                                     <span @click="toggleShowPassword">
@@ -97,7 +104,9 @@
                                             <h6 class="mt-4">Confirmar contraseña <span class="obligationText">*</span>
                                             </h6>
                                             <b-input-group>
-                                                <b-form-input :type="inputType" id="inputConfirmPassword"
+                                                <b-form-input v-validate="'required|confirmed:password'"
+                                                    :class="{ 'is-danger': errors.has('password_confirmation') }"
+                                                    :type="inputType" id="inputConfirmPassword"
                                                     class="inputConfirmPassword" v-model="confirmPassword"
                                                     type="password" placeholder="***********" required>
                                                 </b-form-input>
@@ -151,10 +160,17 @@ export default {
     },
     data() {
         return {
-            password: '',
+            error: false,
+        error_msg: '',
             showPassword: false,
-            inputType: 'password',
-
+            name: "",
+            lastName: "",
+            lastNameM: "",
+            phone: "",
+            selected: "",
+            userName: "",
+            password: "",
+            confirmPassword: "",
             selected: null,
             options: [
                 { value: null, text: 'Selecciona un Estado' },
@@ -214,6 +230,18 @@ export default {
         toggleShowPassword() {
             this.showPassword = !this.showPassword;
             this.inputType = this.showPassword ? 'text' : 'password';
+        },
+        onSubmit() {
+            this.$validator.validate().then(valid => {
+                if (!valid) {
+                    console.log('Falta Acompletar campos')
+                    alert('Debes de Completar todos los campos')
+                } else {
+                    console.log('Todo corecto')
+                    console.log(this.$data)
+                    console.log(this.genero)
+                }
+            });
         }
     }
 

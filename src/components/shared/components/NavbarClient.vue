@@ -4,15 +4,14 @@
             <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png"
                     id="iconNavbar"></b-link>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>
-                    <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
-                        :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
-                    <b-nav-item :to="{ name: 'awaiting-requests' }" @click="selectOption('awaiting-requests')"
-                        :class="{ 'active': selectedOption === 'awaiting-requests' }">Solicitudes pendientes</b-nav-item>
-                    <b-nav-item :to="{ name: 'management' }" @click="selectOption('management')"
-                        :class="{ 'active': selectedOption === 'management' }">Mis gestiones</b-nav-item>
+                    <!--<b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
+                        :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>-->
+                    <b-nav-item :to="{ name: 'register-animal' }" @click="selectOption('register-animal')"
+                        :class="{ 'active': selectedOption === 'register-animal' }">Registrar Animal</b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -23,7 +22,6 @@
 </template>
 
 <script>
-
 </script>
 
 

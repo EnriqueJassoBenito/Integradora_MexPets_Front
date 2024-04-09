@@ -25,6 +25,17 @@ const routes = [
         ]
     }, 
     {
+        path: '/client',
+        component: () => import('../components/shared/components/NavbarClient.vue'),
+        children: [
+            {
+                path: 'register-animal',
+                name: 'register-animal',
+                component: () => import('../components/client/RegisterAnimal.vue')
+            },
+        ]
+    }, 
+    {
         path: '/moderator',
         component: () => import('../components/shared/components/NavbarModerator.vue'),
         children: [
@@ -94,4 +105,23 @@ const routes = [
 ]
 
 const router = new VueRouter({routes, })
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const user = JSON.parse(localStorage.getItem('authUser'));
+    const userRole = user ? user.user.rol.nrol : null;
+  
+    if (requiresAuth && !user) {
+      next({ name: 'login' });
+    } else if (requiresAuth && user) {
+      // Verificar si el usuario tiene permisos para acceder a la ruta
+      const requiredRoles = to.meta.roles;
+      if (requiredRoles && !requiredRoles.includes(userRole)) {
+        next({ name: 'landing' }); // Redirigir a una página de acceso no autorizado
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  });
 export default router;

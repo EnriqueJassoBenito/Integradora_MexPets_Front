@@ -9,7 +9,7 @@
           </div>
           <div class="contentCenter">
             <h4>¡Bienvenido a Mexpet!</h4>
-            <p class="my-2">Utiiza tu cuenta para iniciar sesión</p>
+            <p class="my-2">Utiliza tu cuenta para iniciar sesión</p>
           </div>
           <div>
             <b-form @submit="onSubmit">
@@ -52,6 +52,8 @@
 
 <script>
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+
 export default {
   name: 'Login',
   components: {
@@ -69,38 +71,61 @@ export default {
           href: '',
           to: 'landing'
         },
-
         {
           text: 'Iniciar Sesión',
           href: '#',
           to: 'Login'
-
         }
-
       ]
-
     }
-
   },
 
   methods: {
     onSubmit() {
       axios.post('auth/login', {
-        "correo": this.email,
-        "contrasena": this.password
+        "email": this.email,
+        "password": this.password
       }).then(({ data: { data: { user, token } } }) => {
-        this.error = false
-        localStorage.setItem('authToken', token)
-        localStorage.setItem('authUser', JSON.stringify(user))
-      })
-        .catch(e => {
-          console.log(e);
-          this.error = true
-          this.error_msg = 'Usuario y/o contraseña incorrectos'
-        })
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('authUser', JSON.stringify(user));
+
+        const decodedToken = jwtDecode(token);
+        const userRole = user && user.user ? user.user.rol.nrol : null;
+        console.log(JSON.stringify(userRole));
+
+        switch (userRole) {
+          case 'ADMIN':
+            this.$router.push('/admin');
+            break;
+          case 'CLIENTE':
+            this.$router.push('/client');
+            break;
+          case 'MODERADOR':
+            this.$router.push('/moderator');
+            break;
+          default:
+            this.$router.push('/landing');
+        }
+      }).catch(e => {
+        console.log(e);
+        this.error = true;
+        this.error_msg = 'Usuario y/o contraseña incorrectos';
+      });
     }
   }
 }
+
+/*
+methods: {
+    logout() {
+      // Limpiar datos de autenticación al cerrar sesión
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('authUser');
+      // Redirigir a la página de inicio o a la página de inicio de sesión
+      this.$router.push({ name: 'landing' });
+    }
+  }
+*/
 </script>
 
 
