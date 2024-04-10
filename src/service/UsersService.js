@@ -20,6 +20,15 @@ const getUsersByRole = async (roleName) => {
     }
 };
 
+const getUsersByAdminAndModeratorRoles = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}roles/admin-moderador`);
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const insertUser = async (userData) => {
     try {
         const response = await axios.post(baseUrl, userData);
@@ -50,6 +59,7 @@ const deleteUser = async (userId) => {
 export default {
     getAllUsers,
     getUsersByRole,
+    getUsersByAdminAndModeratorRoles,
     insertUser,
     updateUser,
     deleteUser,

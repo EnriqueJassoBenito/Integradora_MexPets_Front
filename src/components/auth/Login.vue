@@ -109,7 +109,12 @@ export default {
       }).catch(e => {
         console.log(e);
         this.error = true;
-        this.error_msg = 'Usuario y/o contraseña incorrectos';
+        //this.error_msg = 'Usuario y/o contraseña incorrectos';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Usuario y/o contraseña incorrectos'
+        });
       });
     }
   }
