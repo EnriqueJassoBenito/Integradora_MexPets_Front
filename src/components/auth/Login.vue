@@ -30,6 +30,14 @@
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
               Sesión</b-button>
           </div>
+          <!--
+            <div
+      ref="container"
+      class="frc-captcha"
+      data-sitekey="FCMVRR8LOPON8OO3"
+      data-lang="es"
+    ></div>
+          -->
           <div class="contentCenter">
             <b-link href="#foo">¿Olvidaste tu contraseña?</b-link>
           </div>
@@ -41,9 +49,6 @@
           <div class="contentCenter">
             <p>¿No tienes cuenta? <b-link :to="{ name: 'register' }">Crear una cuenta</b-link></p>
           </div>
-          <div>
-            <b-alert show variant="danger" v-if="error">{{ error_msg }}</b-alert>
-          </div>
         </b-card>
       </div>
     </b-row>
@@ -53,6 +58,7 @@
 <script>
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+
 
 export default {
   name: 'Login',

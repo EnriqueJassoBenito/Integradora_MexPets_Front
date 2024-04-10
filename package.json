@@ -11,6 +11,7 @@
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
+    "friendly-challenge": "^0.9.15",
     "jwt-decode": "^4.0.0",
     "sweetalert2": "^11.10.7",
     "vee-validate": "^2.2.15",
