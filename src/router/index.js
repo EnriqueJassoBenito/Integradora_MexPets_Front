@@ -25,7 +25,7 @@ const routes = [
     ],
   },
   {
-    path: "/client",
+    path: "/client/",
     component: () => import("../components/shared/components/NavbarClient.vue"),
     children: [
       {
@@ -64,6 +64,7 @@ const routes = [
         return c("router-view");
       },
     },
+    
     children: [
       {
         path: "/landing",

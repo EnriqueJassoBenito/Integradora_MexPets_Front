@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="navbar">
     <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top" style="z-index: 1;">
       <b-link :to="{ name: 'landing' }"><img src="../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
@@ -15,7 +16,12 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <b-row>
+            <router-view />
+        </b-row>
   </div>
+
+</div>
 </template>
 
 <script>
