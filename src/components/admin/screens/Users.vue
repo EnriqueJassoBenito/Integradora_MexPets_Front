@@ -153,7 +153,7 @@ export default {
     async consultTypeUsers() {
   try {
     this.loading = true;
-    const result = await service.getAllUsers();
+    const result = await service.getUsersByAdminAndModeratorRoles();
     this.usersList = result;
   } catch (error) {
     console.error("Error:", error);
