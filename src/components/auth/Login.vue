@@ -58,7 +58,11 @@
 <script>
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-
+export function logout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('authUser');
+  this.$router.push({ name: 'landing' });
+}
 
 export default {
   name: 'Login',
@@ -126,13 +130,12 @@ export default {
   }
 }
 
+
 /*
 methods: {
     logout() {
-      // Limpiar datos de autenticación al cerrar sesión
       localStorage.removeItem('authToken');
       localStorage.removeItem('authUser');
-      // Redirigir a la página de inicio o a la página de inicio de sesión
       this.$router.push({ name: 'landing' });
     }
   }

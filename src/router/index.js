@@ -13,7 +13,7 @@ const routes = [
     component: () => import("../components/shared/components/NavbarAdmin.vue"),
     children: [
       {
-        path: "admin-users",
+        path: "",
         name: "admin-users",
         component: () => import("../components/admin/Users.vue"),
       },
@@ -65,6 +65,28 @@ const routes = [
         name: "management",
         component: () => import("../components/moderator/Management.vue"),
       },
+    ],
+  },
+  {
+    path: "/home",
+    component: () =>
+      import("../components/shared/components/Navbar.vue"),
+    children: [
+      {
+        path: "/adopt",
+        name: "adopt",
+        component: () => import("../components/Adopt.vue"),
+      },
+      {
+        path: "/adopter",
+        name: "adopter",
+        component: () => import("../components/Adopter.vue"),
+      },
+      {
+        path: "/about-us",
+        name: "about-us",
+        component: () => import("../components/AboutUs.vue"),
+      }
     ],
   },
   {
@@ -125,7 +147,7 @@ router.beforeEach((to, from, next) => {
   } else if (requiresAuth && user) {
     const requiredRoles = to.meta.roles;
     if (requiredRoles && !requiredRoles.includes(userRole)) {
-      next({ name: "landing" }); // Redirigir a una página de acceso no autorizado
+      next({ name: "landing" });
     } else {
       next();
     }

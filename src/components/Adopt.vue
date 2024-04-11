@@ -1,7 +1,46 @@
 <template>
     <div>
-      <h1>Adopt</h1>
-      <div class="row">
+      <div class="d-flex justify-content-center" >
+      <div class="card" style="margin-top:20px; max-width: 1000px;">
+  <div class="row no-gutters">
+    <div class="col-md-2">
+      <img src="../assets/logomexx.png" class="card-img" style="width:100%">
+    </div>
+    <div class="col-md-3 p-0 d-flex justify-content-start" style="color:#FFDE59">
+    <p class="card-text" style="font-size: 1.5rem; font-weight: bold;">Encuentra al nuevo integrante de la familia</p>
+  </div>
+    <div class="col-md-7">
+        <div id="form-select" style="margin:15px">
+  <div class="row">
+    <div class="col-md-4">
+      <select class="form-select"></select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-select"></select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-select"></select>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <select class="form-select"></select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-select"></select>
+    </div>
+    <div class="col-md-4 d-flex align-items-center justify-content-between">
+      <button class="btn btn-primary">Buscar</button>
+      <button class="btn btn-secondary">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+    </div> 
+  </div>
+</div>
+</div>
+      <div class="row" style="margin-top:25px">
         <div class="col-md-3" v-for="index in 12" :key="index">
           <b-card
             title="Card Title"

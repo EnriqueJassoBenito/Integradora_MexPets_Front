@@ -109,7 +109,6 @@ import Swal from 'sweetalert2';
 export default {
   data() {
     return {
-      fields: [],
       camposTabla: [
         { key: 'type', label: 'Tipo' }
       ],
@@ -213,7 +212,12 @@ export default {
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error");
+    Swal.fire({
+          icon: 'error',
+          title: 'Error authentication',
+          showConfirmButton: false,
+          timer: 1500
+        });
   }
 }
 ,
@@ -227,7 +231,12 @@ export default {
         }));
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error authentication',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
     async updateType(id, type) {
@@ -242,7 +251,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
     async deleteType(id) {
@@ -258,7 +272,12 @@ export default {
 
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
 
@@ -283,7 +302,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
 
@@ -297,7 +321,12 @@ export default {
         }));
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error authentication',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
     async updatePersonality(id, personalityPet) {
@@ -312,7 +341,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
     async deletePersonality(id) {
@@ -327,7 +361,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
 
@@ -363,7 +402,12 @@ export default {
     }
   } catch (error) {
     console.error("Error:", error);
-    alert("Error");
+    Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
   }
 }
 ,
@@ -377,7 +421,12 @@ export default {
         }));
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error authentiation',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } finally {
         this.loading = false;
       }
@@ -394,7 +443,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
     async deleteRace(id) {
@@ -409,7 +463,12 @@ export default {
         });
       } catch (error) {
         console.error("Error:", error);
-        alert("Error");
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     },
 

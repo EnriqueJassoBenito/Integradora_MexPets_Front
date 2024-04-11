@@ -19,8 +19,8 @@
         <template v-slot:cell(username)="row">
             {{ row.item.username }}
         </template>
-        <template v-slot:cell(nombre)="row">
-          {{ row.item.nombre }} {{ row.item.lastname }} {{ row.item.lastnameMatern }}
+        <template v-slot:cell(name)="row">
+          {{ row.item.name }} {{ row.item.lastname }} {{ row.item.lastnameMatern }}
         </template>
         <template v-slot:cell(email)="row">
           {{ row.item.email }}
@@ -43,36 +43,44 @@
     </div>
 
     <b-modal v-model="showModalAddModerator" title="Agregar Moderador" hide-footer>
-      <form @submit.prevent="addModerator">
-        <b-form-group label="Nombre">
-          <b-form-input v-model="newModerator.nombre"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Apellido Paterno">
-          <b-form-input v-model="newModerator.lastname"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Apellido Materno">
-          <b-form-input v-model="newModerator.lastnameMatern"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Teléfono">
-          <b-form-input v-model="newModerator.phoneNumber"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Correo electrónico">
-          <b-form-input v-model="newModerator.email"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Contraseña">
-          <b-form-input v-model="newModerator.password"></b-form-input>
-        </b-form-group>
-        <b-form-group label="" class="mb-2">
-          <b-button type="submit" variant="primary" style="margin-top: 20px;">Guardar</b-button>
-          <b-button variant="secondary" @click="cerrarModalAgregarModerador"
-            style="margin-top: 20px; margin-left: 10px;">Cancelar</b-button>
-        </b-form-group>
-      </form>
-    </b-modal>
+    <form @submit.prevent="addModerator">
+      <b-form-group label="Username">
+        <b-form-input v-model="newModerator.nameUser"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Nombre">
+        <b-form-input v-model="newModerator.name"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Apellido Paterno">
+        <b-form-input v-model="newModerator.lastname"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Apellido Materno">
+        <b-form-input v-model="newModerator.lastnameMatern"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Teléfono">
+        <b-form-input v-model="newModerator.phoneNumber"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Correo electrónico">
+        <b-form-input v-model="newModerator.email"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Contraseña">
+        <b-form-input v-model="newModerator.password"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Ubicación">
+        <b-form-input v-model="newModerator.localitation"></b-form-input>
+      </b-form-group>
+      <b-form-group label="Rol">
+        <b-form-select v-model="newModerator.rolId" :options="roles" required></b-form-select>
+      </b-form-group>
+      <b-form-group label="" class="mb-2">
+        <b-button type="submit" variant="primary" style="margin-top: 20px;">Guardar</b-button>
+        <b-button variant="secondary" @click="cerrarModalAgregarModerador" style="margin-top: 20px; margin-left: 10px;">Cancelar</b-button>
+      </b-form-group>
+    </form>
+  </b-modal>
 
     <b-modal v-model="showModalInfo" title="Información del Usuario" hide-footer>
       <div>
-        <p><strong>Nombre:</strong> {{ userSelect.nombre }}</p>
+        <p><strong>Nombre:</strong> {{ userSelect.name }}</p>
         <p><strong>Email:</strong> {{ userSelect.email }}</p>
       </div>
     </b-modal>
@@ -80,14 +88,14 @@
     <b-modal v-model="showModal" title="Editar Usuario" hide-footer>
       <form @submit.prevent="guardar">
         <b-form-group label="Nombre">
-          <b-form-input v-model="userEdit.nombre"></b-form-input>
+          <b-form-input v-model="userEdit.name"></b-form-input>
         </b-form-group>
         <b-form-group label="Email">
           <b-form-input v-model="userEdit.email"></b-form-input>
         </b-form-group>
         <b-form-group label="" class="mb-2">
           <b-button type="submit" variant="primary" style="margin-top: 20px;">Guardar Cambios</b-button>
-          <b-button variant="secondary" @click="cerrarModal"
+          <b-button variant="secondary" @click="closeModalAddModerator"
             style="margin-top: 20px; margin-left: 10px;">Cancelar</b-button>
         </b-form-group>
       </form>
@@ -98,6 +106,7 @@
 <script>
 import axios from 'axios';
 import service from '../../service/UsersService';
+import rol from '../../service/RolService';
 import Swal from 'sweetalert2';
 export default {
   data() {
@@ -109,8 +118,6 @@ export default {
       fields: [
         { key: 'nameUser', label: 'Username' },
         { key: 'name', label: 'Nombre' },
-        { key: 'lastname', label: 'Apellido' },
-        { key: 'lastnameMatern', label: 'Apellido Materno' },
         { key: 'email', label: 'Correo' },
         { key: 'location', label: 'Lugar' },
         { key: 'phoneNumber', label: 'Teléfono' },
@@ -124,11 +131,25 @@ export default {
       userEdit: { name: '', email: '' },
       userEditIndex: null,
       userSelect: { name: '', email: '' },
-      newModerator: { name: '', email: '' }
+      newModerator: { name: '', email: '' },
+      showModalAddModerator: false,
+      newModerator: {
+        nameUser:'', 
+        name: '',
+        lastname: '',
+        lastnameMatern: '',
+        phoneNumber: '',
+        email: '',
+        password: '',
+        localitation: '',
+        rolId: null, 
+      },
+      roles: [],
     };
   },
   created() {
     this.consultTypeUsers();
+    this.loadRoles(); 
   },
   computed: {
     filteredItems() {
@@ -148,6 +169,7 @@ export default {
 
       return usersFilter;
     }
+    
   },
   methods: {
     async consultTypeUsers() {
@@ -156,10 +178,35 @@ export default {
     const result = await service.getUsersByAdminAndModeratorRoles();
     this.usersList = result;
   } catch (error) {
-    console.error("Error:", error);
-    alert("Error");
+    Swal.fire({
+          icon: 'error',
+          title: 'Error authentication',
+          showConfirmButton: false,
+          timer: 1500
+        });
   }
 },
+async loadRoles() {
+  try {
+        this.roles = await rol.getAllRol();
+      } catch (error) {
+        console.error("Error al obtener roles:", error);
+      }
+    },
+    async addModerator() {
+  try {
+    this.newModerator.status = true;
+    await service.insertUser(this.newModerator);
+    console.log('Moderador agregado exitosamente');
+    this.showModalAddModerator = false;
+  } catch (error) {
+    console.error('Error al agregar el moderador:', error);
+  }
+  this.closeModalAddModerator();
+},
+    cerrarModalAgregarModerador() {
+      this.showModalAddModerator = false;
+    },
 closeModalAddModerator() {
       this.showModalAddModerator = false;
       this.newModerator = { name: '', email: '' };
@@ -167,10 +214,6 @@ closeModalAddModerator() {
     showModalAddModeratorFn() {
       this.showModalAddModerator = true;
     },
-    addModerator() {
-      this.usersList.push(this.newModerator);
-      this.closeModalAddModerator();
-    }
   }
 };
 </script>

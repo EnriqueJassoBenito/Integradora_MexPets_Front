@@ -25,7 +25,7 @@
                 Promover la adopción de animales no solo es una cuestión de ética y moralidad, sino también una forma de contribuir al bienestar de los animales y de la sociedad en su conjunto. 
               </h6>
             </div>
-            <div class="col-md-6 align-self-center p-0 d-flex justify-content-start">
+            <div class="col-md-6 align-self-center">
                 <img src="../assets/Manimal2.png" style="width: 350px;">
             </div>
           </div>
@@ -35,9 +35,9 @@
       <img src="../assets/4Adopt.png" class="card-img" alt="...">
     </div>
     <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">Misión</h5>
-        <p class="card-text">Nuestra misión es simple pero poderosa: reducir la población de animales sin hogar y promover la adopción responsable. Creemos firmemente en dar a cada animal la oportunidad de una vida feliz y saludable, independientemente de su historia pasada.
+      <div >
+        <h5>Misión</h5>
+        <p>Nuestra misión es simple pero poderosa: reducir la población de animales sin hogar y promover la adopción responsable. Creemos firmemente en dar a cada animal la oportunidad de una vida feliz y saludable, independientemente de su historia pasada.
             Nos esforzamos por educar a la comunidad sobre la importancia de esterilizar y castrar a sus mascotas, así como sobre los beneficios emocionales y sociales de adoptar un animal de rescate
         </p>
       </div>
@@ -97,5 +97,6 @@
     
   </template>
   <style>
+  
 </style>
   

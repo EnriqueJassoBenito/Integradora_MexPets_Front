@@ -6,15 +6,17 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
           <b-nav-item :to="{ name: 'admin-users' }" @click="selectOption('admin-users')"
             :class="{ 'active': selectedOption === 'admin-users' }">Usuarios</b-nav-item>
           <b-nav-item :to="{ name: 'categories' }" @click="selectOption('categories')"
             :class="{ 'active': selectedOption === 'categories' }">Categorías</b-nav-item>
-          <b-nav-item :to="{ name: 'profile-admin' }" @click="selectOption('profile-admin')"
-            :class="{ 'active': selectedOption === 'profile-admin' }">Perfil</b-nav-item>
           <b-nav-item :to="{ name: 'logs-data' }" @click="selectOption('logs-data')"
-            :class="{ 'active': selectedOption === 'logs-data' }">bitácora</b-nav-item>
+            :class="{ 'active': selectedOption === 'logs-data' }">Bitácora</b-nav-item>
+            <b-nav-item :to="{ name: 'profile-admin' }" @click="selectOption('profile-admin')"
+            :class="{ 'active': selectedOption === 'profile-admin' }">Perfil</b-nav-item>
+          <b-navbar-nav class="ml-auto">
+          <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
+        </b-navbar-nav>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -26,6 +28,7 @@
 
 <script>
 import axios from 'axios';
+import { logout } from '../../auth/Login.vue';
 export default {
   data() {
     return {
@@ -52,6 +55,9 @@ export default {
   methods: {
     selectOption(option) {
       this.selectedOption = option;
+    },
+    logout() {
+      logout.bind(this)();
     }
   }
 }
