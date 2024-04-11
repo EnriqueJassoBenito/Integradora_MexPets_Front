@@ -6,12 +6,15 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>
+          <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
           <b-nav-item :to="{ name: 'admin-users' }" @click="selectOption('admin-users')"
             :class="{ 'active': selectedOption === 'admin-users' }">Usuarios</b-nav-item>
           <b-nav-item :to="{ name: 'categories' }" @click="selectOption('categories')"
             :class="{ 'active': selectedOption === 'categories' }">Categorías</b-nav-item>
-          <b-nav-item>Perfil</b-nav-item>
+          <b-nav-item :to="{ name: 'profile-admin' }" @click="selectOption('profile-admin')"
+            :class="{ 'active': selectedOption === 'profile-admin' }">Perfil</b-nav-item>
+          <b-nav-item :to="{ name: 'logs-data' }" @click="selectOption('logs-data')"
+            :class="{ 'active': selectedOption === 'logs-data' }">bitácora</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

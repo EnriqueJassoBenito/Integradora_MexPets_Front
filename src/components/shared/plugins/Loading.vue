@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'CustomLoader',
+    name: 'Loading',
 };
 </script>
 

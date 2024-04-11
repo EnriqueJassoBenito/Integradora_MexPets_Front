@@ -10,3 +10,7 @@ const onGetLogs = async () => {
         throw(error)
     }
 }
+
+export default {
+    onGetLogs
+}

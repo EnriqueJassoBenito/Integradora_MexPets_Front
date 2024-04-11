@@ -15,12 +15,22 @@ const routes = [
       {
         path: "admin-users",
         name: "admin-users",
-        component: () => import("../components/admin/screens/Users.vue"),
+        component: () => import("../components/admin/Users.vue"),
       },
       {
         path: "categories",
         name: "categories",
-        component: () => import("../components/admin/screens/Categories.vue"),
+        component: () => import("../components/admin/Categories.vue"),
+      },
+      {
+        path: "profile-admin",
+        name: "profile-admin",
+        component: () => import("../components/admin/ProfileAdmin.vue"),
+      },
+      {
+        path: "logs-data",
+        name: "logs-data",
+        component: () => import("../components/admin/Logs.vue"),
       },
     ],
   },

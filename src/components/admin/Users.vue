@@ -97,7 +97,7 @@
 
 <script>
 import axios from 'axios';
-import service from '../../../service/UsersService';
+import service from '../../service/UsersService';
 import Swal from 'sweetalert2';
 export default {
   data() {

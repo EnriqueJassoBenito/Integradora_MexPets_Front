@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import service from '../../../service/CategoryService';
+import service from '../../service/CategoryService';
 import Swal from 'sweetalert2';
 
 export default {
