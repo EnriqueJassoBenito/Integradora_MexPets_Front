@@ -11,6 +11,24 @@ const getAllUsers = async () => {
     }
 };
 
+const getActiveUsers = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}active`);
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getInactiveUsers = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}inactive`);
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getUsersByRole = async (roleName) => {
     try {
         const response = await axios.get(`${baseUrl}role/${roleName}`);
@@ -47,21 +65,24 @@ const updateUser = async (userId, userData) => {
     }
 };
 
-const deleteUser = async (userId) => {
+const changeUserStatus = async (id, newStatus) => {
     try {
-        const response = await axios.delete(`${baseUrl}${userId}`);
+        const response = await axios.patch(`${baseUrl}${id}`, { status: newStatus });
         return response.data.data;
     } catch (error) {
         throw error;
     }
 };
 
+
 export default {
     getAllUsers,
+    getActiveUsers,
+    getInactiveUsers,
     getUsersByRole,
     getUsersByAdminAndModeratorRoles,
     insertUser,
     updateUser,
-    deleteUser,
+    changeUserStatus
 };
 
