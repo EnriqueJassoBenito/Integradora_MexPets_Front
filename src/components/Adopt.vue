@@ -10,7 +10,7 @@
     <p class="card-text" style="font-size: 1.5rem; font-weight: bold;">Encuentra al nuevo integrante de la familia</p>
   </div>
     <div class="col-md-7">
-        <div id="form-select" style="margin:15px">
+        <div id="form-select" style="margin:15px;">
   <div class="row">
     <div class="col-md-4">
       <select class="form-select"></select>
