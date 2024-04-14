@@ -3,7 +3,11 @@
         <b-row>
             <div class="menu">
                 <b-navbar toggleable="lg" variant="with">
+<<<<<<< Updated upstream
                     <img src="../../components/icons/BrownLogo.png" id="iconNavbar">
+=======
+                    <img src="../icons/BrownLogo.png" id="iconNavbar">
+>>>>>>> Stashed changes
 
 
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

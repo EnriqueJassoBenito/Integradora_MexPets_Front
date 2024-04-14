@@ -1,6 +1,10 @@
 <template>
     <div class="row">
         <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png"
                     id="iconNavbar"></b-link>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -45,6 +49,9 @@
                     <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
 
                 </b-navbar-nav>
+                <b-navbar-nav class="ml-auto">
+                    <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
+                </b-navbar-nav>
             </b-collapse>
         </b-navbar>
         <router-view></router-view>
@@ -52,6 +59,7 @@
 </template>
 
 <script>
+<<<<<<< Updated upstream
 import { logout } from '../../auth/Login.vue';
 
 export default {
@@ -68,7 +76,43 @@ export default {
       logout.bind(this)();
     }
   }
+=======
+import axios from 'axios';
+import { logout } from '../../auth/Login.vue';
+export default {
+    data() {
+        return {
+            listaUsuarios: [],
+            mostrarModal: false,
+            mostrarModalInformacion: false,
+            usuarioEditado: { nombre: '', email: '' },
+            usuarioEditadoIndex: null,
+            usuarioSeleccionado: { nombre: '', email: '' },
+            selectedOption: null
+        };
+    },
+    created() {
+        const url = 'http://localhost:8080/api/user/';
+        axios.get(url)
+            .then(response => {
+                this.listaUsuarios = response.data;
+                console.log('Datos de usuarios:', this.listaUsuarios);
+            })
+            .catch(error => {
+                console.error('Error al obtener los datos de usuarios:', error);
+            });
+    },
+    methods: {
+        selectOption(option) {
+            this.selectedOption = option;
+        },
+        logout() {
+            logout.bind(this)();
+        }
+    }
+>>>>>>> Stashed changes
 }
+</script>
 </script>
 
 <style scoped>

@@ -67,3 +67,16 @@
   width: 70%;
 }
 </style>
+
+<script>
+
+ 
+
+export default {
+    methods: {
+        selectOption() {
+
+        }
+    },
+}
+</script>

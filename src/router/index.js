@@ -39,6 +39,11 @@ const routes = [
     component: () => import("../components/shared/components/NavbarClient.vue"),
     children: [
       {
+        path: "",
+        name: "home",
+        component: () => import("../components/client/Home.vue"),
+      },
+      {
         path: "register-animal",
         name: "register-animal",
         component: () => import("../components/client/RegisterAnimal.vue"),
@@ -120,6 +125,10 @@ const routes = [
       },
       {
         path: "/adopt",
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         name: "adopt",
         component: () => import("../components/public/Adopt.vue"),
       },
@@ -132,6 +141,25 @@ const routes = [
         path: "/about-us",
         name: "about-us-l",
         component: () => import("../components/public/AboutUs.vue"),
+<<<<<<< Updated upstream
+=======
+      },
+      {
+        path: "/adopt",
+        name: "adopt-home ",
+        component: () => import("../components/public/Adopt.vue"),
+      },
+      {
+        path: "/adopter",
+        name: "adopter-home",
+        component: () => import("../components/public/Adopter.vue"),
+      },
+      {
+        path: "/about-us",
+        name: "about-us-home",
+        component: () => import("../components/public/AboutUs.vue"),
+
+>>>>>>> Stashed changes
       },
       {
         path: "/login",
