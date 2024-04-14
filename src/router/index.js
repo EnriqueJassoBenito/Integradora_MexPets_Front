@@ -125,24 +125,19 @@ const routes = [
       },
       {
         path: "/adopt",
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         name: "adopt",
         component: () => import("../components/public/Adopt.vue"),
       },
       {
         path: "/adopter",
-        name: "adopter-l",
+        name: "adopter",
         component: () => import("../components/public/Adopter.vue"),
       },
       {
         path: "/about-us",
-        name: "about-us-l",
+        name: "about-us",
         component: () => import("../components/public/AboutUs.vue"),
-<<<<<<< Updated upstream
-=======
+
       },
       {
         path: "/adopt",
@@ -159,7 +154,6 @@ const routes = [
         name: "about-us-home",
         component: () => import("../components/public/AboutUs.vue"),
 
->>>>>>> Stashed changes
       },
       {
         path: "/login",

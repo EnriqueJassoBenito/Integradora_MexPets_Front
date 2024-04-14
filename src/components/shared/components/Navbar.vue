@@ -1,23 +1,22 @@
 <template>
   <div>
-<<<<<<< Updated upstream
     <div class="row">
-    <b-navbar toggleable="lg" type="dark" variant="dark" >
-      <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item :to="{ name: 'landing' }">Home</b-nav-item>
-          <b-nav-item :to="{ name: 'adopt' }">Adoptar</b-nav-item>
-          <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar> 
-    </div> 
-<router-view />
-</div>
-=======
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <b-nav-item :to="{ name: 'landing' }">Home</b-nav-item>
+            <b-nav-item :to="{ name: 'adopt' }">Adoptar</b-nav-item>
+            <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </div>
+    <router-view />
+  </div>
+  <div>
     <b-navbar>
       <b-navbar toggleable="lg" type="dark" variant="dark">
         <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
@@ -34,11 +33,10 @@
         <router-view />
       </b-row>
     </b-navbar>
-  </div>  
+  </div>
   <div>
     <router-view />
   </div>
->>>>>>> Stashed changes
 </template>
 
 <script>
