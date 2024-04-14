@@ -3,7 +3,7 @@
         <b-row>
             <div class="menu">
                 <b-navbar toggleable="lg" variant="with">
-                    <img src="../components/icons/BrownLogo.png" id="iconNavbar">
+                    <img src="../../components/icons/BrownLogo.png" id="iconNavbar">
 
 
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -11,7 +11,7 @@
                     <b-collapse id="nav-collapse" is-nav>
                         <b-navbar-nav>
                             <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopt' }">Adoptar</b-nav-item>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopter-home' }">Dar en adopción</b-nav-item>
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
                             <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'about-us' }">Nosotros</b-nav-item>
                         </b-navbar-nav>
                         <b-navbar-nav>
@@ -73,7 +73,7 @@ export default {
 
 @font-face {
     font-family: Rammetto One;
-    src: url('../fonts/RammettoOne-Regular.ttf');
+    src: url('../../fonts/RammettoOne-Regular.ttf');
 }
 
 

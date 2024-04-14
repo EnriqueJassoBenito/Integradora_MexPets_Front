@@ -246,7 +246,6 @@ export default {
   
   try {
     const roles = await rol.getAllRol();
-    console.log("Roles obtenidos:", roles);
 
     const clienteRol = roles.find(rol => rol.nrol === "CLIENTE");
 
@@ -271,10 +270,6 @@ export default {
     };
 
     const response = await this.service.insertUser(formData);
-console.log(response);
-
-console.log(JSON.stringify(response));
-
 if (response && response.nameUser) { 
   Swal.fire({
     icon: 'success',
