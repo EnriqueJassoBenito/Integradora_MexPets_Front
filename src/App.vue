@@ -6,11 +6,6 @@
           <transition name="fade" mode="out-in">
             <router-view></router-view>
           </transition>
-          <!--<transition name="fade">
-                        <div v-if="loading" class="overlay">
-                            <spinner></spinner>
-                        </div>
-                    </transition>-->
         </div>
       </b-col>
     </b-row>

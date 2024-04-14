@@ -56,14 +56,24 @@ const routes = [
         component: () => import("../components/moderator/ModeratorProfile.vue"),
       },
       {
+        path: "registration-requests",
+        name: "registration-requests",
+        component: () => import("../components/moderator/RegistrationRequests.vue"),
+      },
+      {
         path: "awaiting-requests",
         name: "awaiting-requests",
         component: () => import("../components/moderator/AwaitingRequests.vue"),
       },
       {
-        path: "management",
-        name: "management",
+        path: "management-adoptions",
+        name: "management-adoptions",
         component: () => import("../components/moderator/Management.vue"),
+      },
+      {
+        path: "management-registrations",
+        name: "management-registrations",
+        component: () => import("../components/moderator/ManagementRegister.vue"),
       },
     ],
   },
@@ -75,17 +85,17 @@ const routes = [
       {
         path: "/adopt",
         name: "adopt",
-        component: () => import("../components/Adopt.vue"),
+        component: () => import("../components/public/Adopt.vue"),
       },
       {
         path: "/adopter",
         name: "adopter",
-        component: () => import("../components/Adopter.vue"),
+        component: () => import("../components/public/Adopter.vue"),
       },
       {
         path: "/about-us",
         name: "about-us",
-        component: () => import("../components/AboutUs.vue"),
+        component: () => import("../components/public/AboutUs.vue"),
       }
     ],
   },
@@ -101,10 +111,22 @@ const routes = [
       {
         path: "/landing",
         name: "landing",
-        component: () => import("../components/LandingPage.vue"),
+        component: () => import("../components/public/LandingPage.vue"),
       },
       {
         path: "/adopt",
+        name: "adopt",
+        component: () => import("../components/public/Adopt.vue"),
+      },
+      {
+        path: "/adopter",
+        name: "adopter",
+        component: () => import("../components/public/Adopter.vue"),
+      },
+      {
+        path: "/about-us",
+        name: "about-us",
+        component: () => import("../components/public/AboutUs.vue"),
         name: "adopt-home",
         component: () => import("../components/Adopt.vue"),
       },

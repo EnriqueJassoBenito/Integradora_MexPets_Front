@@ -1,6 +1,5 @@
 <template>
   <div>
-  <div class="row">
     <b-navbar toggleable="lg" type="dark" variant="dark" >
       <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -12,9 +11,16 @@
           <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
+<<<<<<< HEAD
+    </b-navbar>
+    <b-row>
+            <router-view />
+        </b-row>
+=======
     </b-navbar>  
   </div>
 <router-view />
+>>>>>>> d03bdaccd4241379039e1f065c32f52d8ff0c210
 </div>
 </template>
 

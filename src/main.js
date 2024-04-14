@@ -3,13 +3,21 @@ import App from './App.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
+import cloudinary from 'cloudinary-core';
 
 import './assets/main.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(BootstrapVue)
+const cloudinaryConfig = {
+  cloud_name: 'db5zuwucd',
+  api_key: '733776665585982',
+  api_secret: 'UHMJ6N_YU8m5ozoxqyVKB68u49U',
+};
+
+Vue.prototype.$cloudinary = cloudinary.Cloudinary.new(cloudinaryConfig);
++Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(IconsPlugin)
 
