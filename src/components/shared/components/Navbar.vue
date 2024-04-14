@@ -10,15 +10,11 @@
           <b-nav-item :to="{ name: 'landing' }">Home</b-nav-item>
           <b-nav-item :to="{ name: 'adopt' }">Adoptar</b-nav-item>
           <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
-          <b-nav-item :to="{ name: 'recomendation' }">Recomendaciones</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
-    </b-navbar>
-    <b-row>
-            <router-view />
-        </b-row>
+    </b-navbar>  
   </div>
-
+<router-view />
 </div>
 </template>
 
@@ -50,5 +46,6 @@ html {
   padding: 0;
   width: 100%;
   height: 100%;
+  align-items: center;
 }
 </style>

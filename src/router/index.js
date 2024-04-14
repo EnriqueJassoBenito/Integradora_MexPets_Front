@@ -105,17 +105,17 @@ const routes = [
       },
       {
         path: "/adopt",
-        name: "adopt",
+        name: "adopt-home",
         component: () => import("../components/Adopt.vue"),
       },
       {
         path: "/adopter",
-        name: "adopter",
+        name: "adopter-home",
         component: () => import("../components/Adopter.vue"),
       },
       {
         path: "/about-us",
-        name: "about-us",
+        name: "about-us-home",
         component: () => import("../components/AboutUs.vue"),
       },
       {

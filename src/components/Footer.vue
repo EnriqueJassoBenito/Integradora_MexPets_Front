@@ -22,7 +22,7 @@ export default {
 .footer {
   background-color: #2B2F33;
   position: fixed;
-  bottom: 0; /*Corregir*/
+  bottom: 0;
   left: 0;
   width: 100%;
   color: white;
