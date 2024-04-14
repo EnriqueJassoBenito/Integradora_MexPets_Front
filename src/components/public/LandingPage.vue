@@ -10,9 +10,9 @@
 
                     <b-collapse id="nav-collapse" is-nav>
                         <b-navbar-nav>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopt' }">Adoptar</b-nav-item>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'about-us' }">Nosotros</b-nav-item>
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopt-home' }">Adoptar</b-nav-item>
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopter-home' }">Dar en adopción</b-nav-item>
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'about-us-home' }">Nosotros</b-nav-item>
                         </b-navbar-nav>
                         <b-navbar-nav>
                                 <b-button variant="dark" class="my-2 mx-5" @click="Login">Iniciar Sesión</b-button>

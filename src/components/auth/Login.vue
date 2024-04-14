@@ -119,7 +119,6 @@ export default {
       }).catch(e => {
         console.log(e);
         this.error = true;
-        //this.error_msg = 'Usuario y/o contraseña incorrectos';
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -129,17 +128,6 @@ export default {
     }
   }
 }
-
-
-/*
-methods: {
-    logout() {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('authUser');
-      this.$router.push({ name: 'landing' });
-    }
-  }
-*/
 </script>
 
 
@@ -147,7 +135,6 @@ methods: {
 @media (min-width: 1024px) {
   .gridCard {
     width: 30%;
-    /* Ancho específico para dispositivos grandes */
     position: fixed;
     top: 50%;
     left: 50%;

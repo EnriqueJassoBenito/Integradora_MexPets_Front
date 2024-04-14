@@ -1,7 +1,7 @@
 <template>
     <div>
-    <div class="d-flex justify-content-center" style="margin-top:40px">
-      <div class="card text-center" style="max-width: 900px;">
+    <div class="d-flex justify-content-center" style="margin-top:40px;">
+      <div class="card text-center justify-content-center" style="max-width: 900px;">
         <div class="card-body">
           <h1 class="card-title">Nosotros</h1>
           <h6 class="card-subtitle mb-2 text-muted text-justify" style="text-align: justify; line-height: 1.5; margin-top: 20px; margin: 20px;">
@@ -72,27 +72,28 @@
     </div> 
   </div>
 </div>
-
 <img src="../assets/final.png" alt="..." style="width:80%">
         </div>
       </div>
       
     </div>
-    <div class="footer mt-5" style="background-color: orange; padding: 20px 0;">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
-          <h4 style="color:white">Síguenos en redes sociales</h4>
-          <div class="social-icons" >
-            <a href="#" class="social-icon" style="margin:20px;"><b-icon icon="facebook" scale="1.5"></b-icon></a>
-            <a href="#" class="social-icon" style="margin:20px; color:green"><b-icon icon="whatsapp" scale="1.5"></b-icon></a>
-            <a href="#" class="social-icon" style="margin:20px"><b-icon icon="twitter" scale="1.5"></b-icon></a>
-            <a href="#" class="social-icon" style="margin:20px; color:rgb(209, 0, 181)"><b-icon icon="instagram" scale="1.5"></b-icon></a>
-          </div>
+    <div class="row">
+      <div class="footer" style="background-color: orange; padding: 15px 0; position: absolute; bottom: 0; width: 100%;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <h4 style="color:white">Síguenos en redes sociales</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon" style="margin:20px;"><b-icon icon="facebook" scale="1.5"></b-icon></a>
+          <a href="#" class="social-icon" style="margin:20px; color:green"><b-icon icon="whatsapp" scale="1.5"></b-icon></a>
+          <a href="#" class="social-icon" style="margin:20px"><b-icon icon="twitter" scale="1.5"></b-icon></a>
+          <a href="#" class="social-icon" style="margin:20px; color:rgb(209, 0, 181)"><b-icon icon="instagram" scale="1.5"></b-icon></a>
         </div>
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>
     
   </template>
