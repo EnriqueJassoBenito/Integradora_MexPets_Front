@@ -1,11 +1,14 @@
 <template>
     <b-container fluid>
         <div class="loading-overlay is-active" v-if="isLoading">
-            <b-spinner class="spiner"></b-spinner>
+            <div class="custom-loader"></div>
         </div>
-        <h2 class="text-wait mb-4">Procesada</h2>
-        <b-row class="mt-5">
-            <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalPending" :key="animal.id" class="mb-4">
+        <div class="section">
+            <h2 class="section-title">En proceso</h2>
+        </div>
+        <hr>
+        <b-row class="mt-2">
+            <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalApproval" :key="animal.id" class="mb-4">
                 <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet" img-top
                     tag="article" footer="Card Footer" footer-bg-variant="warning" footer-border-variant="dark"
                     style="max-width: 20rem;">
@@ -14,42 +17,53 @@
                         <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
                         <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
                         <p><strong>Personalidad:</strong> {{ animal.personality.personalityPet }}</p>
+                        <p><strong>Sexo:</strong> {{ animal.sex }}</p>
+                        <p><strong>Tamaño:</strong> {{ animal.size }}</p>
+                        <p><strong>Peso:</strong> {{ animal.weight }}</p>
+                        <p><strong>Edad:</strong> {{ animal.age }}</p>
+                        <p><strong>Color:</strong> {{ animal.color }}</p>
+                        <p><strong>Esterilizado:</strong> {{ animal.sterilized ? 'Sí' : 'No' }}</p>
+                        <p><strong>Descripción:</strong> {{ animal.description }}</p>
+                        <p><strong>Estado:</strong> {{ getStatusTranslation(animal.approvalStatus) }}</p>
                     </b-card-text>
-                    <b-button @click="openModal(card)" variant="primary">Gestionar</b-button> <!--Este botón abre el-->
+                    <b-button @click="openModal(animal)" variant="primary">
+                        Ver
+                    </b-button>
                 </b-card>
             </b-col>
         </b-row>
-        <hr>
-        <!--<b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
+
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
             <b-row>
                 <b-col cols="6">
                     <b-carousel controls indicators>
-                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index" :img-src="image"
-                            :alt="`Slide ${index + 1}`"></b-carousel-slide>
+                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
+                            :img-src="image.imageUrl" :alt="`Slide ${index + 1}`"></b-carousel-slide>
                     </b-carousel>
                 </b-col>
                 <b-col cols="6">
-                    <p>Nombre: {{ modalData.nombre }}</p>
+                    <p>Nombre: {{ modalData.namePet }}</p>
                     <p>Características:</p>
                     <ul>
-                        <li>Tipo: {{ modalData.tipo }}</li>
-                        <li>Localización: {{ modalData.localizacion }}</li>
-                        <li>Raza: {{ modalData.raza }}</li>
-                        <li>Personalidad: {{ modalData.personalidad }}</li>
-                        <li>Sexo: {{ modalData.sexo }}</li>
-                        <li>Peso: {{ modalData.peso }}</li>
-                        <li>Tamaño: {{ modalData.tamano }}</li>
-                        <li>Edad: {{ modalData.edad }}</li>
+                        <li>Localización: {{ modalData.location }}</li>
+                        <li>Tipo: {{ modalData.typePet.type }}</li>
+                        <li>Raza: {{ modalData.race.racePet }}</li>
+                        <li>Personalidad: {{ modalData.personality.personalityPet }}</li>
+                        <li>Sexo: {{ modalData.sex }}</li>
+                        <li>Tamaño: {{ modalData.size }}</li>
+                        <li>Peso: {{ modalData.weight }}</li>
+                        <li>Edad: {{ modalData.age }}</li>
                         <li>Color: {{ modalData.color }}</li>
-                        <li>Esterilizado: {{ modalData.esterilizado }}</li>
+                        <li>Esterilizado: {{ modalData.sterilized ? 'Sí' : 'No' }}</li>
+                        <li>Descripción: {{ modalData.description }}</li>
                     </ul>
-                    <p>Descripción: {{ modalData.descripcion }}</p>
-
-                    <b-button variant="success" @click="manageAnimal">Gestionar</b-button>
-                    <b-button variant="danger" @click="closeModal">Cancelar</b-button>
+                    <p>Estado: {{ getStatusTranslation(modalData.approvalStatus) }}</p>
+                </b-col>
+                <b-col cols="12" class="d-flex justify-content-between mt-3">
+                    <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
-        </b-modal>-->
+        </b-modal>
     </b-container>
 </template>
 
@@ -60,80 +74,67 @@ export default {
     data() {
         return {
             isLoading: false,
-            animalPending: []
-        };
+            animalApproval: [],
+            modalData: {
+                id: '',
+                namePet: '',
+                location: '',
+                typePet: '',
+                race: '',
+                personality: '',
+                sex: '',
+                size: '',
+                weight: '',
+                age: '',
+                color: '',
+                sterilized: '',
+                description: '',
+                images: [],
+                approvalStatus: '',
+                moderatorComment: '',
+            },
+            animal: null,
+        }
     },
     mounted() {
-        this.pendingApprovals();
-        this.approved();
+        this.getApproval();
     },
     methods: {
-        async pendingApprovals() {
+        async  getApproval() {
             try {
                 this.isLoading = true;
-                const pendingApprovalAnimals = await service.onGetPendingApprovalAnimals();
-                this.animalPending = pendingApprovalAnimals;
-                this.isLoading = false;
-                //console.log('Animales pendientes de aprobación:', pendingApprovalAnimals);
+                const approvedAnimals = await service.onGetApprovedAnimals();
+                setTimeout(() => {
+                    this.animalApproval = approvedAnimals;
+                    this.isLoading = false;
+                }, 2000);
             } catch (error) {
                 console.error('Error al obtener animales pendientes de aprobación:', error);
                 this.isLoading = false;
             }
         },
-        async approved() {
-            try {
-                const approved = await service.onGetApprovedAnimals();
-                console.log('Adopciones aprobadas:', approved);
-            } catch (error) {
-                console.error('Error al obtener adopciones aprobadas:', error);
-            }
-        },
-        async approveOrRejectAdoption(id, status, comment) {
-            try {
-                const result = await service.onApproveOrRejectAnimal(id, status, comment);
-                console.log('Resultado de la acción de aprobación/rechazo:', result);
-            } catch (error) {
-                console.error('Error al aprobar/rechazar adopción:', error);
-            }
-        },
-        openModal(card) {
-            this.modalData = {
-                ...this.modalData,
-                nombre: card.title,
-            };
+        openModal(animal) {
+            this.modalData = { ...animal };
             this.$refs.myModalRef.show();
-        },
-        manageAnimal() {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción gestionará la mascota.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#81B622',
-                cancelButtonColor: '#DC3545',
-                confirmButtonText: 'Sí, gestionar',
-                cancelButtonText: 'Cancelar',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.handleSuccess();
-                    this.closeModal();
-                }
-            });
-        },
-        handleSuccess() {
-            Swal.fire({
-                title: '¡Gestionado!',
-                text: 'La mascota ha sido gestionada correctamente.',
-                icon: 'success',
-                confirmButtonColor: '#0066C5',
-                confirmButtonText: 'Aceptar'
-            });
         },
         closeModal() {
             this.$refs.myModalRef.hide();
+        },
+        getStatusTranslation(status) {
+            switch (status) {
+                case 'PENDING':
+                    return 'Pendiente';
+                case 'APPROVED':
+                    return 'Aprobado';
+                case 'REJECT':
+                    return 'Rechazado';
+                default:
+                    return 'Desconocido';
+            }
         }
     }
-};
+}
+
 </script>
 
 <style>
@@ -147,7 +148,7 @@ export default {
 
 .loading-overlay {
     display: none;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.776);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -162,7 +163,47 @@ export default {
     display: flex;
 }
 
-.spiner {
-    color: #dd4a68;
+.custom-loader {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    color: #F0BB00;
+    background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
+    border-radius: 50%;
+    animation: s9 2s infinite linear;
+}
+
+.custom-loader::before,
+.custom-loader::after {
+    content: "";
+    grid-area: 1/1;
+    background:
+        linear-gradient(currentColor 0 0) center,
+        linear-gradient(currentColor 0 0) center;
+    background-size: 100% 10px, 10px 100%;
+    background-repeat: no-repeat;
+}
+
+.custom-loader::after {
+    transform: rotate(45deg);
+}
+
+@keyframes s9 {
+    100% {
+        transform: rotate(1turn)
+    }
+}
+
+.section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 </style>

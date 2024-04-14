@@ -57,8 +57,16 @@
                         <li>Descripción: {{ modalData.description }}</li>
                     </ul>
                     <p>Estado: {{ getStatusTranslation(modalData.approvalStatus) }}</p>
-                    <b-button variant="success" @click="manageAnimal">Gestionar</b-button>
-                    <b-button variant="danger" @click="closeModal">Cancelar</b-button>
+                </b-col>
+                <b-col cols="12">
+                    <b-form-group label="Comentario del moderador">
+                        <b-form-textarea v-model="modalData.moderatorComment" rows="3"></b-form-textarea>
+                    </b-form-group>
+                </b-col>
+                <b-col cols="12" class="d-flex justify-content-between mt-3">
+                    <b-button variant="success" @click="approveAnimal">Aprobar</b-button>
+                    <b-button variant="danger" @click="rejectAnimal">Rechazar</b-button>
+                    <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
         </b-modal>
@@ -105,7 +113,7 @@ export default {
                 setTimeout(() => {
                     this.animalPending = pendingApprovalAnimals;
                     this.isLoading = false;
-                }, 2000);
+                }, 1000);
             } catch (error) {
                 console.error('Error al obtener animales pendientes de aprobación:', error);
                 this.isLoading = false;
@@ -117,10 +125,43 @@ export default {
                 console.log('Resultado de la acción de aprobación/rechazo:', result);
             } catch (error) {
                 console.error('Error al aprobar/rechazar adopción:', error);
+            } finally {
+                this.isLoading = false;
+                this.closeModal();
             }
         },
+        async approveAnimal() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.isLoading = true;
+                this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
+            }
+        },
+        async rejectAnimal() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.isLoading = true;
+                this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
+            }
+        },
+        async showConfirmation() {
+            return new Promise((resolve) => {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción no se puede deshacer.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#81B622',
+                    cancelButtonColor: '#DC3545',
+                    confirmButtonText: 'Sí, estoy seguro',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    resolve(result.isConfirmed);
+                });
+            });
+        },
         openModal(animal) {
-            this.modalData = { ...animal }; // Copia todos los atributos de 'animal' a 'modalData'
+            this.modalData = { ...animal }; 
             this.$refs.myModalRef.show();
         },
         manageAnimal() {
@@ -199,7 +240,7 @@ export default {
     width: 50px;
     height: 50px;
     display: grid;
-    color: #81B622;
+    color: #766DF4;
     background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
     -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
     border-radius: 50%;

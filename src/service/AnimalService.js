@@ -86,7 +86,7 @@ const onGetPendingApprovalAnimals = async () => {
 const onGetApprovedAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}approved`);
-        console.log(response.data);
+        //console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -124,11 +124,9 @@ const onUpdateAnimal = async (id, animalDto) => {
 
 const onApproveOrRejectAnimal = async (id, approvalStatus, moderatorComment) => {
     try {
-        const response = await axios.patch(`${url_api_animals}${id}/approval`, null, {
-            params: {
-                approvalStatus: approvalStatus,
-                comment: moderatorComment
-            }
+        const response = await axios.patch(`${url_api_animals}${id}/approval`, {
+            approvalStatus: approvalStatus,
+            moderatorComment: moderatorComment
         });
         console.log(response.data);
         return response.data.data;
@@ -136,6 +134,7 @@ const onApproveOrRejectAnimal = async (id, approvalStatus, moderatorComment) => 
         throw error;
     }
 }
+
 
 const onDeleteAnimal = async (id) => {
     try {

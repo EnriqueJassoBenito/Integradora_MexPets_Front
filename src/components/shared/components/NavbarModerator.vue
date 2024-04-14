@@ -9,7 +9,7 @@
                     <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
                     <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
                         :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
-                
+
                     <b-nav-item-dropdown text="Solicitudes de registro" toggle-class="nav-link-custom" right>
                         <b-dropdown-item :to="{ name: 'registration-requests-standby' }"
                             @click="selectOption('registration-requests-standby')">
@@ -22,8 +22,7 @@
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown text="Solicitudes de adopción" toggle-class="nav-link-custom" right>
-                        <b-dropdown-item :to="{ name: 'awaiting-requests' }"
-                            @click="selectOption('awaiting-requests')">
+                        <b-dropdown-item :to="{ name: 'awaiting-requests' }" @click="selectOption('awaiting-requests')">
                             En espera
                         </b-dropdown-item>
                         <b-dropdown-item :to="{ name: 'registration-requests-proccess' }"
@@ -42,7 +41,7 @@
                             Seguimiento de registro
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
-                    <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
+                    <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>
 
                 </b-navbar-nav>
             </b-collapse>
@@ -53,7 +52,7 @@
 
 <script>
 import { logout } from '../../auth/Login.vue';
-
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -61,13 +60,32 @@ export default {
         };
     },
     methods: {
-    selectOption(option) {
-      this.selectedOption = option;
-    },
-    logout() {
-      logout.bind(this)();
+        confirmLogout() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Deseas cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#81B622',
+                cancelButtonColor: '#DC3545',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.logout();
+                }
+            });
+        },
+        logout() {
+            Swal.fire({
+                title: 'Cerrando Sesión',
+                icon: 'info',
+                timer: 1500,
+                showConfirmButton: false
+            });
+            logout.bind(this)();
+        }
     }
-  }
 }
 </script>
 
