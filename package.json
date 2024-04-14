@@ -11,6 +11,8 @@
     "axios": "^1.6.8",
     "bootstrap": "4.6.0",
     "bootstrap-vue": "^2.23.1",
+    "cloudinary": "^2.1.0",
+    "cloudinary-core": "^2.13.1",
     "friendly-challenge": "^0.9.15",
     "jwt-decode": "^4.0.0",
     "sweetalert2": "^11.10.7",
