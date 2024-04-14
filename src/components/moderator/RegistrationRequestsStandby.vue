@@ -240,7 +240,7 @@ export default {
     width: 50px;
     height: 50px;
     display: grid;
-    color: #766DF4;
+    color: #F0BB00;
     background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
     -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
     border-radius: 50%;

@@ -41,11 +41,9 @@
                             Seguimiento de registro
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
-                    <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>
-
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
+                    <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -54,14 +52,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import { logout } from '../../auth/Login.vue';
 import Swal from 'sweetalert2';
-=======
-
-import axios from 'axios';
-import { logout } from '../../auth/Login.vue';
->>>>>>> 86507a6a71b7c4457a721c600f72fa9e88cad572
 export default {
     data() {
         return {
@@ -74,7 +66,6 @@ export default {
             selectedOption: null
         };
     },
-<<<<<<< HEAD
     methods: {
         confirmLogout() {
             Swal.fire({
@@ -102,28 +93,6 @@ export default {
             logout.bind(this)();
         }
     }
-=======
-    created() {
-        const url = 'http://localhost:8080/api/user/';
-        axios.get(url)
-            .then(response => {
-                this.listaUsuarios = response.data;
-                console.log('Datos de usuarios:', this.listaUsuarios);
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos de usuarios:', error);
-            });
-    },
-    methods: {
-        selectOption(option) {
-            this.selectedOption = option;
-        },
-        logout() {
-            logout.bind(this)();
-        }
-    }
-
->>>>>>> 86507a6a71b7c4457a721c600f72fa9e88cad572
 }
 
 </script>
