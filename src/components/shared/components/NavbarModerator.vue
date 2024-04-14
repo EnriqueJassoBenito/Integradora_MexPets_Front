@@ -1,7 +1,6 @@
 <template>
     <div class="row">
         <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
-            
             <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png"
                     id="iconNavbar"></b-link>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -10,12 +9,29 @@
                     <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
                     <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
                         :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
-                    <b-nav-item :to="{ name: 'registration-requests' }" @click="selectOption('registration-requests')"
-                        :class="{ 'active': selectedOption === 'registration-requests' }">Solicitudes de
-                        registro</b-nav-item>
-                    <b-nav-item :to="{ name: 'awaiting-requests' }" @click="selectOption('awaiting-requests')"
-                        :class="{ 'active': selectedOption === 'awaiting-requests' }">Solicitudes
-                        pendientes</b-nav-item>
+                
+                    <b-nav-item-dropdown text="Solicitudes de registro" toggle-class="nav-link-custom" right>
+                        <b-dropdown-item :to="{ name: 'registration-requests-standby' }"
+                            @click="selectOption('registration-requests-standby')">
+                            En espera
+                        </b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'registration-requests-proccess' }"
+                            @click="selectOption('registration-requests-proccess')">
+                            En proceso
+                        </b-dropdown-item>
+                    </b-nav-item-dropdown>
+
+                    <b-nav-item-dropdown text="Solicitudes de adopción" toggle-class="nav-link-custom" right>
+                        <b-dropdown-item :to="{ name: 'awaiting-requests' }"
+                            @click="selectOption('awaiting-requests')">
+                            En espera
+                        </b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'registration-requests-proccess' }"
+                            @click="selectOption('registration-requests-proccess')">
+                            En proceso
+                        </b-dropdown-item>
+                    </b-nav-item-dropdown>
+
                     <b-nav-item-dropdown text="Mis gestiones" toggle-class="nav-link-custom" right>
                         <b-dropdown-item :to="{ name: 'management-adoptions' }"
                             @click="selectOption('management-adoptions')">
@@ -26,6 +42,8 @@
                             Seguimiento de registro
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
+                    <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
+
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -34,13 +52,22 @@
 </template>
 
 <script>
+import { logout } from '../../auth/Login.vue';
+
 export default {
     data() {
         return {
-            selectedOption: ''
+            selectedOption: null
         };
     },
-
+    methods: {
+    selectOption(option) {
+      this.selectedOption = option;
+    },
+    logout() {
+      logout.bind(this)();
+    }
+  }
 }
 </script>
 

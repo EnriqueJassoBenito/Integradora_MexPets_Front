@@ -56,9 +56,14 @@ const routes = [
         component: () => import("../components/moderator/ModeratorProfile.vue"),
       },
       {
-        path: "registration-requests",
-        name: "registration-requests",
-        component: () => import("../components/moderator/RegistrationRequests.vue"),
+        path: "registration-requests-standby",
+        name: "registration-requests-standby",
+        component: () => import("../components/moderator/RegistrationRequestsStandby.vue"),
+      },
+      {
+        path: "registration-requests-proccess",
+        name: "registration-requests-proccess",
+        component: () => import("../components/moderator/ResgistrationRequestsProcess.vue"),
       },
       {
         path: "awaiting-requests",
@@ -115,7 +120,6 @@ const routes = [
       },
       {
         path: "/adopt",
-<<<<<<< HEAD
         name: "adopt",
         component: () => import("../components/public/Adopt.vue"),
       },
@@ -128,20 +132,6 @@ const routes = [
         path: "/about-us",
         name: "about-us",
         component: () => import("../components/public/AboutUs.vue"),
-=======
-        name: "adopt-home",
-        component: () => import("../components/Adopt.vue"),
-      },
-      {
-        path: "/adopter",
-        name: "adopter-home",
-        component: () => import("../components/Adopter.vue"),
-      },
-      {
-        path: "/about-us",
-        name: "about-us-home",
-        component: () => import("../components/AboutUs.vue"),
->>>>>>> d03bdaccd4241379039e1f065c32f52d8ff0c210
       },
       {
         path: "/login",

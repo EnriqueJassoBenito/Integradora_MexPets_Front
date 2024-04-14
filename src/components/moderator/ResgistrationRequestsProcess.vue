@@ -3,11 +3,11 @@
         <div class="loading-overlay is-active" v-if="isLoading">
             <b-spinner class="spiner"></b-spinner>
         </div>
-        <h2 class="text-wait mb-4">En espera</h2>
+        <h2 class="text-wait mb-4">Procesada</h2>
         <b-row class="mt-5">
             <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalPending" :key="animal.id" class="mb-4">
-                <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet"
-                    img-top tag="article" footer="Card Footer" footer-bg-variant="warning" footer-border-variant="dark"
+                <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet" img-top
+                    tag="article" footer="Card Footer" footer-bg-variant="warning" footer-border-variant="dark"
                     style="max-width: 20rem;">
                     <b-card-text>
                         <p><strong>Ubicación:</strong> {{ animal.location }}</p>
@@ -20,9 +20,6 @@
             </b-col>
         </b-row>
         <hr>
-        <h2 class="text-processed mb-4">En proceso</h2>
-
-
         <!--<b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
             <b-row>
                 <b-col cols="6">
@@ -73,11 +70,14 @@ export default {
     methods: {
         async pendingApprovals() {
             try {
+                this.isLoading = true;
                 const pendingApprovalAnimals = await service.onGetPendingApprovalAnimals();
                 this.animalPending = pendingApprovalAnimals;
-                console.log('Animales pendientes de aprobación:', pendingApprovalAnimals);
+                this.isLoading = false;
+                //console.log('Animales pendientes de aprobación:', pendingApprovalAnimals);
             } catch (error) {
                 console.error('Error al obtener animales pendientes de aprobación:', error);
+                this.isLoading = false;
             }
         },
         async approved() {
