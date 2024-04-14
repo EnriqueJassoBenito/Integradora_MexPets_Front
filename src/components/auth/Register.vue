@@ -174,6 +174,7 @@
 <script>
 import service from '../../service/UsersService';
 import rol from '../../service/RolService';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -270,27 +271,48 @@ export default {
     };
 
     const response = await this.service.insertUser(formData);
-    console.log("Respuesta del servidor:", response);
+console.log(response);
+
+console.log(JSON.stringify(response));
+
+if (response && response.nameUser) { 
+  Swal.fire({
+    icon: 'success',
+    title: 'Éxito',
+    text: 'Usuario agregado correctamente: ' + response.nameUser
+  });
+  this.$router.push({ name: 'login' });
+
+} else {
+  throw new Error("La respuesta del servidor no contiene un usuario válido.");
+}
+
+
   } catch (error) {
-    console.error("Error al enviar los datos:", error);
-    this.error = true;
-    this.error_msg = "¡Hubo un error al registrar el usuario!";
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al registrar usuario: ' + error.message
+    });
   }
 },
-    validateForm() {
-      return (
-        this.name.trim() !== "" &&
-        this.lastName.trim() !== "" &&
-        this.phone.trim() !== "" &&
-        this.selected !== null &&
-        this.userName.trim() !== "" &&
-        this.password.trim() !== "" &&
-        this.confirmPassword.trim() !== "" &&
-        this.password === this.confirmPassword
-      );
-    },
-  },
-};
+
+validateForm() {
+  return (
+    this.name.trim() !== "" &&
+    this.lastName.trim() !== "" &&
+    this.phone.trim() !== "" &&
+    this.selected !== null &&
+    this.userName.trim() !== "" &&
+    this.email.trim() !== "" && 
+    this.password.trim() !== "" &&
+    this.confirmPassword.trim() !== "" &&
+    this.password === this.confirmPassword
+  );
+}
+}
+}
+
 </script>
 
 <style>

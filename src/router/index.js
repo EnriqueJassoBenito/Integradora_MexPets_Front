@@ -114,7 +114,7 @@ const routes = [
         component: () => import("../components/Adopter.vue"),
       },
       {
-        path: "/about-us",
+        path: "/about-usl",
         name: "about-us-home",
         component: () => import("../components/AboutUs.vue"),
       },
