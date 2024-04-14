@@ -1,6 +1,5 @@
 <template>
     <b-container>
-
         <b-row class="mt-5">
             <h2 class="text-wait mb-4">En espera</h2>
             <b-col cols="12" sm="6" md="4" lg="3" v-for="(card, index) in cardsEnEspera" :key="index" class="mb-4">

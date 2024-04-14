@@ -2,10 +2,10 @@
   <b-container fluid>
     <b-row>
       <div class="gridCard">
-        <b-breadcrumb :items="items"></b-breadcrumb>
+        <b-breadcrumb :items="items" class="breadCrumbContainer"></b-breadcrumb>
         <b-card bg-variant="light">
           <div class="contentCenter">
-            <img src="../components/icons/BrownLogo.png" id="iconLogin" class="iconLogo my-2" width="20%">
+            <img src="../icons/BrownLogo.png" id="iconLogin" class="iconLogo my-2" width="20%">
           </div>
           <div class="contentCenter">
             <h4>¡Bienvenido a Mexpet!</h4>
@@ -30,14 +30,6 @@
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
               Sesión</b-button>
           </div>
-          <!--
-            <div
-      ref="container"
-      class="frc-captcha"
-      data-sitekey="FCMVRR8LOPON8OO3"
-      data-lang="es"
-    ></div>
-          -->
           <div class="contentCenter">
             <b-link href="#foo">¿Olvidaste tu contraseña?</b-link>
           </div>
@@ -57,6 +49,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { jwtDecode } from 'jwt-decode';
 export function logout() {
   localStorage.removeItem('authToken');

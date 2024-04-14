@@ -4,8 +4,6 @@
             <div class="menu">
                 <b-navbar toggleable="lg" variant="with">
                     <img src="../../components/icons/BrownLogo.png" id="iconNavbar">
-
-
                     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
                     <b-collapse id="nav-collapse" is-nav>
