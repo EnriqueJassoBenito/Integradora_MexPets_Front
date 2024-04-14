@@ -125,12 +125,12 @@ const routes = [
       },
       {
         path: "/adopter",
-        name: "adopter",
+        name: "adopter-l",
         component: () => import("../components/public/Adopter.vue"),
       },
       {
         path: "/about-us",
-        name: "about-us",
+        name: "about-us-l",
         component: () => import("../components/public/AboutUs.vue"),
       },
       {

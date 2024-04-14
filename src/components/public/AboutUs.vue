@@ -26,13 +26,13 @@
               </h6>
             </div>
             <div class="col-md-6 align-self-center">
-                <img src="../assets/Manimal2.png" style="width: 350px;">
+                <img src="../../assets/Manimal2.png" style="width: 350px;">
             </div>
           </div>
           <div class="card">
   <div class="row no-gutters">
     <div class="col-md-4">
-      <img src="../assets/4Adopt.png" class="card-img" alt="...">
+      <img src="../../assets/4Adopt.png" class="card-img" alt="...">
     </div>
     <div class="col-md-8">
       <div class="card-body">
@@ -54,14 +54,14 @@
       </div>
     </div>
     <div class="col-md-4">
-        <img src="../assets/3.png" class="card-img" alt="...">
+        <img src="../../assets/3.png" class="card-img" alt="...">
     </div>
   </div>
 </div>
 <div class="card" style="margin-top:20px">
   <div class="row no-gutters">
     <div class="col-md-4">
-      <img src="../assets/2Dog.jpeg" class="card-img" alt="...">
+      <img src="../../assets/2Dog.jpeg" class="card-img" alt="...">
     </div>
     <div class="col-md-8">
       <div class="card-body">
@@ -72,7 +72,7 @@
     </div> 
   </div>
 </div>
-<img src="../assets/final.png" alt="..." style="width:80%">
+<img src="../../assets/final.png" alt="..." style="width:80%">
         </div>
       </div>
       
