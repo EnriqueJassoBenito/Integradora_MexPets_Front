@@ -9,6 +9,7 @@
                     <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
                     <b-nav-item :to="{ name: 'profile' }" @click="selectOption('profile')"
                         :class="{ 'active': selectedOption === 'profile' }">Perfil</b-nav-item>
+                    
 
                     <b-nav-item-dropdown text="Solicitudes de registro" toggle-class="nav-link-custom" right>
                         <b-dropdown-item :to="{ name: 'registration-requests-standby' }"
@@ -25,13 +26,16 @@
                         <b-dropdown-item :to="{ name: 'awaiting-requests' }" @click="selectOption('awaiting-requests')">
                             En espera
                         </b-dropdown-item>
-                        <b-dropdown-item :to="{ name: 'registration-requests-proccess' }"
-                            @click="selectOption('registration-requests-proccess')">
+                        <b-dropdown-item :to="{ name: 'adoption-requests-process' }"
+                            @click="selectOption('adoption-requests-process')">
                             En proceso
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
 
-                    <b-nav-item-dropdown text="Mis gestiones" toggle-class="nav-link-custom" right>
+                    <b-nav-item :to="{ name: 'management-adoptions' }" @click="selectOption('management-adoptions')"
+                        :class="{ 'active': selectedOption === 'management-adoptions' }">Mis gestiones</b-nav-item>
+
+                    <!--<b-nav-item-dropdown text="Mis gestiones" toggle-class="nav-link-custom" right>
                         <b-dropdown-item :to="{ name: 'management-adoptions' }"
                             @click="selectOption('management-adoptions')">
                             Seguimiento de adopciones
@@ -40,7 +44,7 @@
                             @click="selectOption('management-registrations')">
                             Seguimiento de registro
                         </b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    </b-nav-item-dropdown>-->
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>

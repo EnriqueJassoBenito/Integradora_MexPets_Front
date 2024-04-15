@@ -76,14 +76,14 @@ const routes = [
         component: () => import("../components/moderator/AwaitingRequests.vue"),
       },
       {
+        path: "adoption-requests-process",
+        name: "adoption-requests-process",
+        component: () => import("../components/moderator/AdoptionRequestsProcess.vue"),
+      },
+      {
         path: "management-adoptions",
         name: "management-adoptions",
         component: () => import("../components/moderator/Management.vue"),
-      },
-      {
-        path: "management-registrations",
-        name: "management-registrations",
-        component: () => import("../components/moderator/ManagementRegister.vue"),
       },
     ],
   },

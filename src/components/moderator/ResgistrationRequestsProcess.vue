@@ -10,57 +10,60 @@
         <b-row class="mt-2">
             <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalApproval" :key="animal.id" class="mb-4">
                 <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet" img-top
-                    tag="article" footer="Card Footer" footer-bg-variant="warning" footer-border-variant="dark"
-                    style="max-width: 20rem;">
+                    tag="article" :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
+                    footer-bg-variant="success" footer-border-variant="dark" style="max-width: 15rem;">
                     <b-card-text>
                         <p><strong>Ubicación:</strong> {{ animal.location }}</p>
                         <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
                         <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
-                        <p><strong>Personalidad:</strong> {{ animal.personality.personalityPet }}</p>
                         <p><strong>Sexo:</strong> {{ animal.sex }}</p>
-                        <p><strong>Tamaño:</strong> {{ animal.size }}</p>
-                        <p><strong>Peso:</strong> {{ animal.weight }}</p>
-                        <p><strong>Edad:</strong> {{ animal.age }}</p>
-                        <p><strong>Color:</strong> {{ animal.color }}</p>
-                        <p><strong>Esterilizado:</strong> {{ animal.sterilized ? 'Sí' : 'No' }}</p>
-                        <p><strong>Descripción:</strong> {{ animal.description }}</p>
-                        <p><strong>Estado:</strong> {{ getStatusTranslation(animal.approvalStatus) }}</p>
                     </b-card-text>
-                    <b-button @click="openModal(animal)" variant="primary">
-                        Ver
+                    <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
+                        <b-icon icon="eye" aria-hidden="true"></b-icon>
                     </b-button>
                 </b-card>
             </b-col>
         </b-row>
 
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
-            <b-row>
-                <b-col cols="6">
-                    <b-carousel controls indicators>
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota" header-bg-variant="success">
+            <b-row class="mb-3">
+                <b-col cols="12">
+                    <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
                         <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
-                            :img-src="image.imageUrl" :alt="`Slide ${index + 1}`"></b-carousel-slide>
+                            :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
+                            img-height="200px"></b-carousel-slide>
                     </b-carousel>
                 </b-col>
-                <b-col cols="6">
-                    <p>Nombre: {{ modalData.namePet }}</p>
-                    <p>Características:</p>
-                    <ul>
-                        <li>Localización: {{ modalData.location }}</li>
-                        <li>Tipo: {{ modalData.typePet.type }}</li>
-                        <li>Raza: {{ modalData.race.racePet }}</li>
-                        <li>Personalidad: {{ modalData.personality.personalityPet }}</li>
-                        <li>Sexo: {{ modalData.sex }}</li>
-                        <li>Tamaño: {{ modalData.size }}</li>
-                        <li>Peso: {{ modalData.weight }}</li>
-                        <li>Edad: {{ modalData.age }}</li>
-                        <li>Color: {{ modalData.color }}</li>
-                        <li>Esterilizado: {{ modalData.sterilized ? 'Sí' : 'No' }}</li>
-                        <li>Descripción: {{ modalData.description }}</li>
-                    </ul>
-                    <p>Estado: {{ getStatusTranslation(modalData.approvalStatus) }}</p>
+            </b-row>
+            <b-row>
+                <b-col cols="12">
+                    <p><strong>Nombre:</strong> {{ modalData.namePet }}</p>
+                    <p><strong>Características:</strong></p>
+                    <div class="characteristics mb-2">
+                        <b-row>
+                            <b-col cols="6">
+                                <div><strong>Localización:</strong> {{ modalData.location }}</div>
+                                <div><strong>Tipo:</strong> {{ modalData.typePet.type }}</div>
+                                <div><strong>Raza:</strong> {{ modalData.race.racePet }}</div>
+                                <div><strong>Personalidad:</strong> {{ modalData.personality.personalityPet }}</div>
+                                <div><strong>Sexo:</strong> {{ modalData.sex }}</div>
+                            </b-col>
+                            <b-col cols="6">
+                                <div><strong>Tamaño:</strong> {{ modalData.size }}</div>
+                                <div><strong>Peso:</strong> {{ modalData.weight }}</div>
+                                <div><strong>Edad:</strong> {{ modalData.age }}</div>
+                                <div><strong>Color:</strong> {{ modalData.color }}</div>
+                                <div><strong>Esterilizado:</strong> {{ modalData.sterilized ? 'Sí' : 'No' }}</div>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div><strong>Descripción:</strong> {{ modalData.description }}</div>
+
                 </b-col>
-                <b-col cols="12" class="d-flex justify-content-between mt-3">
-                    <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
+            </b-row>
+            <b-row class="mt-3">
+                <b-col cols="12" class="d-flex justify-content-end">
+                    <b-button variant="secondary" @click="closeModal">Cerrar</b-button>
                 </b-col>
             </b-row>
         </b-modal>
@@ -100,7 +103,7 @@ export default {
         this.getApproval();
     },
     methods: {
-        async  getApproval() {
+        async getApproval() {
             try {
                 this.isLoading = true;
                 const approvedAnimals = await service.onGetApprovedAnimals();
@@ -138,17 +141,19 @@ export default {
 </script>
 
 <style>
-.text-wait {
-    color: green;
+.b-card {
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.text-processed {
-    color: rgb(80, 31, 31);
+.b-card-img-top {
+    object-fit: cover;
+    height: 100px;
 }
 
 .loading-overlay {
     display: none;
-    background: rgba(255, 255, 255, 0.776);
+    background: rgba(255, 255, 255, 0.708);
     position: fixed;
     bottom: 0;
     left: 0;
@@ -205,5 +210,12 @@ export default {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.characteristics {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
 }
 </style>

@@ -86,7 +86,6 @@ const onGetPendingApprovalAnimals = async () => {
 const onGetApprovedAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}approved`);
-        //console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -114,7 +113,7 @@ const onInsertAnimal = async (animalDto, imageFiles) => {
 
 const onUpdateAnimal = async (id, animalDto) => {
     try {
-        const response = await axios.put(`${url_api_animals}/${id}`, animalDto);
+        const response = await axios.put(`${url_api_animals}${id}`, animalDto);
         console.log(response.data);
         return response.data.data;
     } catch (error) {

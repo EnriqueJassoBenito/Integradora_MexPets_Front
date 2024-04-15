@@ -1,59 +1,64 @@
 <template>
-    <b-container>
-        <b-row class="mt-5">
-            <h2 class="text-wait mb-4">En espera</h2>
-            <b-col cols="12" sm="6" md="4" lg="3" v-for="(card, index) in cardsEnEspera" :key="index" class="mb-4">
-                <b-card :title="card.title" :img-src="card.imgSrc" :img-alt="card.imgAlt" img-top tag="article"
-                    footer="Card Footer" footer-bg-variant="warning" footer-border-variant="dark"
-                    style="max-width: 20rem;">
-                    <b-card-text>Header and footers variants.</b-card-text>
-                    <b-button @click="openModal(card)" variant="primary">Gestionar</b-button> <!--Este botón abre el-->
-                </b-card>
-            </b-col>
-        </b-row>
-
+    <b-container fluid>
+        <div class="loading-overlay is-active" v-if="isLoading">
+            <div class="custom-loader"></div>
+        </div>
+        <div class="section">
+            <h2 class="section-title">En espera</h2>
+        </div>
         <hr>
+        <b-card class="my-3 p-3 shadow-sm rounded" style="max-width: 900px; margin: 0 auto;">
+            <b-table striped hover :items="adoptionPending" :fields="fields" class="my-custom-table table-responsive">
+                <template v-slot:cell(image)="{ item }">
+                    <img :src="item.animal.images[0].imageUrl" :alt="item.animal.animalPet" style="max-width: 100px;">
+                </template>
+                <template v-slot:cell(animal)="{ item }">
+                    {{ item.animal.namePet }}
+                </template>
+                <template v-slot:cell(adopter)="{ item }">
+                    {{ item.adopter.name }} {{ item.adopter.lastname }}
+                </template>
+                <template v-slot:cell(date)="{ item }">
+                    {{ formatDate(item.creationDate) }}
+                </template>
+                <template v-slot:cell(status)="{ item }">
+                    {{ getStatusTranslation(item.approvalStatus) }}
+                </template>
+                <template v-slot:cell(actions)="{ item }">
+                    <b-button @click="openModal(item)" variant="primary">
+                        <b-icon icon="eye"></b-icon>
+                    </b-button>
+                </template>
+            </b-table>
+        </b-card>
 
-        <b-row class="mt-5">
-            <h2 class="text-processed mb-4">En proceso</h2>
-            <b-col cols="12" sm="6" md="4" lg="3" v-for="(card, index) in cardsEnProceso" :key="index" class="mb-4">
-                <b-card :title="card.title" :img-src="card.imgSrc" :img-alt="card.imgAlt" img-top tag="article"
-                    style="max-width: 20rem;">
-                    <b-card-text>{{ card.content }}</b-card-text>
-                </b-card>
-            </b-col>
-        </b-row>
-
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
-            <b-row>
-                <!-- Carrusel a la izquierda -->
-                <b-col cols="6">
-                    <b-carousel controls indicators>
-                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index" :img-src="image"
-                            :alt="`Slide ${index + 1}`"></b-carousel-slide>
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la adopción" header-bg-variant="warning">
+            <b-row class="mb-3">
+                <b-col cols="12">
+                    <p><strong>Lugar donde será recibido:</strong></p>
+                    <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
+                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
+                            :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
+                            img-height="200px"></b-carousel-slide>
                     </b-carousel>
                 </b-col>
-
-                <!-- Detalles a la derecha -->
-                <b-col cols="6">
-                    <p>Nombre: {{ modalData.nombre }}</p>
-                    <p>Características:</p>
-                    <ul>
-                        <li>Tipo: {{ modalData.tipo }}</li>
-                        <li>Localización: {{ modalData.localizacion }}</li>
-                        <li>Raza: {{ modalData.raza }}</li>
-                        <li>Personalidad: {{ modalData.personalidad }}</li>
-                        <li>Sexo: {{ modalData.sexo }}</li>
-                        <li>Peso: {{ modalData.peso }}</li>
-                        <li>Tamaño: {{ modalData.tamano }}</li>
-                        <li>Edad: {{ modalData.edad }}</li>
-                        <li>Color: {{ modalData.color }}</li>
-                        <li>Esterilizado: {{ modalData.esterilizado }}</li>
-                    </ul>
-                    <p>Descripción: {{ modalData.descripcion }}</p>
-
-                    <b-button variant="success" @click="manageAnimal">Gestionar</b-button>
-                    <b-button variant="danger" @click="closeModal">Cancelar</b-button>
+            </b-row>
+            <b-row>
+                <b-col cols="12">
+                    <p><strong>Nombre de la mascota:</strong> {{ modalData.animal.namePet }}</p>
+                    <p><strong>Fecha de adopción:</strong> {{ formatDate(modalData.creationDate) }}</p>
+                    <div class="mb-2"><strong>Descripción del adoptante:</strong> {{ modalData.description }}</div>
+                    <div>
+                        <b-form-textarea v-model="modalData.moderatorComment" placeholder="Comentario...">
+                    </b-form-textarea>
+                    </div>
+                </b-col>
+            </b-row>
+            <b-row>
+                <b-col cols="12" class="d-flex justify-content-between mt-3">
+                    <b-button variant="success" @click="approveAdoption">Aprobar</b-button>
+                    <b-button variant="danger" @click="rejectAdoption">Rechazar</b-button>
+                    <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
         </b-modal>
@@ -62,144 +67,219 @@
 </template>
 
 <script>
+import service from '../../service/Adoption.js'
 import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {
-            cardsEnEspera: [
-                {
-                    title: 'Card 1',
-                    imgSrc: 'https://picsum.photos/600/300/?image=25',
-                    imgAlt: 'Image 1',
-                    content: 'Some quick example text for card 1.'
-                },
-                {
-                    title: 'Card 2',
-                    imgSrc: 'https://picsum.photos/600/300/?image=26',
-                    imgAlt: 'Image 2',
-                    content: 'Some quick example text for card 2.'
-                },
-                {
-                    title: 'Card 1',
-                    imgSrc: 'https://picsum.photos/600/300/?image=25',
-                    imgAlt: 'Image 1',
-                    content: 'Some quick example text for card 1.'
-                },
-                {
-                    title: 'Card 2',
-                    imgSrc: 'https://picsum.photos/600/300/?image=26',
-                    imgAlt: 'Image 2',
-                    content: 'Some quick example text for card 2.'
-                },
-                {
-                    title: 'Card 1',
-                    imgSrc: 'https://picsum.photos/600/300/?image=25',
-                    imgAlt: 'Image 1',
-                    content: 'Some quick example text for card 1.'
-                },
-                {
-                    title: 'Card 2',
-                    imgSrc: 'https://picsum.photos/600/300/?image=26',
-                    imgAlt: 'Image 2',
-                    content: 'Some quick example text for card 2.'
-                },
-                // Add more cards as needed
-            ],
-            cardsEnProceso: [
-                {
-                    title: 'Card 3',
-                    imgSrc: 'https://picsum.photos/600/300/?image=27',
-                    imgAlt: 'Image 3',
-                    content: 'Some quick example text for card 3.'
-                },
-                {
-                    title: 'Card 4',
-                    imgSrc: 'https://picsum.photos/600/300/?image=28',
-                    imgAlt: 'Image 4',
-                    content: 'Some quick example text for card 4.'
-                },
-                {
-                    title: 'Card 3',
-                    imgSrc: 'https://picsum.photos/600/300/?image=27',
-                    imgAlt: 'Image 3',
-                    content: 'Some quick example text for card 3.'
-                },
-                {
-                    title: 'Card 4',
-                    imgSrc: 'https://picsum.photos/600/300/?image=28',
-                    imgAlt: 'Image 4',
-                    content: 'Some quick example text for card 4.'
-                },
-                {
-                    title: 'Card 3',
-                    imgSrc: 'https://picsum.photos/600/300/?image=27',
-                    imgAlt: 'Image 3',
-                    content: 'Some quick example text for card 3.'
-                },
-                {
-                    title: 'Card 4',
-                    imgSrc: 'https://picsum.photos/600/300/?image=28',
-                    imgAlt: 'Image 4',
-                    content: 'Some quick example text for card 4.'
-                },
+            isLoading: false,
+            adoptionPending: [],
+            fields: [
+                { key: 'image', label: '#' },
+                { key: 'animal', label: 'Nombre del animal' },
+                { key: 'adopter', label: 'Nombre del adoptante' },
+                { key: 'date', label: 'Fecha' },
+                { key: 'status', label: 'Estado' },
+                { key: 'actions', label: 'Acciones' }
             ],
             modalData: {
-                images: ['https://via.placeholder.com/150', 'https://via.placeholder.com/150', 'https://via.placeholder.com/150'], // Ejemplo de imágenes estáticas
-                nombre: 'Nombre de la mascota',
-                tipo: 'Tipo de mascota',
-                localizacion: 'Localización',
-                raza: 'Raza',
-                personalidad: 'Personalidad',
-                sexo: 'Sexo',
-                peso: 'Peso',
-                tamano: 'Tamaño',
-                edad: 'Edad',
-                color: 'Color',
-                esterilizado: 'Esterilizado',
-                descripcion: 'Descripción del animal con comentarios de gestión o cancelación.'
-            }
-        };
+                animal: '',
+                adopter: '',
+                description: '',
+                creationDate: '',
+                images: [],
+                approvalStatus: '',
+                moderatorComment: '',
+            },
+            adoption: null,
+        }
+    },
+    mounted() {
+        this.pendingApprovals();
     },
     methods: {
-        openModal(card) {
-            this.modalData = {
-                ...this.modalData,
-                nombre: card.title,
-            };
+        async pendingApprovals() {
+            try {
+                this.isLoading = true;
+                const pendingAdoption = await service.onGetPendingApproval();
+                setTimeout(() => {
+                    this.adoptionPending = pendingAdoption;
+                    this.isLoading = false;
+                }, 1000);
+            } catch (error) {
+                console.error('Error al obtener adopciones pendientes de aprobación:', error);
+                this.isLoading = false;
+            }
+        },
+        async approveOrRejectAdoption(id, approvalStatus, moderatorComment) {
+            try {
+                const result = await service.onApproveOrRejectAdoption(id, approvalStatus, moderatorComment);
+                this.pendingApprovals();
+                this.isLoading = true;
+            } catch (error) {
+                console.error('Error al aprobar/rechazar adopción:', error);
+            } finally {
+                this.isLoading = false;
+                this.closeModal();
+            }
+        },
+        async approveAdoption() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.isLoading = true;
+                this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
+            }
+        },
+        async rejectAdoption() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.isLoading = true;
+                this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
+            }
+        },
+        async showConfirmation() {
+            return new Promise((resolve) => {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción no se puede deshacer.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#81B622',
+                    cancelButtonColor: '#DC3545',
+                    confirmButtonText: 'Sí, estoy seguro',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    resolve(result.isConfirmed);
+                });
+            });
+        },
+        openModal(adoption) {
+            this.modalData = { ...adoption };
             this.$refs.myModalRef.show();
         },
-        manageAnimal() {
+        manageAdoption() {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: 'Esta acción gestionará la mascota.',
                 icon: 'warning',
                 showCancelButton: true,
+                confirmButtonColor: '#81B622',
+                cancelButtonColor: '#DC3545',
                 confirmButtonText: 'Sí, gestionar',
                 cancelButtonText: 'Cancelar',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.handleSuccess(); 
+                    this.handleSuccess();
                     this.closeModal();
                 }
             });
         },
         handleSuccess() {
-            Swal.fire('¡Gestionado!', 'La mascota ha sido gestionada correctamente.', 'success');
-            
+            Swal.fire({
+                title: '¡Gestionado!',
+                text: 'La mascota ha sido gestionada correctamente.',
+                icon: 'success',
+                confirmButtonColor: '#0066C5',
+                confirmButtonText: 'Aceptar'
+            });
         },
         closeModal() {
             this.$refs.myModalRef.hide();
-        }
+        },
+        getStatusTranslation(status) {
+            switch (status) {
+                case 'PENDING':
+                    return 'Pendiente';
+                case 'APPROVED':
+                    return 'Aprobado';
+                case 'REJECT':
+                    return 'Rechazado';
+                default:
+                    return 'Desconocido';
+            }
+        },
+        formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+            return formattedDate;
+        },
     }
-};
+}
 </script>
 
 <style>
-.text-wait {
-    color: green;
+
+.loading-overlay {
+    display: none;
+    background: rgba(255, 255, 255, 0.776);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
 }
 
-.text-processed {
-    color: rgb(80, 31, 31);
+.loading-overlay.is-active {
+    display: flex;
+}
+
+.custom-loader {
+    width: 50px;
+    height: 50px;
+    display: grid;
+    color: #F0BB00;
+    background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
+    border-radius: 50%;
+    animation: s9 2s infinite linear;
+}
+
+.custom-loader::before,
+.custom-loader::after {
+    content: "";
+    grid-area: 1/1;
+    background:
+        linear-gradient(currentColor 0 0) center,
+        linear-gradient(currentColor 0 0) center;
+    background-size: 100% 10px, 10px 100%;
+    background-repeat: no-repeat;
+}
+
+.custom-loader::after {
+    transform: rotate(45deg);
+}
+
+@keyframes s9 {
+    100% {
+        transform: rotate(1turn)
+    }
+}
+
+.section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.my-custom-table {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 100%; /* Cambia el valor según lo necesites */
+}
+
+@media (max-width: 767px) {
+    .my-custom-table {
+        overflow-x: auto;
+    }
 }
 </style>

@@ -21,8 +21,14 @@
               </b-form-group>
               <b-form-group>
                 <h6 class="mt-4">Contraseña</h6>
-                <b-form-input id="inputPassword" v-model="password" type="password" placeholder="************" required>
-                </b-form-input>
+                <b-input-group>
+                  <b-form-input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="************" required></b-form-input>
+                  <b-input-group-append>
+                    <b-button @click="togglePassword" variant="outline-secondary">
+                      <b-icon :icon="showPassword ? 'eye-slash' : 'eye'" aria-hidden="true"></b-icon>
+                    </b-button>                    
+                  </b-input-group-append>
+                </b-input-group>
               </b-form-group>
             </b-form>
           </div>
@@ -79,12 +85,23 @@ export default {
           href: '#',
           to: 'Login'
         }
-      ]
+      ],
+      showPassword: false, 
     }
   },
 
   methods: {
     onSubmit() {
+      if (!this.email || !this.password) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Debes llenar todos los campos antes de iniciar sesión',
+          confirmButtonColor: '#0066C5',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
       axios.post('auth/login', {
         "email": this.email,
         "password": this.password
@@ -118,7 +135,10 @@ export default {
           text: 'Usuario y/o contraseña incorrectos'
         });
       });
-    }
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
   }
 }
 </script>

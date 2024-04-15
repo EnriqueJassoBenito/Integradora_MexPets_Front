@@ -4,30 +4,38 @@
             <div class="custom-loader"></div>
         </div>
         <div class="section">
-            <h2 class="section-title">En espera</h2>
+            <h2 class="section-title">En proceso</h2>
         </div>
         <hr>
-        <b-row class="mt-2">
-            <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalPending" :key="animal.id" class="mb-4">
-                <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet" img-top
-                    tag="article" :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
-                    footer-bg-variant="success" footer-border-variant="dark" style="max-width: 15rem;">
-                    <b-card-text>
-                        <p><strong>Ubicación:</strong> {{ animal.location }}</p>
-                        <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
-                        <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
-                        <p><strong>Sexo:</strong> {{ animal.sex }}</p>
-                    </b-card-text>
-                    <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
-                        <b-icon icon="eye" aria-hidden="true"></b-icon>
+        <b-card class="my-3 p-3 shadow-sm rounded" style="max-width: 900px; margin: 0 auto;">
+            <b-table striped hover :items="adoptionApproved" :fields="fields" class="my-custom-table table-responsive">
+                <template v-slot:cell(image)="{ item }">
+                    <img :src="item.animal.images[0].imageUrl" :alt="item.animal.animalPet" style="max-width: 100px;">
+                </template>
+                <template v-slot:cell(animal)="{ item }">
+                    {{ item.animal.namePet }}
+                </template>
+                <template v-slot:cell(adopter)="{ item }">
+                    {{ item.adopter.name }} {{ item.adopter.lastname }}
+                </template>
+                <template v-slot:cell(date)="{ item }">
+                    {{ formatDate(item.creationDate) }}
+                </template>
+                <template v-slot:cell(status)="{ item }">
+                    {{ getStatusTranslation(item.approvalStatus) }}
+                </template>
+                <template v-slot:cell(actions)="{ item }">
+                    <b-button @click="openModal(item)" variant="primary">
+                        <b-icon icon="eye"></b-icon>
                     </b-button>
-                </b-card>
-            </b-col>
-        </b-row>
+                </template>
+            </b-table>
+        </b-card>
 
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la adopción" header-bg-variant="success">
             <b-row class="mb-3">
                 <b-col cols="12">
+                    <p><strong>Lugar donde será recibido:</strong></p>
                     <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
                         <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
                             :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
@@ -37,91 +45,72 @@
             </b-row>
             <b-row>
                 <b-col cols="12">
-                    <p><strong>Nombre:</strong> {{ modalData.namePet }}</p>
-                    <p><strong>Características:</strong></p>
-                    <div class="characteristics mb-2">
-                        <b-row>
-                            <b-col cols="6">
-                                <div><strong>Localización:</strong> {{ modalData.location }}</div>
-                                <div><strong>Tipo:</strong> {{ modalData.typePet.type }}</div>
-                                <div><strong>Raza:</strong> {{ modalData.race.racePet }}</div>
-                                <div><strong>Personalidad:</strong> {{ modalData.personality.personalityPet }}</div>
-                                <div><strong>Sexo:</strong> {{ modalData.sex }}</div>
-                            </b-col>
-                            <b-col cols="6">
-
-                                <div><strong>Tamaño:</strong> {{ modalData.size }}</div>
-                                <div><strong>Peso:</strong> {{ modalData.weight }}</div>
-                                <div><strong>Edad:</strong> {{ modalData.age }}</div>
-                                <div><strong>Color:</strong> {{ modalData.color }}</div>
-                                <div><strong>Esterilizado:</strong> {{ modalData.sterilized ? 'Sí' : 'No' }}</div>
-                            </b-col>
-                        </b-row>
-                    </div>
-                    <div><strong>Descripción:</strong> {{ modalData.description }}</div>
+                    <p><strong>Nombre de la mascota:</strong> {{ modalData.animal.namePet }}</p>
+                    <p><strong>Fecha de adopción:</strong> {{ formatDate(modalData.creationDate) }}</p>
+                    <div class="mb-2"><strong>Descripción del adoptante:</strong> {{ modalData.description }}</div>
                 </b-col>
             </b-row>
             <b-row>
                 <b-col cols="12" class="d-flex justify-content-between mt-3">
-                    <b-button variant="success" @click="approveAnimal">Aprobar</b-button>
-                    <b-button variant="danger" @click="rejectAnimal">Rechazar</b-button>
                     <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
         </b-modal>
+
     </b-container>
 </template>
 
 <script>
-import service from '../../service/AnimalService.js'
+import service from '../../service/Adoption.js'
 import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {
             isLoading: false,
-            animalPending: [],
+            adoptionApproved: [],
+            fields: [
+                { key: 'image', label: '#' },
+                { key: 'animal', label: 'Nombre del animal' },
+                { key: 'adopter', label: 'Nombre del adoptante' },
+                { key: 'date', label: 'Fecha' },
+                { key: 'status', label: 'Estado' },
+                { key: 'actions', label: 'Acciones' }
+            ],
             modalData: {
-                id: '',
-                namePet: '',
-                location: '',
-                typePet: '',
-                race: '',
-                personality: '',
-                sex: '',
-                size: '',
-                weight: '',
-                age: '',
-                color: '',
-                sterilized: '',
+                animal: '',
+                adopter: '',
                 description: '',
+                creationDate: '',
                 images: [],
                 approvalStatus: '',
                 moderatorComment: '',
             },
-            animal: null,
+            adoption: null,
         }
     },
     mounted() {
-        this.pendingApprovals();
+        this.adoptionAprovals();
     },
     methods: {
-        async pendingApprovals() {
+        async adoptionAprovals() {
             try {
                 this.isLoading = true;
-                const pendingApprovalAnimals = await service.onGetPendingApprovalAnimals();
+                const approvedAdoption = await service.onGetApproved();
                 setTimeout(() => {
-                    this.animalPending = pendingApprovalAnimals;
+                    this.adoptionApproved = approvedAdoption;
                     this.isLoading = false;
                 }, 1000);
             } catch (error) {
-                console.error('Error al obtener animales pendientes de aprobación:', error);
+                console.error('Error al obtener adopciones aprobadas de aprobación:', error);
                 this.isLoading = false;
             }
         },
-        async approveOrRejectAdoption(id, status, comment) {
+        async approveOrRejectAdoption(id, approvalStatus, moderatorComment) {
             try {
-                const result = await service.onApproveOrRejectAnimal(id, status, comment);
-                console.log('Resultado de la acción de aprobación/rechazo:', result);
+                const result = await service.onApproveOrRejectAdoption(id, approvalStatus, moderatorComment);
+                this.adoptionAprovals();
+                this.isLoading = true;
             } catch (error) {
                 console.error('Error al aprobar/rechazar adopción:', error);
             } finally {
@@ -129,14 +118,14 @@ export default {
                 this.closeModal();
             }
         },
-        async approveAnimal() {
+        async approveAdoption() {
             const confirmAction = await this.showConfirmation();
             if (confirmAction) {
                 this.isLoading = true;
                 this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
             }
         },
-        async rejectAnimal() {
+        async rejectAdoption() {
             const confirmAction = await this.showConfirmation();
             if (confirmAction) {
                 this.isLoading = true;
@@ -159,11 +148,11 @@ export default {
                 });
             });
         },
-        openModal(animal) {
-            this.modalData = { ...animal }; 
+        openModal(adoption) {
+            this.modalData = { ...adoption };
             this.$refs.myModalRef.show();
         },
-        manageAnimal() {
+        manageAdoption() {
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: 'Esta acción gestionará la mascota.',
@@ -203,20 +192,17 @@ export default {
                 default:
                     return 'Desconocido';
             }
-        }
+        },
+        formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+            return formattedDate;
+        },
     }
 }
-
 </script>
 
 <style>
-.text-wait {
-    color: green;
-}
-
-.text-processed {
-    color: rgb(80, 31, 31);
-}
 
 .loading-overlay {
     display: none;
@@ -277,5 +263,17 @@ export default {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.my-custom-table {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 100%; /* Cambia el valor según lo necesites */
+}
+
+@media (max-width: 767px) {
+    .my-custom-table {
+        overflow-x: auto;
+    }
 }
 </style>
