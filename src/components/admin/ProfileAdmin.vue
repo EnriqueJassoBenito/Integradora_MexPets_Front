@@ -158,7 +158,7 @@ export default {
   data() {
     return {
       currentUser: null,
-      isEditing: false
+      isEditing: false,
     };
   },
   mounted() {

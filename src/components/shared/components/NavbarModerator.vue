@@ -34,17 +34,6 @@
 
                     <b-nav-item :to="{ name: 'management-adoptions' }" @click="selectOption('management-adoptions')"
                         :class="{ 'active': selectedOption === 'management-adoptions' }">Mis gestiones</b-nav-item>
-
-                    <!--<b-nav-item-dropdown text="Mis gestiones" toggle-class="nav-link-custom" right>
-                        <b-dropdown-item :to="{ name: 'management-adoptions' }"
-                            @click="selectOption('management-adoptions')">
-                            Seguimiento de adopciones
-                        </b-dropdown-item>
-                        <b-dropdown-item :to="{ name: 'management-registrations' }"
-                            @click="selectOption('management-registrations')">
-                            Seguimiento de registro
-                        </b-dropdown-item>
-                    </b-nav-item-dropdown>-->
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>

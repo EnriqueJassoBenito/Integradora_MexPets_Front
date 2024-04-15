@@ -11,6 +11,16 @@ const getAllRol = async () => {
     }
 };
 
+const getAllRolU = async () => {
+    try {
+        const response = await axios.get(baseUrl);
+        return response.data.data.map(rol => rol.nrol);
+    } catch (error) {
+        throw error;
+    }
+};
+
 export default {
-    getAllRol
+    getAllRol,
+    getAllRolU
 };

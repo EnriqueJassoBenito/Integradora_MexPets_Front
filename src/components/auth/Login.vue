@@ -31,6 +31,7 @@
                 </b-input-group>
               </b-form-group>
             </b-form>
+            <div ref="container" class="frc-captcha" data-sitekey="FCMVRR8LOPON8OO3" data-lang="es" required></div>
           </div>
           <div class="contentCenter">
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
@@ -55,7 +56,12 @@
 
 <script>
 import axios from 'axios';
+import CaptchaService from '../../service/CaptchaService'
 import Swal from 'sweetalert2';
+import { WidgetInstance } from "friendly-challenge";
+import { ref } from "vue";
+
+
 import { jwtDecode } from 'jwt-decode';
 export function logout() {
   localStorage.removeItem('authToken');
@@ -87,10 +93,28 @@ export default {
         }
       ],
       showPassword: false, 
+      container: ref(),
+      widget: ref(),
+      formData: {
+        name: ""
+      },
     }
   },
 
   methods: {
+    async verifyCaptcha(solution) {
+      let response = await CaptchaService.verificarCaptcha(solution);
+      console.log(response);
+    },
+    doneCallback(solution) {
+      this.verifyCaptcha(solution);
+    },
+
+    errorCallback: (err) => {
+      console.log("There was an error when trying to solve the Captcha.");
+      console.log(err);
+    },
+
     onSubmit() {
       if (!this.email || !this.password) {
         Swal.fire({
@@ -139,7 +163,24 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
-  }
+  },
+  mounted() {
+    if (this.$refs.container) {
+      this.widget = new WidgetInstance(
+        this.$refs.container, {
+          startMode: "",
+          doneCallback: this.doneCallback,
+          errorCallback: this.errorCallback,
+        }
+      );
+    }
+  },
+
+  beforeDestroy() {
+    if (this.widget) {
+      this.widget.destroy();
+    }
+  },
 }
 </script>
 
