@@ -1,20 +1,22 @@
 <template>
+    <div>
     <div class="row">
         <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
-            <b-link :to="{ name: 'home' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
+            <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item :to="{ name: 'home' }" @click="selectOption('home')">Home</b-nav-item>
                     <b-nav-item :to="{ name: 'home' }" @click="selectOption('home')">Adoptar</b-nav-item>
                     <b-nav-item :to="{ name: 'register-animal' }" @click="selectOption('register-animal')">Dar en adopción</b-nav-item>
+                    <b-nav-item :to="{ name: 'profileClient' }" @click="selectOption('profileClient')">Perfil</b-nav-item>
                 </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
                     <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-        <router-view></router-view>
+    </div>
+    <router-view></router-view>
     </div>
 </template>
 

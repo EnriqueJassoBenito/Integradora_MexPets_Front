@@ -96,25 +96,11 @@
 </template>
 <script>
 import axios from 'axios';
+import services from '../../service/CategoryService';
 
 export default {
     data() {
         return {
-
-            namePet: '',
-            location: '',
-            typePet: '',
-            race: '',
-            personality: '',
-            sex: '',
-            size: '',
-            weight: '',
-            age: '',
-            color: '',
-            sterilized: false,
-            description: '',
-            imageFiles: [],
-
             locations: [
                 { value: '', text: 'Seleccionar' },
                 { value: 'aguascalientes', text: 'Aguascalientes' },
@@ -150,21 +136,20 @@ export default {
                 { value: 'yucatan', text: 'Yucatán' },
                 { value: 'zacatecas', text: 'Zacatecas' },
             ],
-            typePets: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'perro', text: 'Perro' },
-                { value: 'gato', text: 'Gato' },
-            ],
-            races: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'labrador', text: 'Labrador' },
-                { value: 'persa', text: 'Persa' },
-            ],
-            personalities: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'amigable', text: 'Amigable' },
-                { value: 'jugueton', text: 'Juguetón' },
-            ],
+            namePet: '',
+            location: '',
+            typePet: '',
+            race: '',
+            personality: '',
+            sex: '',
+            size: '',
+            weight: '',
+            age: '',
+            color: '',
+            sterilized: false,
+            description: '',
+            imageFiles: [],
+            
             sexOptions: [
                 { value: '', text: 'Seleccionar' },
                 { value: 'macho', text: 'Macho' },
@@ -189,9 +174,43 @@ export default {
             sterilizedState: null,
             descriptionState: null,
             imageFilesState: null,
+            typePets: [],
+            typePetState: null,
+            races: [],
+            personalities: [],
         };
     },
+    created() {
+        this.onGetAllType();
+        this.onGetAllRace();
+        this.onGetAllPersonality();
+
+    },
     methods: {
+        async onGetAllType() {
+    try {
+        const types = await services.onGetAllTypeRegister();
+        this.typePets = types;
+    } catch (error) {
+        console.error("Error al obtener tipos:", error);
+    }
+},
+        async onGetAllRace() {
+            try {
+        const race = await services.onGetAllRaceRegister();
+        this.races = race;
+    } catch (error) {
+        console.error("Error al obtener tipos:", error);
+    }
+        },
+        async onGetAllPersonality() {
+            try {
+        const personality = await services.onGetAllPersonalityRegister();
+        this.personalities = personality;
+    } catch (error) {
+        console.error("Error al obtener tipos:", error);
+    }
+        },
         onSubmit() {
             axios.post('animals', {
                 "namePet" : this.namePet,

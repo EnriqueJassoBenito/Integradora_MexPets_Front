@@ -30,7 +30,7 @@
             <b-form-group label="Tipo de animal">
               <b-form-input v-model="updateDataType.type"></b-form-input>
             </b-form-group>
-            <b-button type="submit" variant="primary" style="margin-top:15px;" @click="addOrUpdateType">
+            <b-button type="submit" variant="primary" style="margin-top:15px;">
               {{ !updateDataType.id ? 'Agregar' : 'Actualizar' }}
             </b-button>
           </form>
@@ -185,11 +185,11 @@ export default {
       this.showModalPersonality = true;
     },
 
-    addOrUpdateType() {
+    async addOrUpdateType() {
       if (!this.updateDataType.id) {
-        this.insertType();
+        await this.insertType();
       } else {
-        this.updateType(this.updateDataType.id, this.updateDataType.type);
+        await this.updateType(this.updateDataType.id, this.updateDataType.type);
       }
     },
     async insertType() {
