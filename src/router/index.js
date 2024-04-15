@@ -56,8 +56,8 @@ const routes = [
       import("../components/shared/components/NavbarModerator.vue"),
     children: [
       {
-        path: "profile",
-        name: "profile",
+        path: "profile-moderator",
+        name: "profile-moderator",
         component: () => import("../components/moderator/ModeratorProfile.vue"),
       },
       {
@@ -94,17 +94,17 @@ const routes = [
     children: [
       {
         path: "/adopt",
-        name: "adopt",
+        name: "adopt-home",
         component: () => import("../components/public/Adopt.vue"),
       },
       {
         path: "/adopter",
-        name: "adopter",
+        name: "adopter-home",
         component: () => import("../components/public/Adopter.vue"),
       },
       {
         path: "/about-us",
-        name: "about-us",
+        name: "about-us-home",
         component: () => import("../components/public/AboutUs.vue"),
       }
     ],
@@ -141,19 +141,8 @@ const routes = [
       },
       {
         path: "/adopt",
-        name: "adopt-home ",
+        name: "adopt ",
         component: () => import("../components/public/Adopt.vue"),
-      },
-      {
-        path: "/adopter",
-        name: "adopter-home",
-        component: () => import("../components/public/Adopter.vue"),
-      },
-      {
-        path: "/about-us",
-        name: "about-us-home",
-        component: () => import("../components/public/AboutUs.vue"),
-
       },
       {
         path: "/login",

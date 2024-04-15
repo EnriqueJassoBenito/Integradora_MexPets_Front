@@ -4,6 +4,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
 import cloudinary from 'cloudinary-core';
+import VueFormulate from '@braid/vue-formulate';
+import '@braid/vue-formulate/dist/snow.min.css';
 
 import './assets/main.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -20,7 +22,7 @@ Vue.prototype.$cloudinary = cloudinary.Cloudinary.new(cloudinaryConfig);
 +Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(IconsPlugin)
-
+Vue.use(VueFormulate);
 
 new Vue({
   router,

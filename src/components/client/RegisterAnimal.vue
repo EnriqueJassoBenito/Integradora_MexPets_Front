@@ -1,108 +1,92 @@
 <template>
     <b-container fluid class="d-flex justify-content-center mt-4">
         <b-card title="Registro de Animales" style="width: 100%; max-width: 600px;">
-            <b-form @submit.prevent="handleSubmit">
+            <b-form @submit="onSubmit">
                 <b-row>
                     <b-col md="6">
-                        <!-- Campo Nombre -->
-                        <b-form-group label="Nombre" label-for="nombre" class="mb-3"
-                            invalid-feedback="El nombre contiene caracteres no permitidos." :state="nombreState">
-                            <b-form-input id="nombre" v-model="formData.nombre" required @input="validateNombre"
-                                :class="{ 'is-invalid': nombreInvalid }"></b-form-input>
+                        <b-form-group label="Nombre de la mascota" label-for="namePet"
+                            invalid-feedback="El nombre debe contener al menos 4 letras y no debe contener caracteres especiales"
+                            :state="namePetState">
+                            <b-form-input id="namePet" v-model="namePet" required @input="validateNamePet" />
                         </b-form-group>
-
-                        <!-- Campo Tipo de Mascota -->
-                        <b-form-group label="Tipo de Mascota" label-for="tipo" class="mb-3"
-                            invalid-feedback="Este campo contiene caracteres no permitidos." :state="tipoState">
-                            <b-form-input id="tipo" v-model="formData.tipo" required @input="validateTipo"
-                                :class="{ 'is-invalid': tipoInvalid }"></b-form-input>
+                        <b-form-group label="Localización" label-for="location"
+                            invalid-feedback="Por favor, selecciona un estado existente en la lista desplegable."
+                            :state="locationState">
+                            <b-form-select id="location" v-model="location" :options="locations" required />
                         </b-form-group>
-
-                        <!-- Campo Raza -->
-                        <b-form-group label="Raza" label-for="raza" class="mb-3"
-                            invalid-feedback="La raza contiene caracteres no permitidos." :state="razaState">
-                            <b-form-input id="raza" v-model="formData.raza" required @input="validateRaza"
-                                :class="{ 'is-invalid': razaInvalid }"></b-form-input>
+                        <b-form-group label="Tipo de mascota" label-for="typePet"
+                            invalid-feedback="Por favor, selecciona un tipo de mascota existente en la lista desplegable."
+                            :state="typePetState">
+                            <b-form-select id="typePet" v-model="typePet" :options="typePets" required />
                         </b-form-group>
-
-                        <!-- Campo Edad -->
-                        <b-form-group label="Edad" label-for="edad" class="mb-3"
-                            invalid-feedback="Por favor, selecciona la edad." :state="formData.edad !== ''">
-                            <b-form-select id="edad" v-model="formData.edad" :options="edades" required
-                                @change="validateForm"></b-form-select>
+                        <b-form-group label="Raza" label-for="race"
+                            invalid-feedback="Por favor, selecciona una raza existente en la lista desplegable."
+                            :state="raceState">
+                            <b-form-select id="race" v-model="race" :options="races" required />
                         </b-form-group>
-
-                        <!-- Campo Sexo -->
-                        <b-form-group label="Sexo" label-for="sexo" class="mb-3"
-                            invalid-feedback="Por favor, selecciona el sexo." :state="formData.sexo !== ''">
-                            <b-form-select id="sexo" v-model="formData.sexo" :options="sexos" required
-                                @change="validateForm"></b-form-select>
+                        <b-form-group label="Personalidad" label-for="personality"
+                            invalid-feedback="Por favor, selecciona una personalidad existente en la lista desplegable."
+                            :state="personalityState">
+                            <b-form-select id="personality" v-model="personality" :options="personalities" required />
                         </b-form-group>
-
-                        <!-- Campo Color -->
-                        <b-form-group label="Color" label-for="color" class="mb-3"
-                            invalid-feedback="El color contiene caracteres no permitidos." :state="colorState">
-                            <b-form-input id="color" v-model="formData.color" required @input="validateColor"
-                                :class="{ 'is-invalid': colorInvalid }"></b-form-input>
+                        <b-form-group label="Sexo" label-for="sex"
+                            invalid-feedback="Por favor, selecciona un sexo existente en la lista desplegable."
+                            :state="sexState">
+                            <b-form-select id="sex" v-model="sex" :options="sexOptions" required />
                         </b-form-group>
                     </b-col>
-
                     <b-col md="6">
-                        <!-- Campo Tamaño -->
-                        <b-form-group label="Tamaño" label-for="tamano" class="mb-3"
-                            invalid-feedback="Por favor, selecciona el tamaño." :state="formData.tamano !== ''">
-                            <b-form-select id="tamano" v-model="formData.tamano" :options="tamanos" required
-                                @change="validateForm"></b-form-select>
+                        <b-form-group label="Tamaño" label-for="size"
+                            invalid-feedback="Por favor, selecciona un tamaño existente en la lista desplegable."
+                            :state="sizeState">
+                            <b-form-select id="size" v-model="size" :options="sizes" required />
                         </b-form-group>
-
-                        <!-- Campo Personalidad -->
-                        <b-form-group label="Personalidad" label-for="personalidad" class="mb-3"
-                            invalid-feedback="La personalidad contiene caracteres no permitidos."
-                            :state="personalidadState">
-                            <b-form-select id="personalidad" v-model="formData.personalidad" :options="personalidades"
-                                required @change="validatePersonalidad"></b-form-select>
+                        <b-form-group label="Peso" label-for="weight"
+                            invalid-feedback="El peso del animal debe ser mayor o igual a 0.5 y menor o igual a 70 kg."
+                            :state="weightState">
+                            <b-form-input id="weight" type="number" v-model="weight" min="0.5" max="70" required />
                         </b-form-group>
-
-                        <!-- Campo Sociable -->
-                        <b-form-group label="Sociable" label-for="sociable" class="mb-3"
-                            invalid-feedback="Debes seleccionar si es sociable o no."
-                            :state="formData.sociable !== null">
-                            <b-form-checkbox id="sociable" v-model="formData.sociable" switch>
+                        <b-form-group label="Edad" label-for="age"
+                            invalid-feedback="La edad debe ser mayor o igual a 1 y menor o igual a 30."
+                            :state="ageState">
+                            <b-form-input id="age" type="number" v-model="age" min="1" max="30" required />
+                        </b-form-group>
+                        <b-form-group label="Color" label-for="color"
+                            invalid-feedback="El color no debe contener caracteres especiales." :state="colorState">
+                            <b-form-input id="color" v-model="color" required />
+                        </b-form-group>
+                        <b-form-group label="Esterilizado" label-for="sterilized"
+                            invalid-feedback="Debes seleccionar si está esterilizado o no." :state="sterilizedState">
+                            <b-form-checkbox id="sterilized" v-model="sterilized" switch>
                                 Sí
                             </b-form-checkbox>
                         </b-form-group>
-
-                        <!-- Campo Esterilizado -->
-                        <b-form-group label="Esterilizado" label-for="esterilizado" class="mb-3"
-                            invalid-feedback="Debes seleccionar si está esterilizado o no."
-                            :state="formData.esterilizado !== null">
-                            <b-form-checkbox id="esterilizado" v-model="formData.esterilizado" switch>
-                                Sí
-                            </b-form-checkbox>
-                        </b-form-group>
-
-                        <!-- Campo Localización -->
-                        <b-form-group label="Localización" label-for="localizacion" class="mb-3"
-                            invalid-feedback="Por favor, selecciona la localización."
-                            :state="formData.localizacion !== ''">
-                            <b-form-select id="localizacion" v-model="formData.localizacion" :options="localizaciones"
-                                required @change="validateForm"></b-form-select>
-                        </b-form-group>
-
-                        <!-- Campo Imágenes -->
-                        <b-form-group label="Imágenes" label-for="imagenes" class="mb-3"
-                            invalid-feedback="Solo puedes subir hasta 5 imágenes con un total de 10 MB."
-                            :state="imagesState">
-                            <b-form-file id="imagenes" v-model="formData.imagenes" multiple accept="image/*"
-                                @change="validateImages" required :class="{ 'is-invalid': !imagesState }"></b-form-file>
+                        <b-form-group label="Descripción" label-for="description"
+                            invalid-feedback="La descripción debe contar con un mínimo de 50 palabras y un máximo de 250."
+                            :state="descriptionState">
+                            <b-form-textarea id="description" v-model="description" required />
                         </b-form-group>
                     </b-col>
                 </b-row>
-
+                <b-row>
+                    <b-col md="12">
+                        <b-form-group label="Imágenes" label-for="imageFiles"
+                            invalid-feedback="Debe insertar un mínimo de 3 imágenes y un máximo de 5, y los archivos no deberán ser mayores a 10 MB."
+                            :state="imageFilesState">
+                            <b-form-file id="imageFiles" v-model="imageFiles" multiple accept="image/*"
+                                @change="validateImageFiles" required :class="{ 'is-invalid': !imageFilesState }" />
+                        </b-form-group>
+                    </b-col>
+                </b-row>
                 <b-row class="mt-3">
-                    <b-col class="text-center">
-                        <b-button type="submit" variant="primary" :disabled="!formValid">
-                            Enviar
+                    <b-col md="6" class="text-center">
+                        <b-button type="submit" variant="success" @click="onSubmit">
+                            Registrar
+                        </b-button>
+                    </b-col>
+                    <b-col md="6" class="text-center">
+                        <b-button type="reset" variant="danger">
+                            Eliminar
                         </b-button>
                     </b-col>
                 </b-row>
@@ -110,52 +94,28 @@
         </b-card>
     </b-container>
 </template>
-
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
-            formData: {
-                nombre: '',
-                tipo: '',
-                raza: '',
-                edad: '',
-                sexo: '',
-                color: '',
-                tamaño: '',
-                personalidad: '',
-                sociable: false,
-                esterilizado: false,
-                localización: '',
-                imagenes: null,
-            },
-            sexos: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'macho', text: 'Macho' },
-                { value: 'hembra', text: 'Hembra' },
-            ],
-            edades: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'cachorro', text: 'Cachorro' },
-                { value: 'adulto', text: 'Adulto' },
-                { value: 'adulto_mayor', text: 'Adulto mayor' },
-            ],
-            tamanos: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'chico', text: 'Chico' },
-                { value: 'mediano', text: 'Mediano' },
-                { value: 'grande', text: 'Grande' },
-            ],
-            personalidades: [
-                { value: '', text: 'Seleccionar' },
-                { value: 'amigable', text: 'Amigable' },
-                { value: 'leal', text: 'Leal' },
-                { value: 'jugueton', text: 'Juguetón' },
-                { value: 'tranquilo', text: 'Tranquilo' },
-                { value: 'afectuoso', text: 'Afectuoso' },
-                { value: 'curioso', text: 'Curioso' }
-            ],
-            localizaciones: [
+
+            namePet: '',
+            location: '',
+            typePet: '',
+            race: '',
+            personality: '',
+            sex: '',
+            size: '',
+            weight: '',
+            age: '',
+            color: '',
+            sterilized: false,
+            description: '',
+            imageFiles: [],
+
+            locations: [
                 { value: '', text: 'Seleccionar' },
                 { value: 'aguascalientes', text: 'Aguascalientes' },
                 { value: 'baja_california', text: 'Baja California' },
@@ -190,93 +150,132 @@ export default {
                 { value: 'yucatan', text: 'Yucatán' },
                 { value: 'zacatecas', text: 'Zacatecas' },
             ],
-            formState: {
-                nombre: null,
-                tipo: null,
-                raza: null,
-                edad: null,
-                sexo: null,
-                color: null,
-                tamaño: null,
-                personalidad: null,
-                localizacion: null,
-            },
-            nombreInvalid: false,
-            tipoInvalid: false,
-            razaInvalid: false,
-            colorInvalid: false,
-            personalidadInvalid: false,
-            imagesState: null,
-            formValid: false,
+            typePets: [
+                { value: '', text: 'Seleccionar' },
+                { value: 'perro', text: 'Perro' },
+                { value: 'gato', text: 'Gato' },
+            ],
+            races: [
+                { value: '', text: 'Seleccionar' },
+                { value: 'labrador', text: 'Labrador' },
+                { value: 'persa', text: 'Persa' },
+            ],
+            personalities: [
+                { value: '', text: 'Seleccionar' },
+                { value: 'amigable', text: 'Amigable' },
+                { value: 'jugueton', text: 'Juguetón' },
+            ],
+            sexOptions: [
+                { value: '', text: 'Seleccionar' },
+                { value: 'macho', text: 'Macho' },
+                { value: 'hembra', text: 'Hembra' },
+            ],
+            sizes: [
+                { value: '', text: 'Seleccionar' },
+                { value: 'chico', text: 'Chico' },
+                { value: 'mediano', text: 'Mediano' },
+                { value: 'grande', text: 'Grande' },
+            ],
+            namePetState: null,
+            locationState: null,
+            typePetState: null,
+            raceState: null,
+            personalityState: null,
+            sexState: null,
+            sizeState: null,
+            weightState: null,
+            ageState: null,
+            colorState: null,
+            sterilizedState: null,
+            descriptionState: null,
+            imageFilesState: null,
         };
     },
     methods: {
-        handleSubmit() {
-            // Lógica de manejo de envío de formulario
-            console.log(this.formData);
+        onSubmit() {
+            axios.post('animals', {
+                "namePet" : this.namePet,
+                "location" : this.location,
+                "typePet" : this.typePet,
+                "race" : this.race,
+                "personality" : this.personality,
+                "sex" : this.sex,
+                "size" : this.size,
+                "weight" : this.weight,
+                "age" : this.age,
+                "color" : this.color,
+                "sterlized" : this.sterilized,
+                "description" : this.description,
+                "imageFiles" : this.imageFiles
+            }).then(response => {
+                const data = response.data;
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
         },
-        validateField(field) {
-            this.formState[field] = this.formData[field] ? true : false;
-            this.validateForm();
+        validateNamePet() {
+            const regex = /^[a-zA-Z\s]+$/;
+            const isValid = regex.test(this.namePet) && this.namePet.length >= 4;
+            this.namePetState = isValid;
         },
-        validateNombre() {
-            // Define la validación que deseas aplicar
-            const invalidPattern = /[^a-zA-Z\s]/g; // Patrón de caracteres no permitidos (ejemplo)
-            this.nombreInvalid = invalidPattern.test(this.formData.nombre);
-            this.formState.nombre = !this.nombreInvalid && this.formData.nombre.trim() !== '';
-            this.validateForm();
+        validateLocation() {
+            const isValid = this.location !== '';
+            this.locationState = isValid;
         },
-        validateTipo() {
-            // Define la validación que deseas aplicar
-            const invalidPattern = /[^a-zA-Z\s]/g; // Patrón de caracteres no permitidos (ejemplo)
-            this.tipoInvalid = invalidPattern.test(this.formData.tipo);
-            this.formState.tipo = !this.tipoInvalid && this.formData.tipo.trim() !== '';
-            this.validateForm();
+        validateTypePet() {
+            const isValid = this.typePet !== '';
+            this.typePetState = isValid;
         },
-        validateRaza() {
-            // Define la validación que deseas aplicar
-            const invalidPattern = /[^a-zA-Z\s]/g; // Patrón de caracteres no permitidos (ejemplo)
-            this.razaInvalid = invalidPattern.test(this.formData.raza);
-            this.formState.raza = !this.razaInvalid && this.formData.raza.trim() !== '';
-            this.validateForm();
+        validateRace() {
+            const isValid = this.race !== '';
+            this.raceState = isValid;
         },
+        validatePersonality() {
+            const isValid = this.personalities !== '';
+            this.personalityState = isValid;
+        },
+        validateSex() {
+            const isValid = this.sex !== '';
+            this.sexState = isValid;
+        },
+        validateSize() {
+            const isValid = this.size !== '';
+            this.sizeState = isValid;
+        },
+        validateWeight() {
+            const isValid = this.weight >= 0.5 && this.weight <= 70;
+            this.weightState = isValid;
+        },
+        validateAge() {
+            const isValid = this.age >= 1 && this.age <= 30;
+            this.ageState = isValid;
+        },
+
         validateColor() {
-            // Define la validación que deseas aplicar
-            const invalidPattern = /[^a-zA-Z\s]/g; // Patrón de caracteres no permitidos (ejemplo)
-            this.colorInvalid = invalidPattern.test(this.formData.color);
-            this.formState.color = !this.colorInvalid && this.formData.color.trim() !== '';
-            this.validateForm();
+            const regex = /^[a-zA-Z\s]+$/;
+            const isValid = regex.test(this.color);
+            this.colorState = isValid;
         },
-        validatePersonalidad() {
-            // Define la validación que deseas aplicar
-            const invalidPattern = /[^a-zA-Z\s]/g; // Patrón de caracteres no permitidos (ejemplo)
-            this.personalidadInvalid = invalidPattern.test(this.formData.personalidad);
-            this.formState.personalidad = !this.personalidadInvalid && this.formData.personalidad.trim() !== '';
-            this.validateForm();
+        validateSterilized() {
+            const isValid = typeof this.sterilized === 'boolean';
+            this.sterilizedState = isValid;
         },
-        validateImages() {
-            const files = this.formData.imagenes;
-            if (!files || files.length === 0) {
-                this.imagesState = false;
-                return;
-            }
-
-            let totalSize = 0;
-            for (const file of files) {
-                totalSize += file.size;
-            }
-
-            // Convertir bytes a MB
-            const totalSizeMB = totalSize / (1024 * 1024);
-
-            // Validar condiciones de imágenes
-            this.imagesState = files.length <= 5 && totalSizeMB <= 10;
-
-            this.validateForm();
+        validateDescription() {
+            const wordCount = this.description.split(' ').length;
+            const isValid = wordCount >= 50 && wordCount <= 250;
+            this.descriptionState = isValid;
         },
-        validateForm() {
-            this.formValid = this.imagesState && Object.values(this.formState).every((state) => state);
+        validateImageFiles() {
+            const fileCount = this.imageFiles.length; 
+            const fileSizesValid = this.imageFiles.every(file => file.size <= 10 *1024 *1024);
+            this.formData.imageFiles.every(file => file.size <= 10 * 1024 * 1024);
+            this.imageFilesState = fileSizesValid;
         },
-    },
+    }
+
 };
 </script>
+
+<style scoped></style>
