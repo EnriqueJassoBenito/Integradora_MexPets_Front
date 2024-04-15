@@ -3,29 +3,35 @@
         <div class="loading-overlay is-active" v-if="isLoading">
             <div class="custom-loader"></div>
         </div>
-        <div class="section">
+        <div class="section mt-3">
             <h2 class="section-title">En espera</h2>
         </div>
         <hr>
         <b-row class="mt-2">
             <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalPending" :key="animal.id" class="mb-4">
-                <b-card :title="animal.namePet" :img-src="animal.images[0].imageUrl" :img-alt="animal.namePet" img-top
-                    tag="article" :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
-                    footer-bg-variant="success" footer-border-variant="dark" style="max-width: 15rem;">
-                    <b-card-text>
-                        <p><strong>Ubicación:</strong> {{ animal.location }}</p>
-                        <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
-                        <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
-                        <p><strong>Sexo:</strong> {{ animal.sex }}</p>
-                    </b-card-text>
-                    <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
-                        <b-icon icon="eye" aria-hidden="true"></b-icon>
-                    </b-button>
+                <b-card :title="animal.namePet" tag="article" :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
+                        footer-bg-variant="warning" footer-border-variant="dark">
+                    <b-row>
+                        <b-col cols="5">
+                            <img :src="animal.images[0].imageUrl" :alt="animal.namePet" class="img-fluid" style="max-height: 150px;">
+                        </b-col>
+                        <b-col cols="7">
+                            <b-card-text>
+                                <p><strong>Ubicación:</strong> {{ animal.location }}</p>
+                                <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
+                                <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
+                                <p><strong>Sexo:</strong> {{ animal.sex }}</p>
+                            </b-card-text>
+                            <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
+                                <b-icon icon="eye" aria-hidden="true"></b-icon>
+                            </b-button>
+                        </b-col>
+                    </b-row>
                 </b-card>
             </b-col>
         </b-row>
 
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota">
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota" header-bg-variant="warning" >
             <b-row class="mb-3">
                 <b-col cols="12">
                     <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
@@ -114,14 +120,14 @@ export default {
                     this.isLoading = false;
                 }, 1000);
             } catch (error) {
-                console.error('Error al obtener animales pendientes de aprobación:', error);
                 this.isLoading = false;
             }
         },
         async approveOrRejectAdoption(id, status, comment) {
             try {
                 const result = await service.onApproveOrRejectAnimal(id, status, comment);
-                console.log('Resultado de la acción de aprobación/rechazo:', result);
+                this.isLoading = true;
+                this.pendingApprovals();
             } catch (error) {
                 console.error('Error al aprobar/rechazar adopción:', error);
             } finally {
@@ -132,15 +138,17 @@ export default {
         async approveAnimal() {
             const confirmAction = await this.showConfirmation();
             if (confirmAction) {
-                this.isLoading = true;
                 this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
+                this.closeModal();
+                this.isLoading = true;
             }
         },
         async rejectAnimal() {
             const confirmAction = await this.showConfirmation();
             if (confirmAction) {
-                this.isLoading = true;
                 this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
+                this.closeModal();
+                this.isLoading = true;
             }
         },
         async showConfirmation() {
@@ -210,13 +218,6 @@ export default {
 </script>
 
 <style>
-.text-wait {
-    color: green;
-}
-
-.text-processed {
-    color: rgb(80, 31, 31);
-}
 
 .loading-overlay {
     display: none;

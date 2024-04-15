@@ -3,7 +3,7 @@
         <div class="loading-overlay is-active" v-if="isLoading">
             <div class="custom-loader"></div>
         </div>
-        <div class="section">
+        <div class="section mt-3">
             <h2 class="section-title">En espera</h2>
         </div>
         <hr>

@@ -3,7 +3,7 @@
         <div class="loading-overlay is-active" v-if="isLoading">
             <div class="custom-loader"></div>
         </div>
-        <div class="section">
+        <div class="section mt-3">
             <h2 class="section-title">En proceso</h2>
         </div>
         <hr>
@@ -25,7 +25,7 @@
                     {{ getStatusTranslation(item.approvalStatus) }}
                 </template>
                 <template v-slot:cell(actions)="{ item }">
-                    <b-button @click="openModal(item)" variant="primary">
+                    <b-button @click="openModal(item)" variant="warning">
                         <b-icon icon="eye"></b-icon>
                     </b-button>
                 </template>
@@ -47,7 +47,6 @@
                 <b-col cols="12">
                     <p><strong>Nombre de la mascota:</strong> {{ modalData.animal.namePet }}</p>
                     <p><strong>Fecha de adopción:</strong> {{ formatDate(modalData.creationDate) }}</p>
-                    <div class="mb-2"><strong>Descripción del adoptante:</strong> {{ modalData.description }}</div>
                 </b-col>
             </b-row>
             <b-row>
@@ -106,77 +105,9 @@ export default {
                 this.isLoading = false;
             }
         },
-        async approveOrRejectAdoption(id, approvalStatus, moderatorComment) {
-            try {
-                const result = await service.onApproveOrRejectAdoption(id, approvalStatus, moderatorComment);
-                this.adoptionAprovals();
-                this.isLoading = true;
-            } catch (error) {
-                console.error('Error al aprobar/rechazar adopción:', error);
-            } finally {
-                this.isLoading = false;
-                this.closeModal();
-            }
-        },
-        async approveAdoption() {
-            const confirmAction = await this.showConfirmation();
-            if (confirmAction) {
-                this.isLoading = true;
-                this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
-            }
-        },
-        async rejectAdoption() {
-            const confirmAction = await this.showConfirmation();
-            if (confirmAction) {
-                this.isLoading = true;
-                this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
-            }
-        },
-        async showConfirmation() {
-            return new Promise((resolve) => {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: 'Esta acción no se puede deshacer.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#81B622',
-                    cancelButtonColor: '#DC3545',
-                    confirmButtonText: 'Sí, estoy seguro',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    resolve(result.isConfirmed);
-                });
-            });
-        },
         openModal(adoption) {
             this.modalData = { ...adoption };
             this.$refs.myModalRef.show();
-        },
-        manageAdoption() {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción gestionará la mascota.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#81B622',
-                cancelButtonColor: '#DC3545',
-                confirmButtonText: 'Sí, gestionar',
-                cancelButtonText: 'Cancelar',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.handleSuccess();
-                    this.closeModal();
-                }
-            });
-        },
-        handleSuccess() {
-            Swal.fire({
-                title: '¡Gestionado!',
-                text: 'La mascota ha sido gestionada correctamente.',
-                icon: 'success',
-                confirmButtonColor: '#0066C5',
-                confirmButtonText: 'Aceptar'
-            });
         },
         closeModal() {
             this.$refs.myModalRef.hide();
