@@ -1,28 +1,32 @@
 <template>
     <div>
-    <div class="row">
-        <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
-            <b-link :to="{ name: 'landing' }"><img src="../../../components/icons/WhiteLogo.png" id="iconNavbar"></b-link>
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-            <b-collapse id="nav-collapse" is-nav>
-                <b-navbar-nav>
-                    <b-nav-item :to="{ name: 'home' }" @click="selectOption('home')">Adoptar</b-nav-item>
-                    <b-nav-item :to="{ name: 'register-animal' }" @click="selectOption('register-animal')">Dar en adopción</b-nav-item>
-                    <b-nav-item :to="{ name: 'profileClient' }" @click="selectOption('profileClient')">Perfil</b-nav-item>
-                </b-navbar-nav>
-                <b-navbar-nav class="ml-auto">
-                    <b-nav-item @click="logout">Cerrar Sesión</b-nav-item>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
-    </div>
-    <router-view></router-view>
+        <div class="row">
+            <b-navbar toggleable="lg" type="dark" variant="dark" class="navbar">
+                <b-link :to="{ name: 'adopt' }"><img src="../../../components/icons/WhiteLogo.png"
+                        id="iconNavbar"></b-link>
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav>
+                        <b-nav-item :to="{ name: 'adopt' }" @click="selectOption('home')">Adoptar</b-nav-item>
+                        <b-nav-item :to="{ name: 'register-animal' }" @click="selectOption('register-animal')">Dar en
+                            adopción</b-nav-item>
+                        <b-nav-item :to="{ name: 'profileClient' }"
+                            @click="selectOption('profileClient')">Perfil</b-nav-item>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
+        </div>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { logout } from '../../auth/Login.vue';
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -50,7 +54,29 @@ export default {
         selectOption(option) {
             this.selectedOption = option;
         },
+        confirmLogout() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Deseas cerrar sesión?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#81B622',
+                cancelButtonColor: '#DC3545',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.logout();
+                }
+            });
+        },
         logout() {
+            Swal.fire({
+                title: 'Cerrando Sesión',
+                icon: 'info',
+                timer: 1500,
+                showConfirmButton: false
+            });
             logout.bind(this)();
         }
     }
