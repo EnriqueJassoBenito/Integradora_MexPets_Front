@@ -40,8 +40,8 @@ const routes = [
     children: [
       {
         path: "",
-        name: "home",
-        component: () => import("../components/client/Home.vue"),
+        name: "adopt",
+        component: () => import("../components/public/Adopt.vue"),
       },
       {
         path: "register-animal",
