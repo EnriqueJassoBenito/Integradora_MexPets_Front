@@ -38,12 +38,9 @@
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
               Sesión</b-button>
           </div>
-          <div class="contentCenter">
-            <b-link href="#foo">¿Olvidaste tu contraseña?</b-link>
-          </div>
           <div class="slider-container">
             <div class="lineL my-4"></div>
-            <div class="my-4">o</div>
+            <div class="my-2">o</div>
             <div class="lineR my-4"></div>
           </div>
           <div class="contentCenter">
@@ -57,11 +54,11 @@
 
 <script>
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import { jwtDecode } from 'jwt-decode';
 import CaptchaService from '../../service/CaptchaService'
-import { WidgetInstance } from "friendly-challenge"; // Importa la clase WidgetInstance de friendly-challenge
-import { ref } from "vue"; // Importa la función ref de Vue 3
+import Swal from 'sweetalert2';
+import { WidgetInstance } from "friendly-challenge";
+import { ref } from "vue";
+import { jwtDecode } from 'jwt-decode';
 
 export function logout() {
   localStorage.removeItem('authToken');

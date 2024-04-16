@@ -104,7 +104,30 @@ const onGetAllType = async () =>{
         throw(error)
     }
 }
-
+const onGetAllTypeRegister = async () =>{
+    try {
+        const response = await axios.get(url_api_type);
+        return response.data.data.map(types => types.type);
+    } catch (error) {
+        throw(error)
+    }
+}
+const onGetAllPersonalityRegister = async () => {
+    try {
+        const response = await axios.get(url_api_personality);
+        return response.data.data.map(personalities => personalities.personalityPet);
+    } catch (error) {
+        throw(error)
+    }
+};
+const onGetAllRaceRegister = async () => {
+    try {
+        const response = await axios.get(url_api_race);
+        return response.data.data.map(races => races.racePet);
+    } catch (error) {
+        throw(error)
+    }
+}
 const onUpdateType = async (id, type) => {
     try {
         const response = await axios.put(`${url_api_type}${id}`, {
@@ -140,6 +163,9 @@ export default{
     onGetAllType,
     onInsertTypePet,
     onUpdateType,
-    onDeleteType
+    onDeleteType,
+    onGetAllTypeRegister,
+    onGetAllPersonalityRegister,
+    onGetAllRaceRegister
 }
 
