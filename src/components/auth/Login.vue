@@ -38,6 +38,9 @@
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
               Sesión</b-button>
           </div>
+          <div class="contentCenter">
+            <b-link :to="{ name: 'forgot-password' }">¿Olvidaste tu contraseña?</b-link>
+          </div>
           <div class="slider-container">
             <div class="lineL my-4"></div>
             <div class="my-2">o</div>

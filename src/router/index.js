@@ -153,6 +153,16 @@ const routes = [
         component: () => import("../components/auth/Login.vue"),
       },
       {
+        path: '/forgot-password',
+        name: 'forgot-password',
+        component: () => import("../components/auth/EmailForm.vue")
+      },      
+      {
+        path: '/auth/changePassword',
+        name: 'auth/changePassword',
+        component: () => import("../components/auth/ChangePassword.vue")
+      },      
+      {
         path: "/register",
         name: "register",
         component: () => import("../components/auth/Register.vue"),

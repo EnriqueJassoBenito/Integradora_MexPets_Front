@@ -98,7 +98,7 @@
 import services from '../../service/CategoryService';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-    
+
 export default {
     data() {
         return {
@@ -188,77 +188,78 @@ export default {
     },
     methods: {
         async onGetAllType() {
-    try {
-        const types = await services.onGetAllTypeRegister();
-        this.typePets = types;
-    } catch (error) {
-        console.error("Error al obtener tipos:", error);
-    }
-},
+            try {
+                const types = await services.onGetAllTypeRegister();
+                this.typePets = types;
+            } catch (error) {
+                console.error("Error al obtener tipos:", error);
+            }
+        },
         async onGetAllRace() {
             try {
-        const race = await services.onGetAllRaceRegister();
-        this.races = race;
-    } catch (error) {
-        console.error("Error al obtener tipos:", error);
-    }
+                const race = await services.onGetAllRaceRegister();
+                this.races = race;
+            } catch (error) {
+                console.error("Error al obtener tipos:", error);
+            }
         },
         async onGetAllPersonality() {
             try {
-        const personality = await services.onGetAllPersonalityRegister();
-        this.personalities = personality;
-    } catch (error) {
-        console.error("Error al obtener tipos:", error);
-    }
+                const personality = await services.onGetAllPersonalityRegister();
+                this.personalities = personality;
+            } catch (error) {
+                console.error("Error al obtener tipos:", error);
+            }
         },
         async onSubmit() {
-    try {
-      const formData = new FormData();
-      
-      formData.append('namePet', this.namePet);
-      formData.append('location', this.location);
-      formData.append('typePet', this.typePet);
-      formData.append('race', this.race);
-      formData.append('personality', this.personality);
-      formData.append('sex', this.sex);
-      formData.append('size', this.size);
-      formData.append('weight', this.weight);
-      formData.append('age', this.age);
-      formData.append('color', this.color);
-      formData.append('sterilized', this.sterilized);
-      formData.append('description', this.description);
-      
-      for (let i = 0; i < this.imageFiles.length; i++) {
-        formData.append('imageFiles', this.imageFiles[i]);
-      }
+            try {
+                const formData = new FormData();
 
-      const response = await axios.post('URL_DEL_ENDPOINT', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+                formData.append('namePet', this.namePet);
+                formData.append('location', this.location);
+                formData.append('typePet', this.typePet);
+                formData.append('race', this.race);
+                formData.append('personality', this.personality);
+                formData.append('sex', this.sex);
+                formData.append('size', this.size);
+                formData.append('weight', this.weight);
+                formData.append('age', this.age);
+                formData.append('color', this.color);
+                formData.append('sterilized', this.sterilized);
+                formData.append('description', this.description);
 
-      if (response.status === 200) {
-        this.showModal = false;
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'El formulario se envió correctamente.'
-        });
-        
-        this.clearForm();
-      } else {
-        throw new Error('El servidor respondió con un código de estado incorrecto.');
-      }
-    } catch (error) {
-      console.error('Error al enviar el formulario:', error);
+                for (let i = 0; i < this.imageFiles.length; i++) {
+                    formData.append('imageFiles', this.imageFiles[i]);
+                }
 
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Hubo un problema al enviar el formulario. Por favor, inténtalo de nuevo más tarde.'
-      });
-    }},
+                const response = await axios.post('URL_DEL_ENDPOINT', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                if (response.status === 200) {
+                    this.showModal = false;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'El formulario se envió correctamente.'
+                    });
+
+                    this.clearForm();
+                } else {
+                    throw new Error('El servidor respondió con un código de estado incorrecto.');
+                }
+            } catch (error) {
+                console.error('Error al enviar el formulario:', error);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al enviar el formulario. Por favor, inténtalo de nuevo más tarde.'
+                });
+            }
+        },
         validateNamePet() {
             const regex = /^[a-zA-Z\s]+$/;
             const isValid = regex.test(this.namePet) && this.namePet.length >= 4;
@@ -312,11 +313,11 @@ export default {
             this.descriptionState = isValid;
         },
         validateImageFiles() {
-    const fileCount = this.imageFiles.length; 
-    const fileSizesValid = this.imageFiles.every(file => file.size <= 10 * 1024 * 1024);
-    this.imageFilesState = fileSizesValid;
-}
-,
+            const fileCount = this.imageFiles.length;
+            const fileSizesValid = this.imageFiles.every(file => file.size <= 10 * 1024 * 1024);
+            this.imageFilesState = fileSizesValid;
+        }
+        ,
     }
 
 };
