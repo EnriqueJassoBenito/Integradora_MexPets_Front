@@ -1,28 +1,48 @@
 <template>
     <b-container fluid>
-        <div class="loading-overlay is-active" v-if="isLoading">
+        <div class="loading-overlay" :class="{ 'is-active': isLoading }">
             <div class="custom-loader"></div>
         </div>
-        <b-row>
+        <b-row align-h="center" align-v="center">
             <div class="gridCard">
                 <b-card bg-variant="light">
                     <div class="contentCenter">
                         <img src="../../assets/logomexx.png" id="iconLogin" class="iconLogo my-2" width="20%">
                     </div>
                     <div class="contentCenter">
-                        <h4>Recuperar contrasena</h4>
+                        <h4>Recuperar contraseña</h4>
                     </div>
                     <div>
                         <b-form @submit.prevent="onSubmit">
                             <b-form-group label-for="password"
                                 invalid-feedback="La contraseña no cumple los requisitos">
-                                <b-form-input placeholder="Ingresa tu contraseña nueva" id="password" v-model="password"
-                                    required />
+                                <b-input-group>
+                                    <b-form-input placeholder="Ingresa tu contraseña nueva" id="password"
+                                        v-model="password" :type="showPasswordPassword ? 'text' : 'password'"
+                                        required />
+                                    <b-input-group-append>
+                                        <b-button @click="togglePasswordPassword" variant="outline-secondary">
+                                            <b-icon :icon="showPasswordPassword ? 'eye-slash' : 'eye'"
+                                                aria-hidden="true"></b-icon>
+                                        </b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
                             </b-form-group>
-                            <b-form-group label-for="passwordConfirm" invalid-feedback="">
-                                <b-form-input placeholder="Confirma tu contraseña nueva" id="confirmPassword"
-                                    v-model="confirmPassword" required />
+                            <b-form-group label-for="confirmPassword" invalid-feedback="">
+                                <b-input-group>
+                                    <b-form-input placeholder="Confirma tu contraseña nueva" id="confirmPassword"
+                                        v-model="confirmPassword" :type="showPasswordConfirm ? 'text' : 'password'"
+                                        required />
+                                    <b-input-group-append>
+                                        <b-button @click="togglePasswordConfirm" variant="outline-secondary">
+                                            <b-icon :icon="showPasswordConfirm ? 'eye-slash' : 'eye'"
+                                                aria-hidden="true"></b-icon>
+                                        </b-button>
+                                    </b-input-group-append>
+                                </b-input-group>
                             </b-form-group>
+
+
                         </b-form>
                     </div>
                     <div class="contentCenter">
@@ -37,6 +57,7 @@
 <script>
 import Swal from 'sweetalert2';
 import service from '../../service/AuthService';
+
 export default {
     data() {
         return {
@@ -44,6 +65,7 @@ export default {
             isLoading: false,
             password: '',
             confirmPassword: '',
+            showPassword: false,
         };
     },
     computed: {
@@ -73,7 +95,7 @@ export default {
                 Swal.fire({
                     icon: 'error',
                     title: 'Contraseña débil',
-                    text: 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un caracter especial.',
+                    text: 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un carácter especial.',
                     confirmButtonColor: '#6A4000',
                     confirmButtonText: 'Aceptar'
                 });
@@ -102,6 +124,7 @@ export default {
                     confirmButtonColor: '#6A4000',
                     confirmButtonText: 'Aceptar'
                 });
+                this.$router.push({ name: 'login' });
             } catch (error) {
                 console.error('Error al confirmar cambio de contraseña:', error.message);
                 Swal.fire({
@@ -115,20 +138,23 @@ export default {
                 this.isLoading = false;
             }
         },
+        togglePasswordPassword() {
+            this.showPasswordPassword = !this.showPasswordPassword;
+        },
+        togglePasswordConfirm() {
+            this.showPasswordConfirm = !this.showPasswordConfirm;
+        },
     },
 };
 </script>
 
-
-<style>
-@media (min-width: 1024px) {
-    .gridCard {
-        width: 30%;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+<style scoped>
+.gridCard {
+    width: 100%;
+    max-width: 400px;
+    /* Limit the width for larger screens */
+    margin: auto;
+    padding: 20px;
 }
 
 .contentCenter {
@@ -136,29 +162,7 @@ export default {
 }
 
 .btnLogin {
-    width: 50%
-}
-
-.slider-container {
-    display: flex;
-    align-items: center;
-}
-
-.lineL {
-    height: 1px;
-    background-color: #000000;
-    flex-grow: 1;
-    margin-left: 10%;
-    margin-right: 2%;
-}
-
-.lineR {
-    height: 1px;
-    background-color: #000000;
-    flex-grow: 1;
-    margin-right: 10%;
-    margin-left: 2%;
-
+    width: 100%;
 }
 
 .loading-overlay {
@@ -186,7 +190,7 @@ export default {
     background: radial-gradient(farthest-side, currentColor calc(100% - 6px), #0000 calc(100% - 5px) 0);
     -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 13px), #000 calc(100% - 12px));
     border-radius: 50%;
-    animation: s9 2s infinite linear;
+    animation: spin 2s infinite linear;
 }
 
 .custom-loader::before,
@@ -204,9 +208,9 @@ export default {
     transform: rotate(45deg);
 }
 
-@keyframes s9 {
+@keyframes spin {
     100% {
-        transform: rotate(1turn)
+        transform: rotate(1turn);
     }
 }
 </style>

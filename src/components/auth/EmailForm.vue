@@ -3,28 +3,32 @@
         <div class="loading-overlay is-active" v-if="isLoading">
             <div class="custom-loader"></div>
         </div>
-        <b-row>
-            <div class="gridCard">
-                <b-card bg-variant="light">
-                    <div class="contentCenter">
-                        <img src="../../assets/logomexx.png" id="iconLogin" class="iconLogo my-2" width="20%">
-                    </div>
-                    <div class="contentCenter">
-                        <h4>Reestablece tu contraseña</h4>
-                        <p class="my-2">Ingresa tu correo electrónico</p>
-                    </div>
-                    <div>
-                        <b-form @submit="onSubmit">
-                            <b-form-group label-for="email" invalid-feedback="">
-                                <b-form-input placeholder="perritos@mexpet.com" id="email" v-model="email" required />
-                            </b-form-group>
-                        </b-form>
-                    </div>
-                    <div class="contentCenter">
-                        <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Reestablecer</b-button>
-                    </div>
-                </b-card>
-            </div>
+        <b-row class="justify-content-center align-items-center h-100">
+            <b-col cols="12" sm="10" md="8" lg="6">
+                <div class="gridCard">
+                    <b-card bg-variant="light">
+                        <div class="contentCenter">
+                            <img src="../../assets/logomexx.png" id="iconLogin" class="iconLogo my-2" width="20%">
+                        </div>
+                        <div class="contentCenter">
+                            <h4>Reestablece tu contraseña</h4>
+                            <p class="my-2">Ingresa tu correo electrónico</p>
+                        </div>
+                        <div>
+                            <b-form @submit="onSubmit">
+                                <b-form-group label-for="email" invalid-feedback="">
+                                    <b-form-input placeholder="perritos@mexpet.com" id="email" v-model="email"
+                                        required />
+                                </b-form-group>
+                            </b-form>
+                        </div>
+                        <div class="contentCenter">
+                            <b-button class="my-4 btnLogin" href="#" variant="success"
+                                @click="onSubmit">Reestablecer</b-button>
+                        </div>
+                    </b-card>
+                </div>
+            </b-col>
         </b-row>
     </b-container>
 </template>
@@ -167,6 +171,25 @@ export default {
 @keyframes s9 {
     100% {
         transform: rotate(1turn)
+    }
+}
+
+@media (min-width: 576px) {
+    .btnLogin {
+        width: 75%;
+    }
+}
+
+@media (min-width: 768px) {
+    .gridCard {
+        width: 80%;
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 992px) {
+    .gridCard {
+        width: 70%;
     }
 }
 </style>

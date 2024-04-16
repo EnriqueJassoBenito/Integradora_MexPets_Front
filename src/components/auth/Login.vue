@@ -1,56 +1,60 @@
 <template>
   <b-container fluid>
-    <b-row>
-      <div class="gridCard">
-        <b-breadcrumb :items="items" class="breadCrumbContainer"></b-breadcrumb>
-        <b-card bg-variant="light">
-          <div class="contentCenter">
-            <img src="../icons/BrownLogo.png" id="iconLogin" class="iconLogo my-2" width="20%">
-          </div>
-          <div class="contentCenter">
-            <h4>¡Bienvenido a Mexpet!</h4>
-            <p class="my-2">Utiliza tu cuenta para iniciar sesión</p>
-          </div>
-          <div>
-            <b-form @submit="onSubmit">
-              <b-form-group>
-                <h6 class="mt-4">Correo electrónico</h6>
-                <b-form-input id="inputEmail" class="inputLogin" v-model="email" type="email"
-                  placeholder="perritos@mexpet.com" required>
-                </b-form-input>
-              </b-form-group>
-              <b-form-group>
-                <h6 class="mt-4">Contraseña</h6>
-                <b-input-group>
-                  <b-form-input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="************"
-                    required></b-form-input>
-                  <b-input-group-append>
-                    <b-button @click="togglePassword" variant="outline-secondary">
-                      <b-icon :icon="showPassword ? 'eye-slash' : 'eye'" aria-hidden="true"></b-icon>
-                    </b-button>
-                  </b-input-group-append>
-                </b-input-group>
-              </b-form-group>
-            </b-form>
-            <div ref="container" class="frc-captcha" data-sitekey="FCMVRR8LOPON8OO3" data-lang="es"></div>
-          </div>
-          <div class="contentCenter">
-            <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
-              Sesión</b-button>
-          </div>
-          <div class="contentCenter">
-            <b-link :to="{ name: 'forgot-password' }">¿Olvidaste tu contraseña?</b-link>
-          </div>
-          <div class="slider-container">
-            <div class="lineL my-4"></div>
-            <div class="my-2">o</div>
-            <div class="lineR my-4"></div>
-          </div>
-          <div class="contentCenter">
-            <p>¿No tienes cuenta? <b-link :to="{ name: 'register' }">Crear una cuenta</b-link></p>
-          </div>
-        </b-card>
-      </div>
+    <b-row class="justify-content-center align-items-center h-100">
+      <b-col cols="12" md="8" lg="6" xl="4">
+        <div class="gridCard">
+          <b-breadcrumb :items="items" class="breadCrumbContainer"></b-breadcrumb>
+          <b-card bg-variant="light">
+            <div class="contentCenter">
+              <img src="../icons/BrownLogo.png" id="iconLogin" class="iconLogo my-2" width="20%">
+            </div>
+            <div class="contentCenter">
+              <h4>¡Bienvenido a Mexpet!</h4>
+              <p class="my-2">Utiliza tu cuenta para iniciar sesión</p>
+            </div>
+            <div>
+              <b-form @submit="onSubmit">
+                <b-form-group>
+                  <h6 class="mt-4">Correo electrónico</h6>
+                  <b-form-input id="inputEmail" class="inputLogin" v-model="email" type="email"
+                    placeholder="perritos@mexpet.com" required>
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group>
+                  <h6 class="mt-4">Contraseña</h6>
+                  <b-input-group>
+                    <b-form-input v-model="password" :type="showPassword ? 'text' : 'password'"
+                      placeholder="************" required></b-form-input>
+                    <b-input-group-append>
+                      <b-button @click="togglePassword" variant="outline-secondary">
+                        <b-icon :icon="showPassword ? 'eye-slash' : 'eye'" aria-hidden="true"></b-icon>
+                      </b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-form>
+              <div ref="container" class="frc-captcha" data-sitekey="FCMVRR8LOPON8OO3" data-lang="es"></div>
+            </div>
+            <div class="contentCenter">
+              <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
+                Sesión</b-button>
+            </div>
+            <div class="contentCenter">
+              <b-link :to="{ name: 'forgot-password' }">¿Olvidaste tu contraseña?</b-link>
+            </div>
+            <div class="slider-container">
+              <div class="lineL my-4"></div>
+              <div class="my-2">o</div>
+              <div class="lineR my-4"></div>
+            </div>
+            <div class="contentCenter">
+              <p>¿No tienes cuenta? <b-link :to="{ name: 'register' }">Crear una cuenta</b-link></p>
+            </div>
+          </b-card>
+        </div>
+      </b-col>
+
+
     </b-row>
   </b-container>
 </template>
@@ -167,10 +171,10 @@ export default {
     if (this.$refs.container) {
       this.widget = new WidgetInstance(
         this.$refs.container, {
-          startMode: "",
-          doneCallback: this.doneCallback,
-          errorCallback: this.errorCallback,
-        }
+        startMode: "",
+        doneCallback: this.doneCallback,
+        errorCallback: this.errorCallback,
+      }
       );
     }
   },
