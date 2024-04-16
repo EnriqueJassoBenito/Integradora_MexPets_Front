@@ -11,6 +11,7 @@ const routes = [
   {
     path: "/admin",
     component: () => import("../components/shared/components/NavbarAdmin.vue"),
+    meta: { role: 'ADMIN' },
     children: [
       {
         path: "",
@@ -37,6 +38,7 @@ const routes = [
   {
     path: "/client/",
     component: () => import("../components/shared/components/NavbarClient.vue"),
+    meta: { role: 'CLIENTE' },
     children: [
       {
         path: "",
@@ -51,9 +53,10 @@ const routes = [
     ],
   },
   {
-    path: "/moderator",
-    component: () =>
-      import("../components/shared/components/NavbarModerator.vue"),
+    path: "/moderator/",
+    component: () => import("../components/shared/components/NavbarModerator.vue"),
+    meta: { role: 'MODERADOR' },
+
     children: [
       {
         path: "profile-moderator",

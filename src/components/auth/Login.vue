@@ -22,15 +22,17 @@
               <b-form-group>
                 <h6 class="mt-4">Contraseña</h6>
                 <b-input-group>
-                  <b-form-input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="************" required></b-form-input>
+                  <b-form-input v-model="password" :type="showPassword ? 'text' : 'password'" placeholder="************"
+                    required></b-form-input>
                   <b-input-group-append>
                     <b-button @click="togglePassword" variant="outline-secondary">
                       <b-icon :icon="showPassword ? 'eye-slash' : 'eye'" aria-hidden="true"></b-icon>
-                    </b-button>                    
+                    </b-button>
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
             </b-form>
+            <div ref="container" class="frc-captcha" data-sitekey="FCMVRR8LOPON8OO3" data-lang="es"></div>
           </div>
           <div class="contentCenter">
             <b-button class="my-4 btnLogin" href="#" variant="success" @click="onSubmit">Iniciar
@@ -57,6 +59,10 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { jwtDecode } from 'jwt-decode';
+import CaptchaService from '../../service/CaptchaService'
+import { WidgetInstance } from "friendly-challenge"; // Importa la clase WidgetInstance de friendly-challenge
+import { ref } from "vue"; // Importa la función ref de Vue 3
+
 export function logout() {
   localStorage.removeItem('authToken');
   localStorage.removeItem('authUser');
@@ -86,7 +92,12 @@ export default {
           to: 'Login'
         }
       ],
-      showPassword: false, 
+      showPassword: false,
+      container: ref(),
+      widget: ref(),
+      formData: {
+        name: ""
+      },
     }
   },
 
@@ -139,7 +150,36 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
-  }
+    async verifyCaptcha(solution) {
+      let response = await CaptchaService.verificarCaptcha(solution);
+      console.log(response);
+    },
+    doneCallback(solution) {
+      this.verifyCaptcha(solution);
+    },
+
+    errorCallback: (err) => {
+      console.log("There was an error when trying to solve the Captcha.");
+      console.log(err);
+    },
+  },
+  mounted() {
+    if (this.$refs.container) {
+      this.widget = new WidgetInstance(
+        this.$refs.container, {
+          startMode: "",
+          doneCallback: this.doneCallback,
+          errorCallback: this.errorCallback,
+        }
+      );
+    }
+  },
+
+  beforeDestroy() {
+    if (this.widget) {
+      this.widget.destroy();
+    }
+  },
 }
 </script>
 
