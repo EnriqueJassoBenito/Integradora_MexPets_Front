@@ -95,9 +95,10 @@
     </b-container>
 </template>
 <script>
-import axios from 'axios';
 import services from '../../service/CategoryService';
-
+import Swal from 'sweetalert2';
+import axios from 'axios';
+    
 export default {
     data() {
         return {
@@ -149,7 +150,6 @@ export default {
             sterilized: false,
             description: '',
             imageFiles: [],
-            
             sexOptions: [
                 { value: '', text: 'Seleccionar' },
                 { value: 'macho', text: 'Macho' },
@@ -211,29 +211,54 @@ export default {
         console.error("Error al obtener tipos:", error);
     }
         },
-        onSubmit() {
-            axios.post('animals', {
-                "namePet" : this.namePet,
-                "location" : this.location,
-                "typePet" : this.typePet,
-                "race" : this.race,
-                "personality" : this.personality,
-                "sex" : this.sex,
-                "size" : this.size,
-                "weight" : this.weight,
-                "age" : this.age,
-                "color" : this.color,
-                "sterlized" : this.sterilized,
-                "description" : this.description,
-                "imageFiles" : this.imageFiles
-            }).then(response => {
-                const data = response.data;
-                console.log(data);
-            })
-            .catch(error => {
-                console.error(error);
-            })
-        },
+        async onSubmit() {
+    try {
+      const formData = new FormData();
+      
+      formData.append('namePet', this.namePet);
+      formData.append('location', this.location);
+      formData.append('typePet', this.typePet);
+      formData.append('race', this.race);
+      formData.append('personality', this.personality);
+      formData.append('sex', this.sex);
+      formData.append('size', this.size);
+      formData.append('weight', this.weight);
+      formData.append('age', this.age);
+      formData.append('color', this.color);
+      formData.append('sterilized', this.sterilized);
+      formData.append('description', this.description);
+      
+      for (let i = 0; i < this.imageFiles.length; i++) {
+        formData.append('imageFiles', this.imageFiles[i]);
+      }
+
+      const response = await axios.post('URL_DEL_ENDPOINT', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.status === 200) {
+        this.showModal = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El formulario se envió correctamente.'
+        });
+        
+        this.clearForm();
+      } else {
+        throw new Error('El servidor respondió con un código de estado incorrecto.');
+      }
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un problema al enviar el formulario. Por favor, inténtalo de nuevo más tarde.'
+      });
+    }},
         validateNamePet() {
             const regex = /^[a-zA-Z\s]+$/;
             const isValid = regex.test(this.namePet) && this.namePet.length >= 4;
@@ -287,11 +312,11 @@ export default {
             this.descriptionState = isValid;
         },
         validateImageFiles() {
-            const fileCount = this.imageFiles.length; 
-            const fileSizesValid = this.imageFiles.every(file => file.size <= 10 *1024 *1024);
-            this.formData.imageFiles.every(file => file.size <= 10 * 1024 * 1024);
-            this.imageFilesState = fileSizesValid;
-        },
+    const fileCount = this.imageFiles.length; 
+    const fileSizesValid = this.imageFiles.every(file => file.size <= 10 * 1024 * 1024);
+    this.imageFilesState = fileSizesValid;
+}
+,
     }
 
 };

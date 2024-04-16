@@ -52,18 +52,6 @@
         <template v-slot:cell(rol)="row">
           {{ row.item.rol }}
         </template>
-        <template v-slot:cell(actions)="row">
-          <b-button
-            variant="warning"
-            size="sm"
-            @click="openModalType(type)"
-            style="margin-right: 10px; height: 35px"
-            ><b-icon icon="pencil-square"></b-icon
-          ></b-button>
-          <b-button @click="editarUsuario(row.item)" variant="success"
-            >Habilitar</b-button
-          >
-        </template>
       </b-table>
     </div>
 
@@ -286,7 +274,6 @@ export default {
         { key: "location", label: "Lugar" },
         { key: "phoneNumber", label: "Teléfono" },
         { key: "rol.nrol", label: "Rol" },
-        { key: "actions", label: "Acciones" },
       ],
       options: [
         { value: null, text: "Selecciona un Estado" },

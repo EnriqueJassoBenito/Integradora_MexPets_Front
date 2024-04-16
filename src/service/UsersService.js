@@ -50,11 +50,13 @@ const getUsersByAdminAndModeratorRoles = async () => {
 const insertUser = async (userData) => {
     try {
         const response = await axios.post(baseUrl, userData);
+        console.log("Respuesta del servidor al registrar usuario:", response.data);
         return response.data.data;
     } catch (error) {
         throw error;
     }
 };
+
 
 const updateUser = async (userId, userData) => {
     try {

@@ -243,7 +243,6 @@ export default {
     this.error_msg = "¡Debes completar todos los campos correctamente!";
     return;
   }
-  
   try {
     const roles = await rol.getAllRol();
 
@@ -270,19 +269,17 @@ export default {
     };
 
     const response = await this.service.insertUser(formData);
-if (response && response.nameUser) { 
+    console.log(response);
+    if (response && response.nameUser) {
   Swal.fire({
     icon: 'success',
     title: 'Éxito',
     text: 'Usuario agregado correctamente: ' + response.nameUser
   });
   this.$router.push({ name: 'login' });
-
 } else {
   throw new Error("La respuesta del servidor no contiene un usuario válido.");
 }
-
-
   } catch (error) {
     Swal.fire({
       icon: 'error',
