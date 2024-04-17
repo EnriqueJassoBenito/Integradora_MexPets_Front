@@ -14,7 +14,15 @@
         <div class="avatar-and-title">
           <div class="row">
             <b-avatar variant="info" size="120px" style="margin-left: 15px;"></b-avatar>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
             <h2 style="margin: 15px; margin-top:40px">Moderador</h2>
+=======
+            <h2 style="margin: 15px; margin-top:40px">Perfil</h2>
+>>>>>>> Stashed changes
+=======
+            <h2 style="margin: 15px; margin-top:40px">Perfil</h2>
+>>>>>>> Stashed changes
           </div>
   
         </div>
@@ -270,4 +278,12 @@
     background-color: gray;
   }
   </style>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
+=======
+    
+>>>>>>> Stashed changes
+=======
+    
+>>>>>>> Stashed changes

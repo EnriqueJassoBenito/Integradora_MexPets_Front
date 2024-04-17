@@ -107,27 +107,39 @@ const onGetAllType = async () =>{
 const onGetAllTypeRegister = async () =>{
     try {
         const response = await axios.get(url_api_type);
-        return response.data.data.map(types => types.type);
+        const typesWithIds = response.data.data.map(types => {
+            return { id: types.id, name: types.type };
+        });
+        return typesWithIds;
     } catch (error) {
         throw(error)
     }
 }
+
 const onGetAllPersonalityRegister = async () => {
     try {
         const response = await axios.get(url_api_personality);
-        return response.data.data.map(personalities => personalities.personalityPet);
+        const personalitiesWithIds = response.data.data.map(personality => {
+            return { id: personality.id, name: personality.personalityPet };
+        });
+        return personalitiesWithIds;
     } catch (error) {
         throw(error)
     }
 };
+
 const onGetAllRaceRegister = async () => {
     try {
         const response = await axios.get(url_api_race);
-        return response.data.data.map(races => races.racePet);
+        const racesWithIds = response.data.data.map(race => {
+            return { id: race.id, name: race.racePet };
+        });
+        return racesWithIds;
     } catch (error) {
         throw(error)
     }
-}
+};
+
 const onUpdateType = async (id, type) => {
     try {
         const response = await axios.put(`${url_api_type}${id}`, {

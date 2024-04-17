@@ -55,6 +55,7 @@
       </b-table>
     </div>
 
+<<<<<<< Updated upstream
     <b-modal
       v-model="showModalAddModerator"
       title="Agregar Moderador"
@@ -207,6 +208,146 @@
         >
       </div>
     </b-modal>
+=======
+    <b-modal v-model="showModalAddModerator" title="Agregar Moderador" hide-footer>
+      <b-form @submit.prevent="onSubmit">
+              <div>
+                <b-row>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Nombre <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="name"
+                        type="text"
+                        placeholder="Nombre(s)"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Apellido Paterno <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="lastName"
+                        type="text"
+                        placeholder="Apellido Paterno"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Apellido Materno <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="lastnameMatern"
+                        type="text"
+                        placeholder="Apellido Materno"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Teléfono <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="phone"
+                        type="tel"
+                        placeholder="7771234567"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Estado <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-select
+                        v-model="selected"
+                        :options="options"
+                        required
+                      ></b-form-select>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+                <b-row>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Nombre de usuario <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="userName"
+                        type="text"
+                        placeholder="Nombre de usuario"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Correo Electrónico <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="email"
+                        type="email"
+                        placeholder="correo@example.com"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Contraseña <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="password"
+                        type="password"
+                        placeholder="***********"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group>
+                      <h6 class="mt-4">
+                        Confirmar contraseña
+                        <span class="obligationText">*</span>
+                      </h6>
+                      <b-form-input
+                        v-model="confirmPassword"
+                        type="password"
+                        placeholder="***********"
+                        required
+                      ></b-form-input>
+                    </b-form-group>
+                  </b-col>
+                </b-row>
+              </div>
+            </b-form>
+            <div class="contentCenter">
+            <b-button
+              class="mt-4 btnLogin"
+              href="#"
+              variant="success"
+              @click="onSubmit"
+              >Registrarse</b-button
+            >
+          </div>
+  </b-modal>
+>>>>>>> Stashed changes
 
     <b-modal
       v-model="showModalInfo"
@@ -262,11 +403,25 @@ export default {
       password: "",
       confirmPassword: "",
       lastnameMatern: "",
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       email: "",
       usersList: [],
       rolFilter: "All",
       userSerch: "",
       optionRol: ["All", "ADMIN", "MODERADOR"],
+=======
+=======
+>>>>>>> Stashed changes
+      email:"",
+      usersList: [],
+      rolFilter: 'All',
+      userSerch: '',
+      optionRol: ['All', 'ADMIN', 'MODERADOR'],
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
       fields: [
         { key: "nameUser", label: "Username" },
         { key: "name", label: "Nombre" },
@@ -274,6 +429,76 @@ export default {
         { key: "location", label: "Lugar" },
         { key: "phoneNumber", label: "Teléfono" },
         { key: "rol.nrol", label: "Rol" },
+      ],
+      options: [
+        { value: null, text: "Selecciona un Estado" },
+        { value: "Aguascalientes", text: "Aguascalientes" },
+        { value: "Baja California", text: "Baja California" },
+        { value: "Baja California Sur", text: "Baja California Sur" },
+        { value: "Campeche", text: "Campeche" },
+        { value: "Chiapas", text: "Chiapas" },
+        { value: "Chihuahua", text: "Chihuahua" },
+        { value: "Ciudad de México", text: "Ciudad de México" },
+        { value: "Coahuila", text: "Coahuila" },
+        { value: "Colima", text: "Colima" },
+        { value: "Durango", text: "Durango" },
+        { value: "Estado de México", text: "Estado de México" },
+        { value: "Guanajuato", text: "Guanajuato" },
+        { value: "Guerrero", text: "Guerrero" },
+        { value: "Hidalgo", text: "Hidalgo" },
+        { value: "Jalisco", text: "Jalisco" },
+        { value: "Michoacán", text: "Michoacán" },
+        { value: "Morelos", text: "Morelos" },
+        { value: "Nayarit", text: "Nayarit" },
+        { value: "Nuevo León", text: "Nuevo León" },
+        { value: "Oaxaca", text: "Oaxaca" },
+        { value: "Puebla", text: "Puebla" },
+        { value: "Querétaro", text: "Querétaro" },
+        { value: "Quintana Roo", text: "Quintana Roo" },
+        { value: "San Luis Potosí", text: "San Luis Potosí" },
+        { value: "Sinaloa", text: "Sinaloa" },
+        { value: "Sonora", text: "Sonora" },
+        { value: "Tabasco", text: "Tabasco" },
+        { value: "Tamaulipas", text: "Tamaulipas" },
+        { value: "Tlaxcala", text: "Tlaxcala" },
+        { value: "Veracruz", text: "Veracruz" },
+        { value: "Yucatán", text: "Yucatán" },
+        { value: "Zacatecas", text: "Zacatecas" },
+      ],
+      options: [
+        { value: null, text: "Selecciona un Estado" },
+        { value: "Aguascalientes", text: "Aguascalientes" },
+        { value: "Baja California", text: "Baja California" },
+        { value: "Baja California Sur", text: "Baja California Sur" },
+        { value: "Campeche", text: "Campeche" },
+        { value: "Chiapas", text: "Chiapas" },
+        { value: "Chihuahua", text: "Chihuahua" },
+        { value: "Ciudad de México", text: "Ciudad de México" },
+        { value: "Coahuila", text: "Coahuila" },
+        { value: "Colima", text: "Colima" },
+        { value: "Durango", text: "Durango" },
+        { value: "Estado de México", text: "Estado de México" },
+        { value: "Guanajuato", text: "Guanajuato" },
+        { value: "Guerrero", text: "Guerrero" },
+        { value: "Hidalgo", text: "Hidalgo" },
+        { value: "Jalisco", text: "Jalisco" },
+        { value: "Michoacán", text: "Michoacán" },
+        { value: "Morelos", text: "Morelos" },
+        { value: "Nayarit", text: "Nayarit" },
+        { value: "Nuevo León", text: "Nuevo León" },
+        { value: "Oaxaca", text: "Oaxaca" },
+        { value: "Puebla", text: "Puebla" },
+        { value: "Querétaro", text: "Querétaro" },
+        { value: "Quintana Roo", text: "Quintana Roo" },
+        { value: "San Luis Potosí", text: "San Luis Potosí" },
+        { value: "Sinaloa", text: "Sinaloa" },
+        { value: "Sonora", text: "Sonora" },
+        { value: "Tabasco", text: "Tabasco" },
+        { value: "Tamaulipas", text: "Tamaulipas" },
+        { value: "Tlaxcala", text: "Tlaxcala" },
+        { value: "Veracruz", text: "Veracruz" },
+        { value: "Yucatán", text: "Yucatán" },
+        { value: "Zacatecas", text: "Zacatecas" },
       ],
       options: [
         { value: null, text: "Selecciona un Estado" },
@@ -318,7 +543,15 @@ export default {
       userSelect: { name: "", email: "" },
       newModerator: { name: "", email: "" },
       showModalAddModerator: false,
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 selectedRole:'',
+=======
+
+>>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
       roles: [],
     };
   },
@@ -371,6 +604,8 @@ selectedRole:'',
       }
     },
     async onSubmit() {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       if (!this.validateForm()) {
         this.error = true;
         this.error_msg = "¡Debes completar todos los campos correctamente!";
@@ -425,6 +660,66 @@ selectedRole:'',
         });
       }
     },
+=======
+=======
+>>>>>>> Stashed changes
+  if (!this.validateForm()) {
+    this.error = true;
+    this.error_msg = "¡Debes completar todos los campos correctamente!";
+    return;
+  }
+  
+  try {
+    const roles = await rol.getAllRol();
+
+    const clienteRol = roles.find(rol => rol.nrol === "ADMIN");
+
+    if (!clienteRol) {
+      throw new Error("No se encontró el rol de cliente.");
+    }
+
+    const formData = {
+      nameUser: this.userName,
+      name: this.name,
+      lastname: this.lastName,
+      lastnameMatern: this.lastnameMatern,
+      email: this.email,
+      phoneNumber: this.phone,
+      localitation: this.selected,
+      password: this.password,
+      rol: {
+        idRol: clienteRol.idRol,
+        nrol: clienteRol.nrol,
+        status: true
+      },
+      status: true
+    };
+
+    const response = await service.insertUser(formData);
+
+    if (response && response.nameUser) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Usuario agregado correctamente: ' + response.nameUser
+      });
+      this.showModalAddModerator = false;
+    } else {
+      throw new Error("La respuesta del servidor no contiene un usuario válido.");
+    }
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Error al registrar usuario: ' + error.message
+    });
+  }
+}
+,
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     cerrarModalAgregarModerador() {
       this.showModalAddModerator = false;
     },
@@ -436,6 +731,8 @@ selectedRole:'',
       this.showModalAddModerator = true;
     },
     validateForm() {
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
       return (
         this.name.trim() !== "" &&
         this.lastName.trim() !== "" &&
@@ -449,6 +746,23 @@ selectedRole:'',
       );
     },
   },
+=======
+=======
+>>>>>>> Stashed changes
+  return (
+    this.name.trim() !== "" &&
+    this.lastName.trim() !== "" &&
+    this.phone.trim() !== "" &&
+    this.selected !== null &&
+    this.userName.trim() !== "" &&
+    this.email.trim() !== "" && 
+    this.password.trim() !== "" &&
+    this.confirmPassword.trim() !== "" &&
+    this.password === this.confirmPassword
+  );
+}
+  }
+>>>>>>> Stashed changes
 };
 </script>
 

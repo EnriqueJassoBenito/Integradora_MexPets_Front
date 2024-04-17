@@ -6,7 +6,6 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <!--<b-nav-item :to="{ name: 'adopt' }">Home</b-nav-item>-->
                     <b-nav-item :to="{ name: 'profile-moderator' }" @click="selectOption('profile-moderator')"
                         :class="{ 'active': selectedOption === 'profile-moderator' }">Perfil</b-nav-item>
                     
