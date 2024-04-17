@@ -142,8 +142,6 @@ const routes = [
         component: () => import("../components/public/LandingPage.vue"),
       },
       {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         path: "/adopter",
         name: "adopter-home",
         component: () => import("../components/public/Adopter.vue"),
@@ -155,10 +153,6 @@ const routes = [
 
       },
       {
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         path: "/adopt",
         name: "adopt-home ",
         component: () => import("../components/public/Adopt.vue"),
