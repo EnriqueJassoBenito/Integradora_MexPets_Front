@@ -55,6 +55,16 @@ const routes = [
         name: "profileClient",
         component: () => import("../components/client/ClientProfile.vue"),
       },
+      {
+        path: "animals-adoption",
+        name: "animals-adoption",
+        component: () => import("../components/client/AnimalsAdopter.vue"),
+      },
+      {
+        path: "my-adoption",
+        name: "my-adoption",
+        component: () => import("../components/client/MyAdoptions.vue"),
+      },
     ],
   },
   {
