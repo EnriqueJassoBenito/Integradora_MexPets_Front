@@ -94,22 +94,37 @@ const onGetApprovedAnimals = async () => {
 
 const onInsertAnimal = async (animalDto, imageFiles) => {
     try {
+        console.log("Datos del animalDto:", animalDto);
+        
         const formData = new FormData();
-        formData.append('dto', JSON.stringify(animalDto));
+        Object.keys(animalDto).forEach(key => {
+            formData.append(key, animalDto[key]);
+        });
+
         imageFiles.forEach((file) => {
             formData.append('imageFiles', file);
         });
+
+        console.log("Contenido de formData:");
+        for (const entry of formData.entries()) {
+            console.log(entry[0] + ': ' + entry[1]);
+        }
+
         const response = await axios.post(`${url_api_animals}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        console.log(response.data);
+        
+        console.log("Respuesta del servidor:", response.data);
+        
         return response.data.data;
     } catch (error) {
         throw error;
     }
 }
+
+
 
 const onUpdateAnimal = async (id, animalDto) => {
     try {
