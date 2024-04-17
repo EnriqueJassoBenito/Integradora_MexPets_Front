@@ -158,15 +158,8 @@ export default {
   data() {
     return {
       currentUser: null,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
       isEditing: false,
-=======
       isEditing: false
->>>>>>> Stashed changes
-=======
-      isEditing: false
->>>>>>> Stashed changes
     };
   },
   mounted() {
@@ -227,7 +220,6 @@ export default {
     this.$router.push({ name: 'landing' });
   }
 }
-
   },
 };
 </script>
