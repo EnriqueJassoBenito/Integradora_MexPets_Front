@@ -23,9 +23,10 @@ const onGetAdoptionById = async (id) => {
   }
 };
 
-const onGetPendingApproval = async () => {
+
+const getPendingAdoptions = async () => {
   try {
-    const response = await axios.get(`${url_api_adoption}pending-approval`);
+    const response = await axios.get(`${url_api_adoption}pending`);
     console.log(response.data);
     return response.data.data;
   } catch (error) {
@@ -33,9 +34,9 @@ const onGetPendingApproval = async () => {
   }
 };
 
-const onGetApproved = async () => {
+const getApprovedAdoptions = async () => {
   try {
-    const response = await axios.get(`${url_api_adoption}approved`);
+    const response = await axios.get(`${url_api_adoption}managed`);
     console.log(response.data);
     return response.data.data;
   } catch (error) {
@@ -43,16 +44,47 @@ const onGetApproved = async () => {
   }
 };
 
-const onInsertAdoption = async (adoptionDto, imageFiles) => {
+const insertAdoption = async (adoptionDto, imageFiles) => {
   try {
+    console.log("Datos adopcion:", adoptionDto)
     const formData = new FormData();
-    formData.append("dto", JSON.stringify(adoptionDto));
-    imageFiles.forEach((file) => {
-      formData.append("imageFiles", file);
+
+    Object.keys(adoptionDto).forEach(key => {
+      formData.append(key, adoptionDto[key]);
     });
+
+    imageFiles.forEach((file) => {
+      formData.append('imageFiles', file);
+    });
+    console.log("Contenido de formData:");
+        for (const entry of formData.entries()) {
+            console.log(entry[0] + ': ' + entry[1]);
+        }
     const response = await axios.post(`${url_api_adoption}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log("Respuesta del servidor:", response.data);
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateAdoption = async (id, adoptionData, imageFiles) => {
+  try {
+    const formData = new FormData();
+    formData.append('adoptionDto', JSON.stringify(adoptionData));
+    if (imageFiles) {
+      imageFiles.forEach((file) => {
+        formData.append('imageFiles', file);
+      });
+    }
+
+    const response = await axios.put(`${url_api_adoption}/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
     });
     console.log(response.data);
@@ -62,17 +94,7 @@ const onInsertAdoption = async (adoptionDto, imageFiles) => {
   }
 };
 
-const onUpdateAdoption = async (id, adoptionDto) => {
-  try {
-    const response = await axios.put(`${url_api_adoption}/${id}`, adoptionDto);
-    console.log(response.data);
-    return response.data.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const onDeleteAdoption = async (id) => {
+const cancelAdoption = async (id) => {
   try {
     const response = await axios.delete(`${url_api_adoption}/${id}`);
     console.log(response.data);
@@ -82,31 +104,12 @@ const onDeleteAdoption = async (id) => {
   }
 };
 
-async function onApproveOrRejectAdoption(id, approvalStatus, moderatorComment) {
-  try {
-    const response = await axios.patch(
-      `${url_api_adoption}${id}/approval`,
-      null,
-      {
-        params: {
-          approvalStatus: approvalStatus,
-          moderatorComment: moderatorComment,
-        },
-      }
-    );
-    console.log("Respuesta del servidor:", response.data);
-  } catch (error) {
-    console.error("Error al realizar la solicitud:", error);
-  }
-}
-
 export default {
   onGetAllAdoption,
   onGetAdoptionById,
-  onGetPendingApproval,
-  onGetApproved,
-  onInsertAdoption,
-  onUpdateAdoption,
-  onDeleteAdoption,
-  onApproveOrRejectAdoption,
+  getPendingAdoptions,
+  getApprovedAdoptions,
+  insertAdoption,
+  updateAdoption,
+  cancelAdoption
 };

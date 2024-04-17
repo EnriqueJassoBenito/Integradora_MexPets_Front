@@ -123,7 +123,8 @@ export default {
       }).then(({ data: { data: { user, token } } }) => {
         localStorage.setItem('authToken', token);
         localStorage.setItem('authUser', JSON.stringify(user));
-
+        sessionStorage.setItem('userId', user.id);
+        
         const decodedToken = jwtDecode(token);
         const userRole = user && user.user ? user.user.rol.nrol : null;
         console.log(JSON.stringify(userRole));

@@ -15,7 +15,7 @@ const onGetAllProcessed = async () => {
 
 const onGetProcessedById = async (id) => {
     try {
-        const response = await axios.get(`${url_api_processed}/${id}`);
+        const response = await axios.get(`${url_api_processed}${id}`);
         console.log(response.data);
         return response.data.data;
     } catch (error) {
@@ -23,9 +23,9 @@ const onGetProcessedById = async (id) => {
     }
 }
 
-const onGetAllActiveProcessed = async () => {
+const onCreateProcessed = async (processedData) => {
     try {
-        const response = await axios.get(`${url_api_processed}/getActive`);
+        const response = await axios.post(`${url_api_processed}process`, processedData);
         console.log(response.data);
         return response.data.data;
     } catch (error) {
@@ -33,9 +33,9 @@ const onGetAllActiveProcessed = async () => {
     }
 }
 
-const onGetAllInactiveProcessed = async () => {
+const onUpdateProcessed = async (id, updatedData) => {
     try {
-        const response = await axios.get(`${url_api_processed}/getAllInactive`);
+        const response = await axios.put(`${url_api_processed}${id}`, updatedData);
         console.log(response.data);
         return response.data.data;
     } catch (error) {
@@ -43,33 +43,9 @@ const onGetAllInactiveProcessed = async () => {
     }
 }
 
-const onAcceptAdoption = async (adoptionId) => {
+const onUpdateApprovalStatus = async (id, status) => {
     try {
-        const response = await axios.post(`${url_api_processed}/acceptAdoption`, null, {
-            params: {
-                adoptionId: adoptionId
-            }
-        });
-        console.log(response.data);
-        return response.data.data;
-    } catch (error) {
-        throw error;
-    }
-}
-
-const onUpdateProcessed = async (id, processedDto) => {
-    try {
-        const response = await axios.put(`${url_api_processed}/${id}`, processedDto);
-        console.log(response.data);
-        return response.data.data;
-    } catch (error) {
-        throw error;
-    }
-}
-
-const onEnableOrDisableProcessed = async (id) => {
-    try {
-        const response = await axios.patch(`${url_api_processed}/${id}`);
+        const response = await axios.patch(`${url_api_processed}${id}/updateApprovalStatus?status=${status}`);
         console.log(response.data);
         return response.data.data;
     } catch (error) {
@@ -79,7 +55,7 @@ const onEnableOrDisableProcessed = async (id) => {
 
 const onDeleteProcessed = async (id) => {
     try {
-        const response = await axios.delete(`${url_api_processed}/${id}`);
+        const response = await axios.delete(`${url_api_processed}${id}`);
         console.log(response.data);
         return response.data.data;
     } catch (error) {
@@ -90,10 +66,8 @@ const onDeleteProcessed = async (id) => {
 export default {
     onGetAllProcessed,
     onGetProcessedById,
-    onGetAllActiveProcessed,
-    onGetAllInactiveProcessed,
-    onAcceptAdoption,
+    onCreateProcessed,
     onUpdateProcessed,
-    onEnableOrDisableProcessed,
+    onUpdateApprovalStatus,
     onDeleteProcessed
 };

@@ -22,7 +22,7 @@
                     {{ formatDate(item.creationDate) }}
                 </template>
                 <template v-slot:cell(status)="{ item }">
-                    {{ getStatusTranslation(item.approvalStatus) }}
+                    {{ getStatusTranslation(item.status) }}
                 </template>
                 <template v-slot:cell(actions)="{ item }">
                     <b-button @click="openModal(item)" variant="primary">
@@ -89,7 +89,7 @@ export default {
                 description: '',
                 creationDate: '',
                 images: [],
-                approvalStatus: '',
+                status: null,
                 moderatorComment: '',
             },
             adoption: null,
@@ -102,7 +102,7 @@ export default {
         async pendingApprovals() {
             try {
                 this.isLoading = true;
-                const pendingAdoption = await service.onGetPendingApproval();
+                const pendingAdoption = await service.getPendingAdoptions();
                 setTimeout(() => {
                     this.adoptionPending = pendingAdoption;
                     this.isLoading = false;
@@ -189,12 +189,10 @@ export default {
         },
         getStatusTranslation(status) {
             switch (status) {
-                case 'PENDING':
+                case false:
                     return 'Pendiente';
-                case 'APPROVED':
+                case true:
                     return 'Aprobado';
-                case 'REJECT':
-                    return 'Rechazado';
                 default:
                     return 'Desconocido';
             }
