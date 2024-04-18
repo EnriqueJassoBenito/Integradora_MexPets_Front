@@ -37,7 +37,7 @@
                 <b-col cols="12">
                     <p><strong>Lugar donde será recibido:</strong></p>
                     <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
-                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
+                        <b-carousel-slide v-for="(image, index) in modalData.animal.images" :key="index"
                             :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
                             img-height="200px"></b-carousel-slide>
                     </b-carousel>
@@ -45,19 +45,15 @@
             </b-row>
             <b-row>
                 <b-col cols="12">
+                    <p><strong>Nombre del adoptante:</strong> {{ modalData.adopter.name }} {{ modalData.adopter.lastname
+                        }}</p>
                     <p><strong>Nombre de la mascota:</strong> {{ modalData.animal.namePet }}</p>
                     <p><strong>Fecha de adopción:</strong> {{ formatDate(modalData.creationDate) }}</p>
-                    <div class="mb-2"><strong>Descripción del adoptante:</strong> {{ modalData.description }}</div>
-                    <div>
-                        <b-form-textarea v-model="modalData.moderatorComment" placeholder="Comentario...">
-                    </b-form-textarea>
-                    </div>
                 </b-col>
             </b-row>
             <b-row>
                 <b-col cols="12" class="d-flex justify-content-between mt-3">
-                    <b-button variant="success" @click="approveAdoption">Aprobar</b-button>
-                    <b-button variant="danger" @click="rejectAdoption">Rechazar</b-button>
+                    <b-button variant="success" @click="manageAdoption">Aprobar</b-button>
                     <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
@@ -69,6 +65,7 @@
 <script>
 import service from '../../service/Adoption.js'
 import Swal from 'sweetalert2';
+import processService from '../../service/AdoptionProcessedService.js'
 
 export default {
     data() {
@@ -112,73 +109,51 @@ export default {
                 this.isLoading = false;
             }
         },
-        async approveOrRejectAdoption(id, approvalStatus, moderatorComment) {
-            try {
-                const result = await service.onApproveOrRejectAdoption(id, approvalStatus, moderatorComment);
-                this.pendingApprovals();
-                this.isLoading = true;
-            } catch (error) {
-                console.error('Error al aprobar/rechazar adopción:', error);
-            } finally {
-                this.isLoading = false;
-                this.closeModal();
-            }
-        },
-        async approveAdoption() {
-            const confirmAction = await this.showConfirmation();
-            if (confirmAction) {
-                this.isLoading = true;
-                this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
-            }
-        },
-        async rejectAdoption() {
-            const confirmAction = await this.showConfirmation();
-            if (confirmAction) {
-                this.isLoading = true;
-                this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
-            }
-        },
-        async showConfirmation() {
-            return new Promise((resolve) => {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: 'Esta acción no se puede deshacer.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#81B622',
-                    cancelButtonColor: '#DC3545',
-                    confirmButtonText: 'Sí, estoy seguro',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    resolve(result.isConfirmed);
-                });
-            });
-        },
-        openModal(adoption) {
-            this.modalData = { ...adoption };
-            this.$refs.myModalRef.show();
-        },
-        manageAdoption() {
+        async manageAdoption() {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: 'Esta acción gestionará la mascota.',
+                text: 'Podrás gestionar esta mascota',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#81B622',
                 cancelButtonColor: '#DC3545',
                 confirmButtonText: 'Sí, gestionar',
                 cancelButtonText: 'Cancelar',
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    this.handleSuccess();
-                    this.closeModal();
+                    try {
+                        const adoptionId = this.modalData.id; 
+                        const userId = localStorage.getItem("authUser");
+                        if (!userId) {
+                            throw new Error('No se pudo obtener el ID del moderador desde el almacenamiento local.');
+                        }
+                        const currentUserData = JSON.parse(userId);
+                        const moderatorId = currentUserData.user.id;
+
+                        const processedData = {
+                            adoption: { id: adoptionId },
+                            moderator: { id: moderatorId },
+                            approvalStatus: 'PENDING',
+                            moderatorComment: 'This is a test comment',
+                        };
+                        const response = await processService.onCreateProcessed(processedData);
+                        console.log('Registro procesado creado:', response);
+                        this.handleSuccess();
+                        this.closeModal();
+                    } catch (error) {
+                        console.error('Error al gestionar adopción:', error);
+                    }
                 }
             });
+        },
+        openModal(adoption) {
+            this.modalData = { ...adoption };
+            this.$refs.myModalRef.show();
         },
         handleSuccess() {
             Swal.fire({
                 title: '¡Gestionado!',
-                text: 'La mascota ha sido gestionada correctamente.',
+                text: 'Adopción procesada correctamente',
                 icon: 'success',
                 confirmButtonColor: '#0066C5',
                 confirmButtonText: 'Aceptar'
@@ -207,7 +182,6 @@ export default {
 </script>
 
 <style>
-
 .loading-overlay {
     display: none;
     background: rgba(255, 255, 255, 0.776);
@@ -272,7 +246,8 @@ export default {
 .my-custom-table {
     text-align: left;
     margin: 0 auto;
-    max-width: 100%; /* Cambia el valor según lo necesites */
+    max-width: 100%;
+    /* Cambia el valor según lo necesites */
 }
 
 @media (max-width: 767px) {
