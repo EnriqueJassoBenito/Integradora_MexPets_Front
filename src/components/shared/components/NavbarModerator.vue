@@ -13,7 +13,6 @@
             :class="{ active: selectedOption === 'profile-moderator' }"
             >Perfil</b-nav-item
           >
-
           <b-nav-item-dropdown
             text="Solicitudes de registro"
             toggle-class="nav-link-custom"

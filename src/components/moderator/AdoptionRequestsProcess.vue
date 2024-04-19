@@ -4,137 +4,115 @@
             <div class="custom-loader"></div>
         </div>
         <div class="section mt-3">
-            <h2 class="section-title">En proceso</h2>
+            <h2 class="section-title">Aprobar o rechazar la solicitud</h2>
         </div>
         <hr>
         <b-card class="my-3 p-3 shadow-sm rounded" style="max-width: 900px; margin: 0 auto;">
-            <b-table striped hover :items="adoptionApproved" :fields="fields" class="my-custom-table table-responsive">
+            <b-table striped hover :items="adopProcess" :fields="fields" class="my-custom-table table-responsive">
                 <template v-slot:cell(image)="{ item }">
-                    <img :src="item.animal.images[0].imageUrl" :alt="item.animal.animalPet" style="max-width: 100px;">
-                </template>
-                <template v-slot:cell(animal)="{ item }">
-                    {{ item.animal.namePet }}
-                </template>
-                <template v-slot:cell(adopter)="{ item }">
-                    {{ item.adopter.name }} {{ item.adopter.lastname }}
-                </template>
-                <template v-slot:cell(date)="{ item }">
-                    {{ formatDate(item.creationDate) }}
-                </template>
-                <template v-slot:cell(status)="{ item }">
-                    {{ getStatusTranslation(item.approvalStatus) }}
+                    <img :src="item.adoption.images[0].imageUrl" :alt="item.adoption.images" style="max-width: 100px;">
                 </template>
                 <template v-slot:cell(actions)="{ item }">
-                    <b-button @click="openModal(item)" variant="warning">
+                    <b-button @click="openModal(item.adoption.id)" variant="primary">
                         <b-icon icon="eye"></b-icon>
                     </b-button>
                 </template>
             </b-table>
         </b-card>
 
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la adopción" header-bg-variant="success">
-            <b-row class="mb-3">
-                <b-col cols="12">
-                    <p><strong>Lugar donde será recibido:</strong></p>
-                    <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
-                        <b-carousel-slide v-for="(image, index) in modalData.images" :key="index"
-                            :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
-                            img-height="200px"></b-carousel-slide>
-                    </b-carousel>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col cols="12">
-                    <p><strong>Nombre de la mascota:</strong> {{ modalData.animal.namePet }}</p>
-                    <p><strong>Fecha de adopción:</strong> {{ formatDate(modalData.creationDate) }}</p>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col cols="12" class="d-flex justify-content-between mt-3">
-                    <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
-                </b-col>
-            </b-row>
+        <b-modal ref="myModalRef" hide-footer title="Comentario del Moderador" header-bg-variant="warning">
+            <b-form @submit.prevent="confirmAction">
+                <b-form-group label="Comentario del Moderador" label-for="moderatorComment">
+                    <b-form-textarea id="moderatorComment" v-model="modalData.moderatorComment"></b-form-textarea>
+                </b-form-group>
+                <b-form-group label="Estado de aprobación" label-for="approvalStatus">
+                    <b-form-select v-model="modalData.approvalStatus" :options="approvalOptions"></b-form-select>
+                </b-form-group>
+                <b-button type="submit" variant="primary">Confirmar</b-button>
+                <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
+            </b-form>
         </b-modal>
-
     </b-container>
 </template>
 
 <script>
-import service from '../../service/Adoption.js'
+import service from '../../service/AdoptionProcessedService'
 import Swal from 'sweetalert2';
 
 export default {
     data() {
         return {
             isLoading: false,
-            adoptionApproved: [],
+            adopProcess: [],
             fields: [
-                { key: 'image', label: '#' },
-                { key: 'animal', label: 'Nombre del animal' },
-                { key: 'adopter', label: 'Nombre del adoptante' },
-                { key: 'date', label: 'Fecha' },
-                { key: 'status', label: 'Estado' },
-                { key: 'actions', label: 'Acciones' }
+                { key: 'image', label: 'Foto de la vivienda' },
+                { key: 'adoption.adopter.nameUser', label: 'Usuario del adoptante' },
+                { key: 'adoption.animal.typePet.type', label: 'Tipo de animal adoptado' },
+                { key: 'approvalStatus', label: 'Estado de aprobación' },
+                { key: 'actions', label: 'Acciones' } // Asegúrate de tener esta columna
             ],
             modalData: {
-                animal: '',
-                adopter: '',
-                description: '',
-                creationDate: '',
-                images: [],
+                adoptionId: '',
                 approvalStatus: '',
                 moderatorComment: '',
             },
-            adoption: null,
+            approvalOptions: [ // Opciones para el estado de aprobación
+                { value: 'PENDING', text: 'Pendiente' },
+                { value: 'APPROVED', text: 'Aprobado' },
+            ],
         }
     },
     mounted() {
-        this.adoptionAprovals();
+        this.processAdoptionByUser();
     },
     methods: {
-        async adoptionAprovals() {
+        async processAdoptionByUser() {
             try {
                 this.isLoading = true;
-                const approvedAdoption = await service.onGetApproved();
+                const userId = localStorage.getItem("authUser");
+                if (!userId) {
+                    throw new Error('No se pudo obtener el ID del moderador desde el almacenamiento local.');
+                }
+                const currentUserData = JSON.parse(userId);
+                const moderatorId = currentUserData.user.id;
+                const pendingAdoption = await service.onGetProcessedAdoptionsByUser(moderatorId);
                 setTimeout(() => {
-                    this.adoptionApproved = approvedAdoption;
+                    this.adopProcess = pendingAdoption;
                     this.isLoading = false;
                 }, 1000);
             } catch (error) {
-                console.error('Error al obtener adopciones aprobadas de aprobación:', error);
+                console.error('Error al obtener adopciones pendientes de aprobación:', error);
                 this.isLoading = false;
             }
         },
-        openModal(adoption) {
-            this.modalData = { ...adoption };
+        async confirmAction() {
+            this.$refs.myModalRef.hide();
+            const { adoptionId, approvalStatus, moderatorComment } = this.modalData;
+            try {
+                await service.onUpdateApprovalStatus(adoptionId, approvalStatus, moderatorComment);
+            } catch (error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un problema al actualizar la información.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                });
+            }
+        }
+        ,
+        openModal(adoptionId) {
+            this.modalData.adoptionId = adoptionId;
             this.$refs.myModalRef.show();
         },
         closeModal() {
             this.$refs.myModalRef.hide();
         },
-        getStatusTranslation(status) {
-            switch (status) {
-                case 'PENDING':
-                    return 'Pendiente';
-                case 'APPROVED':
-                    return 'Aprobado';
-                case 'REJECT':
-                    return 'Rechazado';
-                default:
-                    return 'Desconocido';
-            }
-        },
-        formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-            return formattedDate;
-        },
     }
 }
 </script>
 
-<style>
 
+<style>
 .loading-overlay {
     display: none;
     background: rgba(255, 255, 255, 0.776);
@@ -199,7 +177,8 @@ export default {
 .my-custom-table {
     text-align: left;
     margin: 0 auto;
-    max-width: 100%; /* Cambia el valor según lo necesites */
+    max-width: 100%;
+    /* Cambia el valor según lo necesites */
 }
 
 @media (max-width: 767px) {
