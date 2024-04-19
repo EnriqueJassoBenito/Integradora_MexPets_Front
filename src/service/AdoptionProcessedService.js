@@ -15,6 +15,7 @@ const onGetAllProcessed = async () => {
 const onGetProcessedById = async (id) => {
   try {
     const response = await axios.get(`${url_api_processed}${id}`);
+    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -24,6 +25,7 @@ const onGetProcessedById = async (id) => {
 const onGetProcessedAdoptionsByUser = async (userId) => {
   try {
     const response = await axios.get(`${url_api_processed}user/${userId}`);
+    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -42,30 +44,22 @@ const onCreateProcessed = async (processedData) => {
   }
 };
 
-const onUpdateProcessed = async (id, updatedData) => {
-  try {
-    const response = await axios.put(`${url_api_processed}${id}`, updatedData);
-    return response.data.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const onUpdateApprovalStatus = async (id, approvalStatus, moderatorComment) => {
   try {
     const response = await axios.patch(
       `${url_api_processed}${id}/updateApprovalStatus`,
+      null,
       {
-        param: {
-          id: id,
+        params: {
           approvalStatus: approvalStatus,
           moderatorComment: moderatorComment,
         },
       }
     );
-    console.log(response.data);
+    console.log('Response from PATCH request:', response); 
     return response.data.data;
   } catch (error) {
+    console.error('Error in PATCH request:', error); 
     throw error;
   }
 };
@@ -84,7 +78,6 @@ export default {
   onGetProcessedById,
   onGetProcessedAdoptionsByUser,
   onCreateProcessed,
-  onUpdateProcessed,
   onUpdateApprovalStatus,
   onDeleteProcessed,
 };

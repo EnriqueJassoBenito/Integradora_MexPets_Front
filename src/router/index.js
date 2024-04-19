@@ -59,7 +59,7 @@ const routes = [
         component: () => import("../components/client/RegisterAnimal.vue"),
       },
       {
-        path: "Profile",
+        path: "profileClient",
         name: "profileClient",
         component: () => import("../components/client/ClientProfile.vue"),
         meta: { requiresAuth: true, roles: ['CLIENTE'] }, 
@@ -119,7 +119,7 @@ const routes = [
       {
         path: "adoption-requests-process",
         name: "adoption-requests-process",
-        component: () => import("../components/moderator/ResgistrationRequestsProcess.vue"),
+        component: () => import("../components/moderator/AdoptionRequestsProcess.vue"),
         meta: { requiresAuth: true, roles: ['MODERADOR'] },
       },
       {

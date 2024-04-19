@@ -18,7 +18,7 @@ const cloudinaryConfig = {
 };
 
 Vue.prototype.$cloudinary = cloudinary.Cloudinary.new(cloudinaryConfig);
-+Vue.use(BootstrapVue)
+Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(IconsPlugin)
 Vue.use(VueFormulate);
