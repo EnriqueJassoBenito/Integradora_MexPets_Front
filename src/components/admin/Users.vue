@@ -1,5 +1,8 @@
 <template>
   <div class="centered-container">
+    <div class="loading-overlay is-active" v-if="isLoading">
+      <div class="custom-loader"></div>
+    </div>
     <div class="cuadro-blanco">
       <h2>Administración de Usuarios</h2>
       <div class="row">
@@ -54,7 +57,6 @@
         </template>
       </b-table>
     </div>
-
     <b-modal
       v-model="showModalAddModerator"
       title="Agregar Moderador"
@@ -73,6 +75,12 @@
                   type="text"
                   placeholder="Nombre(s)"
                   required
+                  :rules="[
+                    {
+                      validator: validateName,
+                      message: 'El nombre debe contener al menos 2 caracteres',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -86,19 +94,35 @@
                   type="text"
                   placeholder="Apellido Paterno"
                   required
+                  :rules="[
+                    {
+                      validator: validateLastName,
+                      message:
+                        'El apellido paterno debe contener al menos 2 caracteres',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
+          </b-row>
+          <b-row>
             <b-col cols="6">
               <b-form-group>
                 <h6 class="mt-4">
                   Apellido Materno <span class="obligationText">*</span>
                 </h6>
                 <b-form-input
-                  v-model="lastnameMatern"
+                  v-model="lastNameMatern"
                   type="text"
                   placeholder="Apellido Materno"
                   required
+                  :rules="[
+                    {
+                      validator: validateLastNameMatern,
+                      message:
+                        'El apellido materno debe contener al menos 2 caracteres',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -109,6 +133,12 @@
                   v-model="selectedRole"
                   :options="roles"
                   required
+                  :rules="[
+                    {
+                      validator: validateSelectedRole,
+                      message: 'Por favor, selecciona un rol',
+                    },
+                  ]"
                 ></b-form-select>
               </b-form-group>
             </b-col>
@@ -124,6 +154,12 @@
                   type="tel"
                   placeholder="7771234567"
                   required
+                  :rules="[
+                    {
+                      validator: validatePhone,
+                      message: 'El teléfono debe ser válido',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -136,6 +172,12 @@
                   v-model="selected"
                   :options="options"
                   required
+                  :rules="[
+                    {
+                      validator: validateSelected,
+                      message: 'Por favor, selecciona un estado',
+                    },
+                  ]"
                 ></b-form-select>
               </b-form-group>
             </b-col>
@@ -151,6 +193,13 @@
                   type="text"
                   placeholder="Nombre de usuario"
                   required
+                  :rules="[
+                    {
+                      validator: validateUserName,
+                      message:
+                        'El nombre de usuario debe contener al menos 4 caracteres',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -164,9 +213,17 @@
                   type="email"
                   placeholder="correo@example.com"
                   required
+                  :rules="[
+                    {
+                      validator: validateEmail,
+                      message: 'El correo electrónico debe ser válido',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
+          </b-row>
+          <b-row>
             <b-col cols="6">
               <b-form-group>
                 <h6 class="mt-4">
@@ -177,20 +234,32 @@
                   type="password"
                   placeholder="***********"
                   required
+                  :rules="[
+                    {
+                      validator: validatePassword,
+                      message:
+                        'La contraseña debe contener al menos 6 caracteres',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
             <b-col cols="6">
               <b-form-group>
                 <h6 class="mt-4">
-                  Confirmar contraseña
-                  <span class="obligationText">*</span>
+                  Confirmar contraseña <span class="obligationText">*</span>
                 </h6>
                 <b-form-input
                   v-model="confirmPassword"
                   type="password"
                   placeholder="***********"
                   required
+                  :rules="[
+                    {
+                      validator: validateConfirmPassword,
+                      message: 'Las contraseñas no coinciden',
+                    },
+                  ]"
                 ></b-form-input>
               </b-form-group>
             </b-col>
@@ -253,6 +322,7 @@ export default {
     return {
       service: service,
       error: false,
+      isLoading: false,
       error_msg: "",
       name: "",
       lastName: "",
@@ -261,7 +331,7 @@ export default {
       userName: "",
       password: "",
       confirmPassword: "",
-      lastnameMatern: "",
+      lastNameMatern: '',
       email: "",
       usersList: [],
       rolFilter: "All",
@@ -318,7 +388,7 @@ export default {
       userSelect: { name: "", email: "" },
       newModerator: { name: "", email: "" },
       showModalAddModerator: false,
-selectedRole:'',
+      selectedRole: "",
       roles: [],
     };
   },
@@ -371,19 +441,17 @@ selectedRole:'',
       }
     },
     async onSubmit() {
-      if (!this.validateForm()) {
-        this.error = true;
-        this.error_msg = "¡Debes completar todos los campos correctamente!";
-        return;
-      }
+      this.isLoading = true;
 
       try {
         const roles = await rol.getAllRol();
-
-        const clienteRol = roles.find((rol) => rol.nrol === "ADMIN");
-
-        if (!clienteRol) {
-          throw new Error("No se encontró el rol de cliente.");
+        let clienteRol = null;
+        if (this.selectedRole) {
+          clienteRol = roles.find((rol) => rol.nrol === this.selectedRole);
+        } else {
+          this.error = true;
+          this.error_msg = "¡Debes seleccionar un rol!";
+          return;
         }
 
         const formData = {
@@ -396,13 +464,12 @@ selectedRole:'',
           localitation: this.selected,
           password: this.password,
           rol: {
-            idRol: clienteRol.idRol,
             nrol: clienteRol.nrol,
             status: true,
           },
           status: true,
         };
-
+        console.log(formData);
         const response = await service.insertUser(formData);
 
         if (response && response.nameUser) {
@@ -423,6 +490,8 @@ selectedRole:'',
           title: "Error",
           text: "Error al registrar usuario: " + error.message,
         });
+      } finally {
+        this.isLoading = false;
       }
     },
     cerrarModalAgregarModerador() {
@@ -435,18 +504,41 @@ selectedRole:'',
     showModalAddModeratorFn() {
       this.showModalAddModerator = true;
     },
-    validateForm() {
-      return (
-        this.name.trim() !== "" &&
-        this.lastName.trim() !== "" &&
-        this.phone.trim() !== "" &&
-        this.selected !== null &&
-        this.userName.trim() !== "" &&
-        this.email.trim() !== "" &&
-        this.password.trim() !== "" &&
-        this.confirmPassword.trim() !== "" &&
-        this.password === this.confirmPassword
-      );
+    validateName(value) {
+      const regex = /^[a-zA-Z\s]+$/;
+      return regex.test(value) && value.length >= 2;
+    },
+    validateLastName(value) {
+      const regex = /^[a-zA-Z\s]+$/;
+      return regex.test(value) && value.length >= 2;
+    },
+    validateLastNameMatern(value) {
+      const regex = /^[a-zA-Z\s]+$/;
+      return regex.test(value) && value.length >= 2;
+    },
+    validatePhone(value) {
+      const regex = /^[0-9]{10}$/;
+      return regex.test(value);
+    },
+    validateUserName(value) {
+      const regex = /^[a-zA-Z0-9_]+$/;
+      return regex.test(value) && value.length >= 4;
+    },
+    validateEmail(value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value);
+    },
+    validateSelectedRole(value) {
+      return value !== '';
+    },
+    validateSelected(value) {
+      return value !== '';
+    },
+    validatePassword(value) {
+      return value.length >= 6;
+    },
+    validateConfirmPassword(value) {
+      return value === this.password;
     },
   },
 };
@@ -488,5 +580,61 @@ selectedRole:'',
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.loading-overlay {
+  display: none;
+  background: rgba(255, 255, 255, 0.708);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9998;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-overlay.is-active {
+  display: flex;
+}
+
+.custom-loader {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  color: #f0bb00;
+  background: radial-gradient(
+    farthest-side,
+    currentColor calc(100% - 6px),
+    #0000 calc(100% - 5px) 0
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    #0000 calc(100% - 13px),
+    #000 calc(100% - 12px)
+  );
+  border-radius: 50%;
+  animation: s9 2s infinite linear;
+}
+
+.custom-loader::before,
+.custom-loader::after {
+  content: "";
+  grid-area: 1/1;
+  background: linear-gradient(currentColor 0 0) center,
+    linear-gradient(currentColor 0 0) center;
+  background-size: 100% 10px, 10px 100%;
+  background-repeat: no-repeat;
+}
+
+.custom-loader::after {
+  transform: rotate(45deg);
+}
+
+@keyframes s9 {
+  100% {
+    transform: rotate(1turn);
+  }
 }
 </style>

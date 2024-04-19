@@ -95,7 +95,6 @@ const onGetApprovedAnimals = async () => {
 const onInsertAnimal = async (animalDto, imageFiles) => {
     try {
         console.log("Datos del animalDto:", animalDto);
-        
         const formData = new FormData();
         Object.keys(animalDto).forEach(key => {
             formData.append(key, animalDto[key]);
@@ -123,7 +122,6 @@ const onInsertAnimal = async (animalDto, imageFiles) => {
         throw error;
     }
 }
-
 
 
 const onUpdateAnimal = async (id, animalDto) => {

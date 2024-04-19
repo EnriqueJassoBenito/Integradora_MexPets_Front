@@ -1,6 +1,11 @@
 <template>
   <b-container fluid class="d-flex justify-content-center mt-4">
-    <b-card title="Registro de Animales" style="width: 100%; max-width: 600px">
+    <div class="loading-overlay is-active" v-if="isLoading">
+      <div class="custom-loader"></div>
+    </div>
+    <div title="Registro de Animales" style="width: 100%; max-width: 900px">
+      <h1>Dar en adopción</h1>
+      <h3>Datos</h3>
       <b-form>
         <b-row>
           <b-col md="6">
@@ -83,6 +88,7 @@
               label-for="sex"
               invalid-feedback="Por favor, selecciona un sexo existente en la lista desplegable."
               :state="sexState"
+              required
             >
               <b-form-select
                 id="sex"
@@ -195,12 +201,9 @@
               Registrar
             </b-button>
           </b-col>
-          <b-col md="6" class="text-center">
-            <b-button type="reset" variant="danger"> Eliminar </b-button>
-          </b-col>
         </b-row>
       </b-form>
-    </b-card>
+    </div>
   </b-container>
 </template>
 <script>
@@ -211,6 +214,7 @@ export default {
   data() {
     return {
       petService: petService,
+      isLoading: false,
       locations: [
         { value: "", text: "Seleccionar" },
         { value: "aguascalientes", text: "Aguascalientes" },
@@ -330,7 +334,29 @@ export default {
       }
     },
     async onSubmit() {
+      const userId = localStorage.getItem("authUser");
+  if (!userId) {
+    Swal.fire({
+      icon: "warning",
+      title: "Inicia Sesión o Regístrate",
+      text: "Debes iniciar sesión o crear una cuenta para registrar animales.",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ir a Iniciar Sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.$router.push({ name: 'login' });
+      }
+    });
+    return;
+  }
+
+  const currentUserData = JSON.parse(userId);
+  console.log("Usuario actual ID: " + currentUserData.user.id);
       try {
+        this.isLoading = true;
         console.log("id: " + this.typePet);
         const animalDto = {
           namePet: this.namePet,
@@ -350,7 +376,6 @@ export default {
           register: null,
         };
         console.log(this.age);
-        const userId = localStorage.getItem("authUser");
         if (userId) {
           const currentUserData = JSON.parse(userId);
           animalDto.register = currentUserData.user.id;
@@ -387,6 +412,8 @@ export default {
           title: "Error",
           text: "Error al registrar mascota: ",
         });
+      }finally {
+        this.isLoading = false;
       }
     },
     validateNamePet() {
@@ -411,7 +438,7 @@ export default {
       this.personalityState = isValid;
     },
     validateSex() {
-      const isValid = this.sex !== "";
+      const isValid = this.sex !== null;
       this.sexState = isValid;
     },
     validateSize() {
@@ -455,4 +482,61 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.loading-overlay {
+  display: none;
+  background: rgba(255, 255, 255, 0.708);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 9998;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-overlay.is-active {
+  display: flex;
+}
+
+.custom-loader {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  color: #f0bb00;
+  background: radial-gradient(
+    farthest-side,
+    currentColor calc(100% - 6px),
+    #0000 calc(100% - 5px) 0
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    #0000 calc(100% - 13px),
+    #000 calc(100% - 12px)
+  );
+  border-radius: 50%;
+  animation: s9 2s infinite linear;
+}
+
+.custom-loader::before,
+.custom-loader::after {
+  content: "";
+  grid-area: 1/1;
+  background: linear-gradient(currentColor 0 0) center,
+    linear-gradient(currentColor 0 0) center;
+  background-size: 100% 10px, 10px 100%;
+  background-repeat: no-repeat;
+}
+
+.custom-loader::after {
+  transform: rotate(45deg);
+}
+
+@keyframes s9 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+</style>

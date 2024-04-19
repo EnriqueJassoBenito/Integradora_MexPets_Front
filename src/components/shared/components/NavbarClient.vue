@@ -81,6 +81,8 @@ export default {
                 timer: 1500,
                 showConfirmButton: false
             });
+            localStorage.removeItem('authToken');
+  localStorage.removeItem('authUser');
             logout.bind(this)();
         }
     }

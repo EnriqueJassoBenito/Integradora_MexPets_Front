@@ -8,8 +8,8 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav>
             <b-nav-item :to="{ name: 'landing' }">Home</b-nav-item>
-            <b-nav-item :to="{ name: 'adopt' }">Adoptar</b-nav-item>
-            <b-nav-item :to="{ name: 'adopter' }">Dar en adopción</b-nav-item>
+            <b-nav-item :to="{ name: 'adopt-home' }">Adoptar</b-nav-item>
+            <b-nav-item :to="{ name: 'adopter-home' }">Dar en adopción</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

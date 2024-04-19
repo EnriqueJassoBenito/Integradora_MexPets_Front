@@ -104,7 +104,6 @@ export default {
       },
     }
   },
-
   methods: {
     onSubmit() {
       if (!this.email || !this.password) {
@@ -123,8 +122,7 @@ export default {
       }).then(({ data: { data: { user, token } } }) => {
         localStorage.setItem('authToken', token);
         localStorage.setItem('authUser', JSON.stringify(user));
-        sessionStorage.setItem('userId', user.id);
-        
+
         const decodedToken = jwtDecode(token);
         const userRole = user && user.user ? user.user.rol.nrol : null;
         console.log(JSON.stringify(userRole));
@@ -152,6 +150,14 @@ export default {
         });
       });
     },
+    checkAuthentication() {
+        const usuarioAlmacenado = localStorage.getItem("authUser");
+        console.log(usuarioAlmacenado);
+        if (usuarioAlmacenado) {
+            console.log("Usuario almacenado en localStorage.");
+            this.$router.push({ name: 'landing' });
+        }
+    },
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
@@ -169,17 +175,18 @@ export default {
     },
   },
   mounted() {
+    this.checkAuthentication();
     if (this.$refs.container) {
       this.widget = new WidgetInstance(
         this.$refs.container, {
         startMode: "",
         doneCallback: this.doneCallback,
         errorCallback: this.errorCallback,
+        
       }
       );
     }
   },
-
   beforeDestroy() {
     if (this.widget) {
       this.widget.destroy();
