@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <div class="adopt">
     <div class="loading-overlay is-active" v-if="isLoading">
       <div class="custom-loader"></div>
     </div>
@@ -25,71 +25,104 @@
             <div id="form-select" style="margin: 15px">
               <div class="row">
                 <div class="col-md-4">
-                    <b-form-select
-                id="race"
-                v-model="serchBRace"
-                :options="
-                  races.map((race) => ({ value: race.id, text: race.name }))
-                "
-                required
-              />
+                  <b-form-select
+                    id="race"
+                    v-model="serchBRace"
+                    :options="
+                      races.map((race) => ({ value: race.id, text: race.name }))
+                    "
+                    required
+                  />
                 </div>
                 <div class="col-md-4">
-                    <b-form-select
-                id="personality"
-                v-model="serchBPersonality"
-                :options="
-                  personalities.map((personality) => ({
-                    value: personality.id,
-                    text: personality.name,
-                  }))
-                "
-                required
-              />
+                  <b-form-select
+                    id="personality"
+                    v-model="serchBPersonality"
+                    :options="
+                      personalities.map((personality) => ({
+                        value: personality.id,
+                        text: personality.name,
+                      }))
+                    "
+                    required
+                  />
                 </div>
+
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select">
-                    <b-form-select
-                id="typePet"
-                v-model="serchBType"
-                :options="
-                  typePets.map((type) => ({ value: type.id, text: type.name }))
-                "
-                required
-              />
-                  </select>
+                  <b-form-select
+                    id="typePet"
+                    v-model="serchBType"
+                    :options="
+                      typePets.map((type) => ({
+                        value: type.id,
+                        text: type.name,
+                      }))
+                    "
+                    required
+                  />
                 </div>
               </div>
               <div class="row mt-3">
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select">
-                    <b-form-select-option :value="null"
-                      >Sexo</b-form-select-option
+                  <select
+                    class="form-select form-select-lg custom-select"
+                    v-model="serchBSexo"
+                  >
+                    <option :value="null">Sexo</option>
+                    <option
+                      v-for="gender in genders"
+                      :key="gender.id"
+                      :value="gender.id"
                     >
+                      {{ gender.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select">
-                    <b-form-select-option :value="null"
-                      >Edad</b-form-select-option
-                    >
+                  <select
+                    class="form-select form-select-lg custom-select"
+                    v-model="serchBEdad"
+                  >
+                    <option :value="null">Edad</option>
+                    <option v-for="age in ages" :key="age.id" :value="age.id">
+                      {{ age.range }}
+                    </option>
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select">
-                    <b-form-select-option :value="null"
-                      >Color</b-form-select-option
+                  <select
+                    class="form-select form-select-lg custom-select"
+                    v-model="serchBColor"
+                  >
+                    <option :value="null">Color</option>
+                    <option
+                      v-for="color in colors"
+                      :key="color.id"
+                      :value="color.id"
                     >
+                      {{ color.name }}
+                    </option>
                   </select>
                 </div>
                 <div
                   class="col-md-4 d-flex align-items-center justify-content-between"
                   style="margin-top: 15px"
                 >
-                  <button class="btn btn-primary" style="margin-right: 15px">
-                    Buscar
-                  </button>
-                  <button class="btn btn-secondary">Eliminar</button>
+                  <div
+                    class="col-md-4 d-flex align-items-center justify-content-between"
+                    style="margin-top: 15px"
+                  >
+                    <button
+                      class="btn btn-primary"
+                      style="margin-right: 15px"
+                      @click="buscar()"
+                    >
+                      Buscar
+                    </button>
+                    <button class="btn btn-secondary" @click="limpiarFiltros">
+                      Limpiar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,52 +136,53 @@
         sm="6"
         md="4"
         lg="3"
-        v-for="animal in animalApproval"
+        v-for="animal in resultadosMostrados"
         :key="animal.id"
         class="mb-4"
       >
-        <b-card
-          :title="animal.namePet"
-          tag="article"
-          :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
-          footer-bg-variant="warning"
-          footer-border-variant="dark"
-        >
-          <b-row>
-            <b-col cols="12">
-              <img
-                :src="animal.images[0].imageUrl"
-                :alt="animal.namePet"
-                class="img-fluid"
-                style="max-height: 150px"
-              />
-            </b-col>
-            <b-col cols="7">
-              <b-card-text>
-                <p><strong>Ubicación:</strong> {{ animal.location }}</p>
-                <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
-                <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
-                <p><strong>Sexo:</strong> {{ animal.sex }}</p>
-              </b-card-text>
-              <b-button
-                @click="openModal(animal)"
-                variant="primary"
-                class="float-right mb-2 mr-2"
-              >
-                <b-icon icon="eye" aria-hidden="true"></b-icon>
-              </b-button>
-              <b-button
-                @click="openImageUploadModal()"
-                variant="success"
-                class="float-right mb-2 mr-2"
-              >
-                <b-icon
-                  icon="circle-fill"
-                  animation="throb"
-                  font-scale="1"
-                ></b-icon>
-              </b-button>
-            </b-col>
+        <b-card no-body tag="article" style="max-width: 20rem">
+          <b-card-img
+            :src="animal.images[0].imageUrl"
+            alt="Image"
+            top
+            class="rounded-0 card-img-top"
+          ></b-card-img>
+          <b-row style="margin: 20px">
+            <b-card-text>
+              <h4>
+                <strong>{{ animal.namePet }}</strong>
+              </h4>
+              <p><strong>Ubicación:</strong> {{ animal.location }}</p>
+              <p><strong>Tipo:</strong> {{ animal.typePet.type }}</p>
+              <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
+              <p><strong>Sexo:</strong> {{ animal.sex }}</p>
+            </b-card-text>
+          </b-row>
+          
+          <b-row style="margin: 20px">
+            <b-button
+              v-if="animal.register.id !== userId"
+              variant="success"
+              class="float-right mb-2 mr-2"
+              @click="logValues(animal.register.id, userId)"
+            >
+              <b-icon
+              @click="openImageUploadModal()"
+                icon="circle-fill"
+                animation="throb"
+                font-scale="1"
+              ></b-icon>
+              Adoptar
+            </b-button>
+            <b-button
+              v-else
+              @click="openModal(animal)"
+              variant="info"
+              class="float-right mb-2 mr-2"
+            >
+              <b-icon icon="info-circle" font-scale="1"></b-icon>
+              Info
+            </b-button>
           </b-row>
         </b-card>
       </b-col>
@@ -256,16 +290,14 @@
         >
       </b-form>
     </b-modal>
-  </b-container>
+  </div>
 </template>
-
-<script>
+  
+  <script>
 import service from "../../service/AnimalService.js";
 import adopService from "../../service/Adoption.js";
 import Swal from "sweetalert2";
 import servicesPet from "../../service/CategoryService";
-
-const userId = sessionStorage.getItem("userId");
 
 export default {
   data() {
@@ -300,17 +332,50 @@ export default {
       creationDate: "",
       status: "",
       selectedAnimalId: "",
-      serchBType:null,
-      serchBRace:null,
-      serchBPersonality:null,
+      serchBType: null,
+      serchBRace: null,
+      serchBPersonality: null,
       typePets: [],
       typePetState: null,
       races: [],
       personalities: [],
+      isLoading: false,
+      userId: null,
+      resultadosMostrados: [], 
+      genders: [
+        { id: 1, name: "Macho" },
+        { id: 2, name: "Hembra" },
+      ],
+      ages: [
+        { id: 1, range: "Cachorro" },
+        { id: 2, range: "Joven" },
+        { id: 3, range: "Adulto" },
+        { id: 4, range: "Mayor" },
+      ],
+      colors: [
+        { id: 1, name: "Negro" },
+        { id: 2, name: "Blanco" },
+        { id: 3, name: "Marrón" },
+        { id: 4, name: "Gris" },
+        { id: 5, name: "Rojo" },
+        { id: 6, name: "Amarillo" },
+      ],
+      serchBRace: null,
+      serchBPersonality: null,
+      serchBType: null,
+      serchBSexo: null,
+      serchBEdad: null,
+      serchBColor: null,
     };
   },
   mounted() {
     this.getApproval();
+    const authUserData = JSON.parse(localStorage.getItem("authUser"));
+    if (authUserData && authUserData.user && authUserData.user.id) {
+      this.userId = authUserData.user.id;
+    } else {
+      console.error("No se pudo recuperar el ID del usuario.");
+    }
   },
   created() {
     this.onGetAllType();
@@ -318,11 +383,16 @@ export default {
     this.onGetAllPersonality();
   },
   methods: {
+    logValues(animalRegister, userId) {
+      console.log("Clic en el modal")
+      console.log("ID del cliente que adoptó el animal:", animalRegister);
+      console.log("ID del usuario que inició sesión:", userId);
+    },
     async onGetAllType() {
       try {
         const types = await servicesPet.onGetAllTypeRegister();
         this.typePets = types;
-        console.log(this.typePets)
+        console.log(this.typePets);
       } catch (error) {
         console.error("Error al obtener tipos:", error);
       }
@@ -339,26 +409,27 @@ export default {
       try {
         const personality = await servicesPet.onGetAllPersonalityRegister();
         this.personalities = personality;
+        console.log(this.personalities);
       } catch (error) {
         console.error("Error al obtener tipos:", error);
       }
     },
     async getApproval() {
-      try {
-        this.isLoading = true;
-        const approvedAnimals = await service.onGetApprovedAnimals();
-        setTimeout(() => {
-          this.animalApproval = approvedAnimals;
-          this.isLoading = false;
-        }, 2000);
-      } catch (error) {
-        console.error(
-          "Error al obtener animales pendientes de aprobación:",
-          error
-        );
-        this.isLoading = false;
-      }
-    },
+  try {
+    this.isLoading = true;
+    const approvedAnimals = await service.onGetApprovedAnimals();
+    setTimeout(() => {
+      this.animalApproval = approvedAnimals;
+      console.log("Animales", this.animalApproval);
+      this.buscar();
+      this.isLoading = false;
+    }, 2000);
+  } catch (error) {
+    console.error("Error al obtener animales pendientes de aprobación:", error);
+    this.isLoading = false;
+  }
+},
+
     async submitForm() {
       const minDescriptionLength = 10;
       const maxDescriptionLength = 500;
@@ -383,7 +454,6 @@ export default {
         return;
       }
       const userId = localStorage.getItem("authUser");
-
       const adoptionDto = {
         animal: selectedAnimal.id,
         adopter: sessionStorage.getItem("userId"),
@@ -411,23 +481,83 @@ export default {
         console.error("Error al insertar adopción:", error);
       }
     },
-    openImageUploadModal() {
-      this.description = "";
-      this.imageFiles = [];
-      this.imageFilesState = null;
-      this.$refs.imageUploadModal.show();
+    buscar() {
+      console.log("Animales a filtrar:", this.animalApproval);
+  let resultadosFiltrados = this.animalApproval.slice();
+
+      if (this.serchBRace) {
+        console.log("Filtrado raza");
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.raza === this.serchBRace
+        );
+      }
+
+      if (this.serchBPersonality && this.serchBPersonality.name) {
+        console.log(this.serchBPersonality.name);
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.personalidad === this.serchBPersonality.name
+        );
+      }
+      if (this.serchBPersonality && this.serchBPersonality.name) {
+        console.log(this.serchBPersonality);
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.personalidad === this.serchBPersonality.name
+        );
+      }
+
+      if (this.serchBType) {
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.tipo === this.serchBType
+        );
+      }
+
+      if (this.serchBSexo) {
+  const genderName = this.genders.find(gender => gender.id === this.serchBSexo).name.toLowerCase();
+  resultadosFiltrados = resultadosFiltrados.filter(
+    (animal) => {
+      console.log("Sexo del animal:", animal.sex);
+      console.log("Sexo seleccionado:", genderName);
+      return animal.sex.toLowerCase() === genderName;
+    }
+  );
+}
+      if (this.serchBEdad) {
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.edad == this.serchBEdad
+        );
+      }
+
+      if (this.serchBColor) {
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.color === this.serchBColor
+        );
+      }
+      this.resultadosMostrados = resultadosFiltrados;
     },
+    openImageUploadModal() {
+  this.description = "";
+  this.imageFiles = [];
+  this.imageFilesState = null;
+  this.$refs.imageUploadModal.show();
+},
+
     closeImageUploadModal() {
       this.$refs.imageUploadModal.hide();
       this.description = "";
       this.imageFiles = [];
       this.imageFilesState = null;
     },
-    openModal(animal) {
-      this.modalData = { ...animal };
-      this.selectedAnimalId = animal.id;
-      this.$refs.myModalRef.show();
-    },
+    async openImageUploadModal() {
+  try {
+    console.log("Modal abierto")
+    this.description = "";
+    this.imageFiles = [];
+    this.imageFilesState = null;
+    this.$refs.imageUploadModal.show();
+  } catch (error) {
+    console.error("Error al intentar abrir el modal:", error);
+  }
+},
     closeModal() {
       this.$refs.myModalRef.hide();
     },
@@ -443,6 +573,14 @@ export default {
           return "Desconocido";
       }
     },
+    limpiarFiltros() {
+      this.serchBRace = null;
+      this.serchBPersonality = null;
+      this.serchBType = null;
+      this.serchBSexo = null;
+      this.serchBEdad = null;
+      this.serchBColor = null;
+    },
     validateImageFiles() {
       const fileCount = this.imageFiles.length;
       const fileSizesValid = this.imageFiles.every(
@@ -457,8 +595,11 @@ export default {
   },
 };
 </script>
-
-<style>
+  
+  <style>
+.adopt {
+  background-color: rgb(248, 248, 248);
+}
 .b-card {
   margin-bottom: 20px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -542,5 +683,11 @@ export default {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
+}
+.card-img-top {
+  height: 200px;
+  width: 318px;
+  object-fit: cover;
+  object-position: center top;
 }
 </style>

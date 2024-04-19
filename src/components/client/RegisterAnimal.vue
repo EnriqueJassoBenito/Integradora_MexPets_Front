@@ -355,6 +355,23 @@ export default {
 
   const currentUserData = JSON.parse(userId);
   console.log("Usuario actual ID: " + currentUserData.user.id);
+
+  if (currentUserData.user.rol.nrol !== "CLIENTE") {
+    Swal.fire({
+      icon: "error",
+      title: "Acceso denegado",
+      text: "Solo los usuarios con rol de cliente pueden registrar animales.",
+    });
+    return;
+  }
+  if (!this.namePet || !this.location || !this.typePet || !this.race || !this.personality || !this.sex || !this.size || !this.weight || !this.age || !this.color || !this.description) {
+    Swal.fire({
+      icon: "warning",
+      title: "Campos Vacíos",
+      text: "Por favor completa todos los campos para registrar la mascota.",
+    });
+    return;
+  }
       try {
         this.isLoading = true;
         console.log("id: " + this.typePet);

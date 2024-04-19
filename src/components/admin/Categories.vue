@@ -28,7 +28,7 @@
         <b-modal id="modal-type" v-model="showModalType" centered :title="modalTitle" modal-footer hide-footer>
           <form @submit.prevent="addOrUpdateType" style="display: flex; flex-direction: column;">
             <b-form-group label="Tipo de animal">
-              <b-form-input v-model="updateDataType.type"></b-form-input>
+              <b-form-input v-model="updateDataType.type" required></b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary" style="margin-top:15px;">
               {{ !updateDataType.id ? 'Agregar' : 'Actualizar' }}
@@ -60,7 +60,7 @@
         <b-modal id="modal-raza-mascota" v-model="showModalRace" centered :title="modalTitle" modal-footer hide-footer>
           <form @submit.prevent="addOrUpdateRace" style="display: flex; flex-direction: column;">
             <b-form-group label="Nombre de la Raza">
-              <b-form-input v-model="updateDataRace.racePet"></b-form-input>
+              <b-form-input v-model="updateDataRace.racePet" required></b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary" style="margin-top:15px;">
               {{ !updateDataRace.id ? 'Agregar Raza' : 'Actualizar Raza' }}
@@ -93,7 +93,7 @@
           modal-footer hide-footer>
           <form @submit.prevent="addOrUpdatePersonality" style="display: flex; flex-direction: column;">
             <b-form-group label="Nombre de la personalidad">
-              <b-form-input v-model="updateDataPersonality.personalityPet"></b-form-input>
+              <b-form-input v-model="updateDataPersonality.personalityPet" required></b-form-input>
             </b-form-group>
             <b-button type="submit" variant="primary" style="margin-top:15px;">
               {{ !updateDataPersonality.id ? 'Agregar Personalidad' : 'Actualizar Personalidad' }}

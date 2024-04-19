@@ -78,6 +78,7 @@ const onGetPendingApprovalAnimals = async () => {
 const onGetApprovedAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}approved`);
+        return response.data.data;
     } catch (error) {
         throw error;
     }

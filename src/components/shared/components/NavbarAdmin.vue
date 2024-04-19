@@ -31,14 +31,12 @@
               :to="{ name: 'profile-admin' }"
               @click="selectOption('profile-admin')"
               :class="{ active: selectedOption === 'profile-admin' }"
-              >Perfil</b-nav-item
+              >{{ usuarioNombre }}</b-nav-item
             >
-            <b-navbar-nav class="ml-auto">
               <b-navbar-nav class="ml-auto">
                 <b-nav-item @click="confirmLogout">Cerrar Sesión</b-nav-item>
               </b-navbar-nav>
             </b-navbar-nav>
-          </b-navbar-nav>
         </b-collapse>
       </b-navbar>
     </div>
@@ -53,26 +51,15 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
-      listaUsuarios: [],
-      mostrarModal: false,
-      mostrarModalInformacion: false,
-      usuarioEditado: { nombre: "", email: "" },
-      usuarioEditadoIndex: null,
-      usuarioSeleccionado: { nombre: "", email: "" },
+      usuarioNombre: "",
       selectedOption: null,
     };
   },
   created() {
-    const url = "http://localhost:8080/api/user/";
-    axios
-      .get(url)
-      .then((response) => {
-        this.listaUsuarios = response.data;
-        console.log("Datos de usuarios:", this.listaUsuarios);
-      })
-      .catch((error) => {
-        console.error("Error al obtener los datos de usuarios:", error);
-      });
+    const userData = JSON.parse(localStorage.getItem("authUser"));
+    if (userData && userData.user && userData.user.name && userData.user.lastname) {
+    this.usuarioNombre = `${userData.user.name} ${userData.user.lastname}`;
+  }
   },
   methods: {
     selectOption(option) {

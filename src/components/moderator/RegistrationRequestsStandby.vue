@@ -9,11 +9,13 @@
         <hr>
         <b-row class="mt-2">
             <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalPending" :key="animal.id" class="mb-4">
-                <b-card :title="animal.namePet" tag="article" :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
-                        footer-bg-variant="warning" footer-border-variant="dark">
+                <b-card :title="animal.namePet" tag="article"
+                    :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)" footer-bg-variant="warning"
+                    footer-border-variant="dark">
                     <b-row>
                         <b-col cols="5">
-                            <img :src="animal.images[0].imageUrl" :alt="animal.namePet" class="img-fluid" style="max-height: 150px;">
+                            <img :src="animal.images[0].imageUrl" :alt="animal.namePet" class="img-fluid"
+                                style="max-height: 150px;">
                         </b-col>
                         <b-col cols="7">
                             <b-card-text>
@@ -31,7 +33,7 @@
             </b-col>
         </b-row>
 
-        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota" header-bg-variant="warning" >
+        <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota" header-bg-variant="warning">
             <b-row class="mb-3">
                 <b-col cols="12">
                     <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
@@ -65,6 +67,11 @@
                         </b-row>
                     </div>
                     <div><strong>Descripción:</strong> {{ modalData.description }}</div>
+                    <hr>
+                    <div class="mt-4">
+                        <b-form-textarea id="textarea" v-model="modalData.moderatorComment"
+                            placeholder="Retroalimentación..." rows="3" max-rows="6"></b-form-textarea>
+                    </div>
                 </b-col>
             </b-row>
             <b-row>
@@ -75,6 +82,7 @@
                 </b-col>
             </b-row>
         </b-modal>
+
     </b-container>
 </template>
 
@@ -126,7 +134,11 @@ export default {
         async approveOrRejectAdoption(id, status, comment) {
             try {
                 const result = await service.onApproveOrRejectAnimal(id, status, comment);
-                this.isLoading = true;
+                if (status === 'PENDING') {
+                    Swal.fire('Rechazado', 'Enviando retroalimentación', 'info');
+                } else if (status === 'APPROVED') {
+                    Swal.fire('En hora buena', 'Solicitud aprobada', 'success');
+                }
                 this.pendingApprovals();
             } catch (error) {
                 console.error('Error al aprobar/rechazar adopción:', error);
@@ -146,7 +158,7 @@ export default {
         async rejectAnimal() {
             const confirmAction = await this.showConfirmation();
             if (confirmAction) {
-                this.approveOrRejectAdoption(this.modalData.id, 'REJECTED', this.modalData.moderatorComment);
+                this.approveOrRejectAdoption(this.modalData.id, 'PENDING', this.modalData.moderatorComment);
                 this.closeModal();
                 this.isLoading = true;
             }
@@ -168,7 +180,7 @@ export default {
             });
         },
         openModal(animal) {
-            this.modalData = { ...animal }; 
+            this.modalData = { ...animal };
             this.$refs.myModalRef.show();
         },
         manageAnimal() {
@@ -218,7 +230,6 @@ export default {
 </script>
 
 <style>
-
 .loading-overlay {
     display: none;
     background: rgba(255, 255, 255, 0.776);

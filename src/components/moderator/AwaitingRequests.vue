@@ -4,7 +4,7 @@
             <div class="custom-loader"></div>
         </div>
         <div class="section mt-3">
-            <h2 class="section-title">En espera</h2>
+            <h2 class="section-title">En espera de gestionar</h2>
         </div>
         <hr>
         <b-card class="my-3 p-3 shadow-sm rounded" style="max-width: 900px; margin: 0 auto;">
@@ -53,12 +53,11 @@
             </b-row>
             <b-row>
                 <b-col cols="12" class="d-flex justify-content-between mt-3">
-                    <b-button variant="success" @click="manageAdoption">Aprobar</b-button>
+                    <b-button variant="success" @click="manageAdoption">Gestionar</b-button>
                     <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
                 </b-col>
             </b-row>
         </b-modal>
-
     </b-container>
 </template>
 

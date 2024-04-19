@@ -10,10 +10,11 @@
         <b-card class="my-3 p-3 shadow-sm rounded" style="max-width: 900px; margin: 0 auto;">
             <b-table striped hover :items="adopProcess" :fields="fields" class="my-custom-table table-responsive">
                 <template v-slot:cell(image)="{ item }">
-                    <img :src="item.adoption.images[0].imageUrl" :alt="item.adoption.images" style="max-width: 100px;">
+                    <img :src="item.adoption.animal.images[0].imageUrl" :alt="item.adoption.animal.images"
+                        style="max-width: 100px;">
                 </template>
                 <template v-slot:cell(actions)="{ item }">
-                    <b-button @click="openModal(item.adoption.id)" variant="primary">
+                    <b-button @click="openModal(item)" variant="primary">
                         <b-icon icon="eye"></b-icon>
                     </b-button>
                 </template>
@@ -21,16 +22,29 @@
         </b-card>
 
         <b-modal ref="myModalRef" hide-footer title="Comentario del Moderador" header-bg-variant="warning">
-            <b-form @submit.prevent="confirmAction">
-                <b-form-group label="Comentario del Moderador" label-for="moderatorComment">
-                    <b-form-textarea id="moderatorComment" v-model="modalData.moderatorComment"></b-form-textarea>
-                </b-form-group>
-                <b-form-group label="Estado de aprobación" label-for="approvalStatus">
-                    <b-form-select v-model="modalData.approvalStatus" :options="approvalOptions"></b-form-select>
-                </b-form-group>
-                <b-button type="submit" variant="primary">Confirmar</b-button>
-                <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
-            </b-form>
+                <b-row class="mb-3">
+                    <b-col cols="12">
+                        <p><strong>Lugar donde será recibido:</strong></p>
+                        <b-carousel controls indicators style="max-height: 300px; overflow: hidden;">
+                            <b-carousel-slide v-for="(image, index) in modalData.adoption.images" :key="index"
+                                :img-src="image.imageUrl" :alt="`Slide ${index + 1}`" img-width="300px"
+                                img-height="200px"></b-carousel-slide>
+                        </b-carousel>
+                    </b-col>
+                </b-row>
+                <div><strong>Descripción del adoptante:</strong> {{ modalData.adoption.description }}</div>
+
+                <div class="mt-4">
+                    <b-form-textarea id="textarea" v-model="modalData.moderatorComment"
+                        placeholder="Retroalimentación..." rows="3" max-rows="6"></b-form-textarea>
+                </div>
+                <b-row>
+                    <b-col cols="12" class="d-flex justify-content-between mt-3">
+                        <b-button variant="success" @click="approveAnimal">Aprobar</b-button>
+                        <b-button variant="danger" @click="rejectAnimal">Rechazar</b-button>
+                        <b-button variant="secondary" @click="closeModal">Cancelar</b-button>
+                    </b-col>
+                </b-row>
         </b-modal>
     </b-container>
 </template>
@@ -45,21 +59,20 @@ export default {
             isLoading: false,
             adopProcess: [],
             fields: [
-                { key: 'image', label: 'Foto de la vivienda' },
+                { key: 'image', label: 'Foto del animal' },
                 { key: 'adoption.adopter.nameUser', label: 'Usuario del adoptante' },
                 { key: 'adoption.animal.typePet.type', label: 'Tipo de animal adoptado' },
                 { key: 'approvalStatus', label: 'Estado de aprobación' },
-                { key: 'actions', label: 'Acciones' } // Asegúrate de tener esta columna
+                { key: 'actions', label: 'Acciones' }
             ],
             modalData: {
-                adoptionId: '',
+                id:'',
+                adoption: '',
+                moderator: '',
                 approvalStatus: '',
                 moderatorComment: '',
             },
-            approvalOptions: [ // Opciones para el estado de aprobación
-                { value: 'PENDING', text: 'Pendiente' },
-                { value: 'APPROVED', text: 'Aprobado' },
-            ],
+            images: []
         }
     },
     mounted() {
@@ -85,23 +98,69 @@ export default {
                 this.isLoading = false;
             }
         },
-        async confirmAction() {
-            this.$refs.myModalRef.hide();
-            const { adoptionId, approvalStatus, moderatorComment } = this.modalData;
+        async approveOrRejectAdoption(id, approvalStatus, moderatorComment) {
             try {
-                await service.onUpdateApprovalStatus(adoptionId, approvalStatus, moderatorComment);
+                const result = await service.onUpdateApprovalStatus(id, approvalStatus, moderatorComment);
+                if (approvalStatus === 'PENDING') {
+                    Swal.fire('Rechazado', 'Enviando retroalimentación', 'info');
+                } else if (approvalStatus === 'APPROVED') {
+                    Swal.fire('En hora buena', 'Solicitud aprobada', 'success');
+                }
+                console.log(result)
+                this.processAdoptionByUser();
             } catch (error) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Hubo un problema al actualizar la información.',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar',
-                });
+                console.error('Error al aprobar/rechazar adopción:', error);
+            } finally {
+                this.isLoading = false;
+                this.closeModal();
             }
         }
         ,
-        openModal(adoptionId) {
-            this.modalData.adoptionId = adoptionId;
+        async approveAnimal() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
+                this.closeModal();
+            }
+        },
+        async rejectAnimal() {
+            const confirmAction = await this.showConfirmation();
+            if (confirmAction) {
+                this.approveOrRejectAdoption(this.modalData.id, 'PENDING', this.modalData.moderatorComment);
+                this.closeModal();
+            }
+        },
+        async showConfirmation() {
+            return new Promise((resolve) => {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Esta acción no se puede deshacer.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#81B622',
+                    cancelButtonColor: '#DC3545',
+                    confirmButtonText: 'Sí, estoy seguro',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    resolve(result.isConfirmed);
+                });
+            });
+        },
+        getStatusTranslation(status) {
+            switch (status) {
+                case 'PENDING':
+                    return 'Pendiente';
+                case 'APPROVED':
+                    return 'Aprobado';
+                case 'REJECT':
+                    return 'Rechazado';
+                default:
+                    return 'Desconocido';
+            }
+        },
+        openModal(item) {
+            this.modalData = { ...item };
+            console.log(this.modalData);
             this.$refs.myModalRef.show();
         },
         closeModal() {

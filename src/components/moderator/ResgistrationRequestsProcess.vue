@@ -64,7 +64,6 @@
                         </b-row>
                     </div>
                     <div><strong>Descripción:</strong> {{ modalData.description }}</div>
-
                 </b-col>
             </b-row>
             <b-row class="mt-3">

@@ -47,19 +47,16 @@ const routes = [
   {
     path: "/client/",
     component: () => import("../components/shared/components/NavbarClient.vue"),
-    meta: { requiresAuth: true, roles: ['CLIENTE'] },
     children: [
       {
         path: "",
-        name: "adopt",
-        component: () => import("../components/public/Adopt.vue"),
-        meta: { requiresAuth: true, roles: ['CLIENTE'] },
+        name: "animals-adoption",
+        component: () => import("../components/client/AnimalsAdopter.vue"),
       },
       {
         path: "register-animal",
         name: "register-animal",
         component: () => import("../components/client/RegisterAnimal.vue"),
-        meta: { requiresAuth: true, roles: ['CLIENTE'] },
       },
       {
         path: "Profile",
@@ -68,17 +65,26 @@ const routes = [
         meta: { requiresAuth: true, roles: ['CLIENTE'] }, 
       },
       {
-        path: "animals-adoption",
-        name: "animals-adoption",
-        component: () => import("../components/client/AnimalsAdopter.vue"),
-        meta: { requiresAuth: true, roles: ['CLIENTE'] }, 
-      },
-      {
         path: "my-adoption",
         name: "my-adoption",
         component: () => import("../components/client/MyAdoptions.vue"),
         meta: { requiresAuth: true, roles: ['CLIENTE'] },
       },
+      {
+        path: "/LostAndFound",
+        name: "lostAndFound",
+        component: () => import("../components/public/lostAndFound.vue"),
+      },
+      {
+        path: "/Responsable",
+        name: "Responsable",
+        component: () => import("../components/public/Responsable.vue"),
+      },
+      {
+        path: "/about-us",
+        name: "about-us",
+        component: () => import("../components/public/AboutUs.vue"),
+      }
     ],
   },  
   {
@@ -122,28 +128,6 @@ const routes = [
         component: () => import("../components/moderator/Management.vue"),
         meta: { requiresAuth: true, roles: ['MODERADOR'] },
       },
-    ],
-  },
-  {
-    path: "/home/",
-    component: () =>
-      import("../components/shared/components/Navbar.vue"),
-    children: [
-      {
-        path: "adopt",
-        name: "adopt-home",
-        component: () => import("../components/public/Adopt.vue"),
-      },
-      {
-        path: "adopter",
-        name: "adopter-home",
-        component: () => import("../components/client/RegisterAnimal.vue"),
-      },
-      {
-        path: "/about-us",
-        name: "about-us",
-        component: () => import("../components/public/AboutUs.vue"),
-      }
     ],
   },
   {

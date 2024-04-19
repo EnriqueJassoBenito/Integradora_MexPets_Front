@@ -40,7 +40,6 @@
                 </b-col>
             </b-row>
         </b-modal>-->
-
     </b-container>
 </template>
 

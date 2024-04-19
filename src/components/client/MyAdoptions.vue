@@ -168,6 +168,7 @@
 <script>
 import service from "../../service/AnimalService.js";
 import adopService from "../../service/Adoption.js";
+import servicesPet from "../../service/CategoryService";
 import Swal from "sweetalert2";
 const userId = sessionStorage.getItem("userId");
 
@@ -213,30 +214,6 @@ export default {
     this.onGetAllAni();
   },
   methods: {
-    async onGetAllType() {
-      try {
-        const types = await servicesPet.onGetAllTypeRegister();
-        this.typePets = types;
-      } catch (error) {
-        console.error("Error al obtener tipos:", error);
-      }
-    },
-    async onGetAllRace() {
-      try {
-        const race = await servicesPet.onGetAllRaceRegister();
-        this.races = race;
-      } catch (error) {
-        console.error("Error al obtener tipos:", error);
-      }
-    },
-    async onGetAllPersonality() {
-      try {
-        const personality = await servicesPet.onGetAllPersonalityRegister();
-        this.personalities = personality;
-      } catch (error) {
-        console.error("Error al obtener tipos:", error);
-      }
-    },
     async onGetAllAni() {
       try {
         const userId = localStorage.getItem("authUser");
