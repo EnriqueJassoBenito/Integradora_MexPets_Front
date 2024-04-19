@@ -6,7 +6,6 @@ const url_api_processed = `http://${lc}/api/adoption_processed/`;
 const onGetAllProcessed = async () => {
   try {
     const response = await axios.get(`${url_api_processed}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -16,7 +15,6 @@ const onGetAllProcessed = async () => {
 const onGetProcessedById = async (id) => {
   try {
     const response = await axios.get(`${url_api_processed}${id}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -26,7 +24,6 @@ const onGetProcessedById = async (id) => {
 const onGetProcessedAdoptionsByUser = async (userId) => {
   try {
     const response = await axios.get(`${url_api_processed}user/${userId}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -39,7 +36,6 @@ const onCreateProcessed = async (processedData) => {
       `${url_api_processed}process`,
       processedData
     );
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -49,7 +45,6 @@ const onCreateProcessed = async (processedData) => {
 const onUpdateProcessed = async (id, updatedData) => {
   try {
     const response = await axios.put(`${url_api_processed}${id}`, updatedData);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -78,7 +73,6 @@ const onUpdateApprovalStatus = async (id, approvalStatus, moderatorComment) => {
 const onDeleteProcessed = async (id) => {
   try {
     const response = await axios.delete(`${url_api_processed}${id}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;

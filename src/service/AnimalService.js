@@ -6,7 +6,6 @@ const url_api_animals = `http://${lc}/api/animals/`;
 const onGetAllAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -16,7 +15,6 @@ const onGetAllAnimals = async () => {
 const onGetAnimalById = async (id) => {
     try {
         const response = await axios.get(`${url_api_animals}/${id}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -26,7 +24,6 @@ const onGetAnimalById = async (id) => {
 const onGetAnimalsByTypePet = async (typePetId) => {
     try {
         const response = await axios.get(`${url_api_animals}/type/${typePetId}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -36,7 +33,6 @@ const onGetAnimalsByTypePet = async (typePetId) => {
 const onGetAnimalsByRace = async (raceId) => {
     try {
         const response = await axios.get(`${url_api_animals}/race/${raceId}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -46,7 +42,6 @@ const onGetAnimalsByRace = async (raceId) => {
 const onGetAnimalsByPersonality = async (personalityId) => {
     try {
         const response = await axios.get(`${url_api_animals}/personality/${personalityId}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -56,7 +51,6 @@ const onGetAnimalsByPersonality = async (personalityId) => {
 const onGetFemaleAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}/female`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -66,7 +60,6 @@ const onGetFemaleAnimals = async () => {
 const onGetMaleAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}/male`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -76,7 +69,6 @@ const onGetMaleAnimals = async () => {
 const onGetPendingApprovalAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}pending-approval`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -86,7 +78,6 @@ const onGetPendingApprovalAnimals = async () => {
 const onGetApprovedAnimals = async () => {
     try {
         const response = await axios.get(`${url_api_animals}approved`);
-        return response.data.data;
     } catch (error) {
         throw error;
     }
@@ -94,7 +85,6 @@ const onGetApprovedAnimals = async () => {
 
 const onInsertAnimal = async (animalDto, imageFiles) => {
     try {
-        console.log("Datos del animalDto:", animalDto);
         
         const formData = new FormData();
         Object.keys(animalDto).forEach(key => {
@@ -129,7 +119,6 @@ const onInsertAnimal = async (animalDto, imageFiles) => {
 const onUpdateAnimal = async (id, animalDto) => {
     try {
         const response = await axios.put(`${url_api_animals}${id}`, animalDto);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -144,7 +133,6 @@ const onApproveOrRejectAnimal = async (id, approvalStatus, moderatorComment) => 
             moderatorComment: moderatorComment
             }
         });
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;
@@ -155,7 +143,6 @@ const onApproveOrRejectAnimal = async (id, approvalStatus, moderatorComment) => 
 const onDeleteAnimal = async (id) => {
     try {
         const response = await axios.delete(`${url_api_animals}/${id}`);
-        console.log(response.data);
         return response.data.data;
     } catch (error) {
         throw error;

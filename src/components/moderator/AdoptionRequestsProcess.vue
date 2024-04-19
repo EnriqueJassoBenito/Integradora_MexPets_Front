@@ -91,7 +91,6 @@ export default {
             try {
                 await service.onUpdateApprovalStatus(adoptionId, approvalStatus, moderatorComment);
             } catch (error) {
-                console.error('Error al actualizar estado y comentario del moderador:', error);
                 Swal.fire({
                     title: 'Error',
                     text: 'Hubo un problema al actualizar la información.',

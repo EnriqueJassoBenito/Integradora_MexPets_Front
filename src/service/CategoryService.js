@@ -31,7 +31,6 @@ const onUpdateRace = async (id, racePet) => {
             id,
             racePet
         });
-        console.log(response.data);
     } catch (error) {
         throw(error);
     }

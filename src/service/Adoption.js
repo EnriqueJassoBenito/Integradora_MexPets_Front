@@ -6,7 +6,6 @@ const url_api_adoption = `http://${lc}/api/adoption/`;
 const onGetAllAdoption = async () => {
   try {
     const response = await axios.get(`${url_api_adoption}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -16,7 +15,6 @@ const onGetAllAdoption = async () => {
 const onGetAdoptionById = async (id) => {
   try {
     const response = await axios.get(`${url_api_adoption}/${id}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -27,7 +25,6 @@ const onGetAdoptionById = async (id) => {
 const getPendingAdoptions = async () => {
   try {
     const response = await axios.get(`${url_api_adoption}pending`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -37,7 +34,6 @@ const getPendingAdoptions = async () => {
 const getApprovedAdoptions = async () => {
   try {
     const response = await axios.get(`${url_api_adoption}managed`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -97,7 +93,6 @@ const updateAdoption = async (id, adoptionData, imageFiles) => {
 const cancelAdoption = async (id) => {
   try {
     const response = await axios.delete(`${url_api_adoption}/${id}`);
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     throw error;

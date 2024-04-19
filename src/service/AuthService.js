@@ -10,8 +10,6 @@ export const changePassword = async (email) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error en la solicitud de envio de email :", error);
-
         throw new Error("Error en la solicitud de login");
     }
 };
@@ -30,8 +28,6 @@ export const changePasswordConfirm = async (
         });
         return response.data;
     } catch (error) {
-        console.error("Error en la solicitud cambio de contraseña :", error);
-
         throw new Error("Error en la solicitud de cambio de contraseña");
     }
 };
