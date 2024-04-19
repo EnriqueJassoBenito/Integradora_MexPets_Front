@@ -9,7 +9,6 @@
                     <b-nav-item :to="{ name: 'profile-moderator' }" @click="selectOption('profile-moderator')"
                         :class="{ 'active': selectedOption === 'profile-moderator' }">Perfil</b-nav-item>
 
-
                     <b-nav-item-dropdown text="Solicitudes de registro" toggle-class="nav-link-custom" right>
                         <b-dropdown-item :to="{ name: 'registration-requests-standby' }"
                             @click="selectOption('registration-requests-standby')">
@@ -27,7 +26,7 @@
                         </b-dropdown-item>
                         <b-dropdown-item :to="{ name: 'adoption-requests-process' }"
                             @click="selectOption('adoption-requests-process')">
-                            En proceso
+                            A gestionar
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
 
