@@ -19,20 +19,29 @@
               <div class="row">
                 <div class="col-md-4">
                   <b-form-select id="race" v-model="serchBRace"
-                    :options="races.map((race) => ({ value: race.id, text: race.name }))" required />
+                    :options="[{
+      value: null,
+      text: 'Raza'
+    }, ...races.map((race) => ({ value: race.id, text: race.name }))]" required />
                 </div>
                 <div class="col-md-4">
-                  <b-form-select id="personality" v-model="serchBPersonality" :options="personalities.map((personality) => ({
+                  <b-form-select id="personality" v-model="serchBPersonality" :options="[{
+      value: null,
+      text: 'Personalidad'
+    }, ...personalities.map((personality) => ({
                     value: personality.id,
                     text: personality.name,
-                  }))" required />
+                  }))]" required />
                 </div>
 
                 <div class="col-md-4">
-                  <b-form-select id="typePet" v-model="serchBType" :options="typePets.map((type) => ({
-                    value: type.id,
-                    text: type.name,
-                  }))" required />
+                  <b-form-select id="typePet" v-model="serchBType" :options="[{
+      value: null,
+      text: 'Tipo'
+    }, ...typePets.map((type) => ({
+      value: type.id,
+      text: type.name
+    }))]"/>
                 </div>
               </div>
               <div class="row mt-3">
@@ -45,21 +54,22 @@
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select" v-model="serchBEdad">
-                    <option :value="null">Edad</option>
-                    <option v-for="age in ages" :key="age.id" :value="age.id">
-                      {{ age.range }}
-                    </option>
-                  </select>
-                </div>
+  <select class="form-select form-select-lg custom-select" v-model="serchBState">
+    <option :value="null">Estado</option>
+    <option v-for="state in states" :key="state.id" :value="state">
+      {{ state.name }}
+    </option>
+  </select>
+</div>
                 <div class="col-md-4">
-                  <select class="form-select form-select-lg custom-select" v-model="serchBColor">
-                    <option :value="null">Color</option>
-                    <option v-for="color in colors" :key="color.id" :value="color.id">
-                      {{ color.name }}
-                    </option>
-                  </select>
-                </div>
+  <select class="form-select form-select-lg custom-select" v-model="serchBColor">
+    <option :value="null">Color</option>
+    <option v-for="color in colors" :key="color.id" :value="color">
+      {{ color.name }}
+    </option>
+  </select>
+</div>
+
                 <div class="col-md-4 d-flex align-items-center justify-content-between" style="margin-top: 15px">
                   <div class="col-md-4 d-flex align-items-center justify-content-between" style="margin-top: 15px">
                     <button class="btn btn-primary" style="margin-right: 15px" @click="buscar()">
@@ -77,8 +87,8 @@
       </div>
     </div>
 
-    <b-row class="mt-2">
-      <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalApproval" :key="animal.id" class="mb-4">
+    <b-row class="mt-2" v-if="resultadosMostrados.length > 0">
+      <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in resultadosMostrados" :key="animal.id" class="mb-4">
         <b-card :title="animal.namePet" tag="article" :footer="getStatusFooter(animal.approvalStatus)"
           :footer-bg-variant="getFooterColor(animal.approvalStatus)" footer-border-variant="dark">
           <b-row>
@@ -223,24 +233,59 @@ export default {
       isLoading: false,
       userId: null,
       resultadosMostrados: [],
+      serchBState:null,
+      states: [
+  { id: 1, name: "Aguascalientes" },
+  { id: 2, name: "Baja California" },
+  { id: 3, name: "Baja California Sur" },
+  { id: 4, name: "Campeche" },
+  { id: 5, name: "Coahuila" },
+  { id: 6, name: "Colima" },
+  { id: 7, name: "Chiapas" },
+  { id: 8, name: "Chihuahua" },
+  { id: 9, name: "Ciudad de México" },
+  { id: 10, name: "Durango" },
+  { id: 11, name: "Guanajuato" },
+  { id: 12, name: "Guerrero" },
+  { id: 13, name: "Hidalgo" },
+  { id: 14, name: "Jalisco" },
+  { id: 15, name: "Estado de México" },
+  { id: 16, name: "Michoacán" },
+  { id: 17, name: "Morelos" },
+  { id: 18, name: "Nayarit" },
+  { id: 19, name: "Nuevo León" },
+  { id: 20, name: "Oaxaca" },
+  { id: 21, name: "Puebla" },
+  { id: 22, name: "Querétaro" },
+  { id: 23, name: "Quintana Roo" },
+  { id: 24, name: "San Luis Potosí" },
+  { id: 25, name: "Sinaloa" },
+  { id: 26, name: "Sonora" },
+  { id: 27, name: "Tabasco" },
+  { id: 28, name: "Tamaulipas" },
+  { id: 29, name: "Tlaxcala" },
+  { id: 30, name: "Veracruz" },
+  { id: 31, name: "Yucatán" },
+  { id: 32, name: "Zacatecas" }
+],
       genders: [
         { id: 1, name: "Macho" },
         { id: 2, name: "Hembra" },
       ],
-      ages: [
-        { id: 1, range: "Cachorro" },
-        { id: 2, range: "Joven" },
-        { id: 3, range: "Adulto" },
-        { id: 4, range: "Mayor" },
-      ],
+
       colors: [
-        { id: 1, name: "Negro" },
-        { id: 2, name: "Blanco" },
-        { id: 3, name: "Marrón" },
-        { id: 4, name: "Gris" },
-        { id: 5, name: "Rojo" },
-        { id: 6, name: "Amarillo" },
-      ],
+  { id: 1, name: "Negro" },
+  { id: 2, name: "Blanco" },
+  { id: 3, name: "Marrón" },
+  { id: 4, name: "Gris" },
+  { id: 5, name: "Rojo" },
+  { id: 6, name: "Amarillo" },
+  { id: 7, name: "Verde" },
+  { id: 8, name: "Azul" },
+  { id: 9, name: "Naranja" },
+  { id: 10, name: "Rosa" },
+  { id: 11, name: "Café" },
+],
       serchBRace: null,
       serchBPersonality: null,
       serchBType: null,
@@ -307,6 +352,7 @@ export default {
         const approvedAnimals = await service.onGetApprovedAnimals();
         setTimeout(() => {
           this.animalApproval = approvedAnimals;
+          this.resultadosMostrados = approvedAnimals;
           this.isLoading = false;
         }, 2000);
       } catch (error) {
@@ -365,27 +411,49 @@ export default {
       }
     },
     buscar() {
-      let resultadosFiltrados = this.animalApproval.slice();
-      if (this.serchBRace) {
-        resultadosFiltrados = resultadosFiltrados.filter(animal => animal.race.id === this.serchBRace);
-      }
+      console.log("Animales a filtrar:", this.animalApproval);
+  let resultadosFiltrados = this.animalApproval.slice();
+  if (this.serchBRace) {
+  resultadosFiltrados = resultadosFiltrados.filter((animal) => {
+    return animal.race.id === this.serchBRace;
+  });
+}
 
-      if (this.serchBPersonality) {
-        resultadosFiltrados = resultadosFiltrados.filter(animal => animal.personality.id === this.serchBPersonality);
-      }
-
-      if (this.serchBType) {
-        resultadosFiltrados = resultadosFiltrados.filter(animal => animal.typePet.id === this.serchBType);
-      }
-
+if (this.serchBPersonality) {
+  resultadosFiltrados = resultadosFiltrados.filter((animal) => {
+    return animal.personality.id === this.serchBPersonality;
+  });
+}
+if (this.serchBType) {
+  resultadosFiltrados = resultadosFiltrados.filter((animal) => {
+    return animal.typePet.id === this.serchBType;
+  });
+}
+      if (this.serchBSexo) {
+  const genderName = this.genders.find(gender => gender.id === this.serchBSexo).name.toLowerCase();
+  resultadosFiltrados = resultadosFiltrados.filter(
+    (animal) => {
+      console.log("Sexo del animal:", animal.sex);
+      console.log("Sexo seleccionado:", genderName);
+      return animal.sex.toLowerCase() === genderName;
+    }
+  );
+}
       if (this.serchBEdad) {
-        resultadosFiltrados = resultadosFiltrados.filter(animal => animal.age.id === this.serchBEdad);
+        resultadosFiltrados = resultadosFiltrados.filter(
+          (animal) => animal.edad == this.serchBEdad
+        );
       }
-
       if (this.serchBColor) {
-        resultadosFiltrados = resultadosFiltrados.filter(animal => animal.color.id === this.serchBColor);
-      }
-
+  resultadosFiltrados = resultadosFiltrados.filter((animal) => {
+    return animal.color.toLowerCase() === this.serchBColor.name.toLowerCase();
+  });
+}
+if (this.serchBState) {
+  resultadosFiltrados = resultadosFiltrados.filter((animal) => {
+    return animal.location.toLowerCase() === this.serchBState.name.toLowerCase();
+  });
+}
       this.resultadosMostrados = resultadosFiltrados;
     },
     closeImageUploadModal() {
@@ -443,6 +511,7 @@ export default {
       this.serchBSexo = null;
       this.serchBEdad = null;
       this.serchBColor = null;
+      this.getApproval();
     },
     validateImageFiles() {
       const fileCount = this.imageFiles.length;
