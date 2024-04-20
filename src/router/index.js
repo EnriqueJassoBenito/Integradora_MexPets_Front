@@ -71,13 +71,13 @@ const routes = [
         meta: { requiresAuth: true, roles: ['CLIENTE'] },
       },
       {
-        path: "/LostAndFound",
+        path: "/lostAndFound",
         name: "lostAndFound",
         component: () => import("../components/public/lostAndFound.vue"),
       },
       {
-        path: "/Responsable",
-        name: "Responsable",
+        path: "/responsable",
+        name: "responsable",
         component: () => import("../components/public/Responsable.vue"),
       },
       {

@@ -8,13 +8,15 @@
 
                     <b-collapse id="nav-collapse" is-nav>
                         <b-navbar-nav>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Adoptar</b-nav-item>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Dar en adopción</b-nav-item>
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'about-us' }">Nosotros</b-nav-item>
+                            <!-- <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Adoptar</b-nav-item>-->
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Dar
+                                en adopción</b-nav-item>
+                            <b-nav-item class="mx-5" style="font-weight: bold;"
+                                :to="{ name: 'about-us' }">Nosotros</b-nav-item>
                         </b-navbar-nav>
                         <b-navbar-nav>
-                                <b-button variant="dark" class="my-2 mx-5" @click="Login">Iniciar Sesión</b-button>
-                                <b-button variant="warning" class="my-2 mx-5" @click="Register">Registrarse</b-button>
+                            <b-button variant="dark" class="my-2 mx-5" @click="Login">Iniciar Sesión</b-button>
+                            <b-button variant="warning" class="my-2 mx-5" @click="Register">Registrarse</b-button>
                         </b-navbar-nav>
                     </b-collapse>
                 </b-navbar>
@@ -27,7 +29,7 @@
                 <h1 class="sloganVariant">EN EL MEJOR LÍDER</h1>
                 <h1 class="slogan">DE TU PROPIA</h1>
                 <h1 class="slogan">MANADA</h1>
-                <b-button class="btnLanding" variant="dark" @click="Adopt">Adoptar</b-button>
+                <b-button class="btnLanding" variant="dark" @click="showAdoptAlert">Adoptar</b-button>
             </b-col>
             <b-col cols-md="6">
                 <div class="contentImgLanding">
@@ -41,6 +43,7 @@
 
 <script>
 import Footer from './Footer.vue'
+import Swal from 'sweetalert2'
 
 export default {
     components: {
@@ -61,14 +64,28 @@ export default {
         },
         Register() {
             this.$router.push('/register')
+        },
+        showAdoptAlert() {
+            Swal.fire({
+                title: '¿Quieres adoptar?',
+                text: 'Debes registrarte primero.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#F0BB00',
+                confirmButtonText: 'Registrarse'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$router.push('/register');
+                }
+            });
         }
-    }
+    },
 }
 </script>
 
 
 <style>
-
 @font-face {
     font-family: Rammetto One;
     src: url('../../fonts/RammettoOne-Regular.ttf');

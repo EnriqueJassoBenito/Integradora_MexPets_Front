@@ -11,7 +11,7 @@
             :to="{ name: 'profile-moderator' }"
             @click="selectOption('profile-moderator')"
             :class="{ active: selectedOption === 'profile-moderator' }"
-            >Perfil</b-nav-item
+            >{{ usuarioNombre }}</b-nav-item
           >
           <b-nav-item-dropdown
             text="Solicitudes de registro"
@@ -73,6 +73,7 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
+      usuarioNombre: "",
       listaUsuarios: [],
       mostrarModal: false,
       mostrarModalInformacion: false,
@@ -81,6 +82,12 @@ export default {
       usuarioSeleccionado: { nombre: "", email: "" },
       selectedOption: null,
     };
+  },
+  created() {
+    const userData = JSON.parse(localStorage.getItem("authUser"));
+    if (userData && userData.user && userData.user.name && userData.user.lastname) {
+    this.usuarioNombre = `${userData.user.name} ${userData.user.lastname}`;
+  }
   },
   methods: {
     selectOption(option) {

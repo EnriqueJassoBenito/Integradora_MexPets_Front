@@ -2,6 +2,7 @@
   <b-container fluid>
     <div class="content">
       <div class="contentCard">
+        <div class="contentCard">
         <b-breadcrumb :items="items"></b-breadcrumb>
         <b-card bg-variant="light">
           <div class="contentCenter">
@@ -44,7 +45,7 @@
                   <b-col cols="6">
                     <b-form-group>
                       <h6 class="mt-4">
-                        Apellido Materno <span class="obligationText">*</span>
+                        Apellido Materno <span class="obligationText"></span>
                       </h6>
                       <b-form-input
                         v-model="lastnameMatern"
@@ -166,6 +167,7 @@
             }}</b-alert>
           </div>
         </b-card>
+      </div>
       </div>
     </div>
   </b-container>
@@ -316,6 +318,11 @@ validateForm() {
 }
 .contentCenter {
   text-align: center;
+}
+.contentCard {
+  max-width: 600px;
+  width: 100%;
+  margin: 20px;
 }
 .btnLogin {
   width: 50%;

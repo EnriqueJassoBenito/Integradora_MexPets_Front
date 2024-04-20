@@ -1,31 +1,48 @@
 <template>
-  <div class="d-flex justify-content-center mt-4">
-    <div class="puppy-care">
-    <h2>Cuidados para tu Cachorro</h2>
-    <div >
-      <li v-for="(care, index) in puppyCareList" :key="index">
-        <span class="care-title">{{ care.title }}</span>
-        <p>{{ care.description }}</p>
-      </li>
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="care-card">
+          <div class="card-header">
+            <h2>Cuidados para tu cachorro</h2>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li v-for="(care, index) in puppyCareList" :key="index">
+                <span class="care-title">{{ care.title }}</span>
+                <p>{{ care.description }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="care-card">
+          <div class="card-header">
+            <h2>Cuidados para tu perro Adulto</h2>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li v-for="(care, index) in dogCareList" :key="index">
+                <span class="care-title">{{ care.title }}</span>
+                <p>{{ care.description }}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loading-overlay" v-if="isLoading">
+      <div class="custom-loader"></div>
     </div>
   </div>
-  <div class="dog-care">
-    <h2>Cuidados para tu Perro Adulto Joven en Adelante</h2>
-    <div>
-      <li v-for="(care, index) in dogCareList" :key="index">
-        <span class="care-title">{{ care.title }}</span>
-        <p>{{ care.description }}</p>
-      </li>
-    </div>
-  </div>
-</div>
-  
 </template>
 
 <script>
 export default {
   data() {
     return {
+      isLoading: false,
       puppyCareList: [
         {
           title: "Collar ligero de lona sín ganchos",
@@ -124,16 +141,63 @@ export default {
       ],
     };
   },
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  },
 };
 </script>
-
 <style scoped>
-.puppy-care {
-  font-family: Arial, sans-serif;
+.care-card {
+  margin-top: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 15px;
+  background-color: #f0bb00;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color: #fff;
+}
+
+.card-body {
+  padding: 15px;
 }
 
 .care-title {
   font-weight: bold;
   color: #333;
+}
+
+.loading-overlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-loader {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #f0bb00;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

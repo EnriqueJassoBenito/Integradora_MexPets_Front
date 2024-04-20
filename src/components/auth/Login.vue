@@ -162,8 +162,8 @@ export default {
       this.showPassword = !this.showPassword;
     },
     async verifyCaptcha(solution) {
-      let response = await CaptchaService.verificarCaptcha(solution);
-      console.log(response);
+      let response = await CaptchaService.verifyCaptcha(solution);
+      this.captchaVerified = response.success;
     },
     doneCallback(solution) {
       this.verifyCaptcha(solution);

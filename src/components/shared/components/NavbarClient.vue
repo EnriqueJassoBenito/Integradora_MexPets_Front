@@ -25,8 +25,8 @@
               >Mis registros</b-nav-item
             >
             <b-nav-item-dropdown :to="{ name: '' }" text="Recomendaciones" right>
-                <b-dropdown-item :to="{ name: 'Responsable' }"
-              @click="selectOption('Responsable')">¿En qué consiste adoptar?</b-dropdown-item>
+                <b-dropdown-item :to="{ name: 'responsable' }"
+              @click="selectOption('responsable')">¿En qué consiste adoptar?</b-dropdown-item>
         <b-dropdown-item :to="{ name: 'lostAndFound' }"
               @click="selectOption('lostAndFound')">Perdidos y encontrados</b-dropdown-item>
       </b-nav-item-dropdown>
