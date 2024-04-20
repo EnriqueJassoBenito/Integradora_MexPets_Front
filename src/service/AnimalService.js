@@ -12,14 +12,16 @@ const onGetAllAnimals = async () => {
     }
 }
 
-const onGetAnimalById = async (id) => {
+const onGetAnimalsByUser = async (userId) => {
     try {
-        const response = await axios.get(`${url_api_animals}/${id}`);
+        const response = await axios.get(`${url_api_animals}users/${userId}`);
+        console.log(response)
         return response.data.data;
     } catch (error) {
         throw error;
     }
 }
+
 
 const onGetAnimalsByTypePet = async (typePetId) => {
     try {
@@ -161,7 +163,7 @@ const onDeleteAnimal = async (id) => {
 
 export default {
     onGetAllAnimals,
-    onGetAnimalById,
+    onGetAnimalsByUser,
     onGetAnimalsByTypePet,
     onGetAnimalsByRace,
     onGetAnimalsByPersonality,

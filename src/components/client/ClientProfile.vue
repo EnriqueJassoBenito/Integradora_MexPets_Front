@@ -77,14 +77,14 @@
           <b-col cols="4">
             <div class="form-group">
               <label for="password">Contraseña:</label>
-              <input type="text" class="form-control" id="password" placeholder="***********"
+              <input type="password" class="form-control" id="password" placeholder="***********"
                 v-model="currentUser.user.password" :disabled="!isEditing" />
             </div>
           </b-col>
           <b-col cols="4">
             <div class="form-group">
               <label for="password">Confrirmar Contraseña:</label>
-              <input type="text" class="form-control" id="password" placeholder="***********" :disabled="!isEditing" />
+              <input type="password" class="form-control" id="password" placeholder="***********" :disabled="!isEditing" />
             </div>
           </b-col>
           <hr>

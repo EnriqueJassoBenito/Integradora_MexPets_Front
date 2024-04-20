@@ -8,8 +8,7 @@
 
                     <b-collapse id="nav-collapse" is-nav>
                         <b-navbar-nav>
-                            <!-- <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Adoptar</b-nav-item>-->
-                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'animals-adoption' }">Dar
+                            <b-nav-item class="mx-5" style="font-weight: bold;" :to="{ name: 'adopt-public' }">Dar
                                 en adopción</b-nav-item>
                             <b-nav-item class="mx-5" style="font-weight: bold;"
                                 :to="{ name: 'about-us' }">Nosotros</b-nav-item>

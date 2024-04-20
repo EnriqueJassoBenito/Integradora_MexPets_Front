@@ -49,7 +49,7 @@ const routes = [
     component: () => import("../components/shared/components/NavbarClient.vue"),
     children: [
       {
-        path: "",
+        path: "animals-adoption",
         name: "animals-adoption",
         component: () => import("../components/client/AnimalsAdopter.vue"),
       },
@@ -71,7 +71,7 @@ const routes = [
         meta: { requiresAuth: true, roles: ['CLIENTE'] },
       },
       {
-        path: "/lostAndFound",
+        path: "lostAndFound",
         name: "lostAndFound",
         component: () => import("../components/public/lostAndFound.vue"),
       },
@@ -80,11 +80,6 @@ const routes = [
         name: "responsable",
         component: () => import("../components/public/Responsable.vue"),
       },
-      {
-        path: "/about-us",
-        name: "about-us",
-        component: () => import("../components/public/AboutUs.vue"),
-      }
     ],
   },  
   {
@@ -94,7 +89,7 @@ const routes = [
     children: [
       {
         path: "profile-moderator",
-        name: "profile-moderator",
+        name: "profile-moderator", 
         component: () => import("../components/moderator/ModeratorProfile.vue"),
         meta: { requiresAuth: true, roles: ['MODERADOR'] },
       },
@@ -163,6 +158,16 @@ const routes = [
         path: "/register",
         name: "register",
         component: () => import("../components/auth/Register.vue"),
+      },
+      {
+        path: "/about-us",
+        name: "about-us",
+        component: () => import("../components/public/AboutUs.vue"),
+      },
+      {
+        path: "/adopt-public",
+        name: "adopt-public",
+        component: () => import("../components/public/AdopPublic.vue"),
       },
       {
         path: "*",

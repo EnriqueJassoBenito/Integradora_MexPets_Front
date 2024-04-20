@@ -21,7 +21,8 @@
               <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
                 <b-icon icon="chat" aria-hidden="true"></b-icon>
               </b-button>
-              <b-button @click="openImageUploadModal(animal)" variant="warning" class="float-right mb-2 mr-2">
+              <b-button @click="openImageUploadModal(animal)" variant="warning" class="float-right mb-2 mr-2"
+              v-if="animal.approvalStatus !== 'APPROVED'">
                 <b-icon icon="arrow-counterclockwise" animation="spin-reverse" font-scale="1"></b-icon>
               </b-button>
             </b-col>
@@ -122,7 +123,8 @@
           </b-col>
           <b-col md="6">
             <b-form-group label="Edad:" label-for="age">
-              <b-form-input type="number" id="ageInput" min="1" max="30" v-model="modalData.age" required></b-form-input>
+              <b-form-input type="number" id="ageInput" min="1" max="30" v-model="modalData.age"
+                required></b-form-input>
             </b-form-group>
             <b-form-group label="Color:" label-for="color">
               <b-form-input id="colorInput" v-model="modalData.color" required></b-form-input>
@@ -140,7 +142,7 @@
           required :class="{ 'is-invalid': !imageFilesState }" />
       </b-form>
       <b-button type="submit" variant="primary" @click="onUpdateAnimal">Guardar</b-button>
-        <b-button variant="secondary" @click="closeImageUploadModal">Cancelar</b-button>
+      <b-button variant="secondary" @click="closeImageUploadModal">Cancelar</b-button>
     </b-modal>
   </b-container>
 </template>
@@ -246,42 +248,33 @@ export default {
   methods: {
     async onGetAllAni() {
       try {
-        const userId = localStorage.getItem("authUser");
-        if (userId) {
-          const currentUserData = JSON.parse(userId);
-          const response = await service.onGetAllAnimals();
-          console.log("Animales obtenidos:", response);
-          if (!response.error) {
-            const userRegisterId = currentUserData.user.id;
-            console.log("ID de usuario que inició sesión:", userRegisterId);
-            this.animalApproval = response.filter((animal) => {
-              if (userRegisterId && animal.register.id) {
-                console.log("ID de registro del animal:", animal.register.id);
-                return animal;
-              }
-            });
-          } else {
-            console.error("Error al obtener los datos:", response.message);
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Error al obtener los datos: " + response.message,
-            });
-          }
+        const userIdData = localStorage.getItem("authUser");
+        if (userIdData) {
+          const currentUserData = JSON.parse(userIdData);
+          const userId = currentUserData.user.id; // ID de usuario que inició sesión
+          const animals = await service.onGetAnimalsByUser(userId); // Obtener animales por usuario
+          console.log("Animales obtenidos:", animals);
+          this.animalApproval = animals;
+        } else {
+          console.error("No se encontró información de usuario en localStorage");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se encontró información de usuario en localStorage",
+          });
         }
         this.sterilized = false;
       } catch (error) {
         console.error("Error al obtener los datos:", error);
         Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Error al obtener los datos: " + error.message,
+          icon: "info",
+          title: "Sin registros",
         });
       }
     },
     async onUpdateAnimal() {
       try {
-        console.log("Datos de animal a actualizar:", this.modalData);
+        
         const animalId = this.modalData.id;
         const animalDto = {
           id: animalId,
