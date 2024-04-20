@@ -4,30 +4,12 @@
       <div class="custom-loader"></div>
     </div>
     <b-row class="mt-2">
-      <b-col
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
-        v-for="animal in animalApproval"
-        :key="animal.id"
-        class="mb-4"
-      >
-        <b-card
-          :title="animal.namePet"
-          tag="article"
-          :footer="'Estado: ' + getStatusTranslation(animal.approvalStatus)"
-          footer-bg-variant="warning"
-          footer-border-variant="dark"
-        >
+      <b-col cols="12" sm="6" md="4" lg="3" v-for="animal in animalApproval" :key="animal.id" class="mb-4">
+        <b-card :title="animal.namePet" tag="article" :footer="getStatusFooter(animal.approvalStatus)"
+          :footer-bg-variant="getFooterColor(animal.approvalStatus)" footer-border-variant="dark">
           <b-row>
             <b-col cols="5">
-              <img
-                :src="animal.images[0].imageUrl"
-                :alt="animal.namePet"
-                class="img-fluid"
-                style="max-height: 150px"
-              />
+              <img :src="animal.images[0].imageUrl" :alt="animal.namePet" class="img-fluid" style="max-height: 150px" />
             </b-col>
             <b-col cols="7">
               <b-card-text>
@@ -36,23 +18,11 @@
                 <p><strong>Raza:</strong> {{ animal.race.racePet }}</p>
                 <p><strong>Sexo:</strong> {{ animal.sex }}</p>
               </b-card-text>
-              <b-button
-                @click="openModal(animal)"
-                variant="primary"
-                class="float-right mb-2 mr-2"
-              >
-                <b-icon icon="eye" aria-hidden="true"></b-icon>
+              <b-button @click="openModal(animal)" variant="primary" class="float-right mb-2 mr-2">
+                <b-icon icon="chat" aria-hidden="true"></b-icon>
               </b-button>
-              <b-button
-                @click="openImageUploadModal()"
-                variant="success"
-                class="float-right mb-2 mr-2"
-              >
-                <b-icon
-                  icon="circle-fill"
-                  animation="throb"
-                  font-scale="1"
-                ></b-icon>
+              <b-button @click="openImageUploadModal(animal)" variant="warning" class="float-right mb-2 mr-2">
+                <b-icon icon="arrow-counterclockwise" animation="spin-reverse" font-scale="1"></b-icon>
               </b-button>
             </b-col>
           </b-row>
@@ -60,27 +30,12 @@
       </b-col>
     </b-row>
 
-    <b-modal
-      ref="myModalRef"
-      hide-footer
-      title="Detalles de la mascota"
-      header-bg-variant="success"
-    >
+    <b-modal ref="myModalRef" hide-footer title="Detalles de la mascota" header-bg-variant="success">
       <b-row class="mb-3">
         <b-col cols="12">
-          <b-carousel
-            controls
-            indicators
-            style="max-height: 300px; overflow: hidden"
-          >
-            <b-carousel-slide
-              v-for="(image, index) in modalData.images"
-              :key="index"
-              :img-src="image.imageUrl"
-              :alt="`Slide ${index + 1}`"
-              img-width="300px"
-              img-height="200px"
-            ></b-carousel-slide>
+          <b-carousel controls indicators style="max-height: 300px; overflow: hidden">
+            <b-carousel-slide v-for="(image, index) in modalData.images" :key="index" :img-src="image.imageUrl"
+              :alt="`Slide ${index + 1}`" img-width="300px" img-height="200px"></b-carousel-slide>
           </b-carousel>
         </b-col>
       </b-row>
@@ -114,6 +69,11 @@
               </b-col>
             </b-row>
           </div>
+          <div class="mt-4">
+            <p><strong>Retroalimentación del moderador:</strong></p>
+            <b-form-textarea id="textarea" v-model="modalData.moderatorComment" placeholder="Retroalimentación..."
+              rows="3" max-rows="6" readonly></b-form-textarea>
+          </div>
         </b-col>
       </b-row>
       <b-row class="mt-3">
@@ -123,44 +83,64 @@
       </b-row>
     </b-modal>
 
-    <b-modal
-      ref="imageUploadModal"
-      hide-footer
-      title="Cargar Imágenes y Descripción"
-    >
-      <b-form @submit.stop="submitForm">
-        <b-form-group label="Descripción">
-          <b-form-textarea
-            v-model="description"
-            rows="3"
-            placeholder="Descripción de la mascota"
-          ></b-form-textarea>
+    <b-modal ref="imageUploadModal" hide-footer title="Editar registro">
+      <b-form class="mb-4">
+        <b-form-group label="Nombre de la mascota:" label-for="namePetInput">
+          <b-form-input id="namePetInput" v-model="modalData.namePet" required></b-form-input>
         </b-form-group>
-
-        <b-form-group
-          label="Imágenes"
-          label-for="imageFiles"
-          invalid-feedback="Debe insertar un mínimo de 1 imagen y un máximo de 5, y los archivos no deberán ser mayores a 10 MB."
-          :state="imageFilesState"
-        >
-          <b-form-file
-            id="imageFiles"
-            v-model="imageFiles"
-            multiple
-            accept="image/*"
-            @change="validateImageFiles"
-            required
-            :class="{ 'is-invalid': !imageFilesState }"
-          />
+        <b-form-group label="Localización:" label-for="location">
+          <b-form-select id="location" v-model="modalData.location" :options="locations" required />
         </b-form-group>
+        <b-row>
+          <b-col md="6">
+            <b-form-group label="Tipo de mascota:" label-for="typePet">
+              <b-form-select id="typePet" v-model="modalData.typePet" :options="typePets.map((type) => ({ value: type.id, text: type.name }))
+                " required /> </b-form-group>
+            <b-form-group label="Raza:" label-for="race">
+              <b-form-select id="race" v-model="modalData.race" :options="races.map((race) => ({ value: race.id, text: race.name }))
+                " required /> </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group label="Personalidad:" label-for="personality">
+              <b-form-select id="personality" v-model="modalData.personality" :options="personalities.map((personality) => ({
+                value: personality.id,
+                text: personality.name
+              }))" required />
+            </b-form-group>
+            <b-form-group label="Sexo:" label-for="sex">
+              <b-form-select id="sex" v-model="modalData.sex" :options="sexOptions" required /> </b-form-group>
+          </b-col>
+        </b-row>
 
-        <b-button type="submit" variant="primary" :disabled="!imageFilesState"
-          >Guardar</b-button
-        >
-        <b-button variant="secondary" @click="closeImageUploadModal"
-          >Cancelar</b-button
-        >
+        <b-row>
+          <b-col md="6">
+            <b-form-group label="Tamaño:" label-for="size">
+              <b-form-select id="size" v-model="modalData.size" :options="sizes" required /> </b-form-group>
+            <b-form-group label="Peso:" label-for="weight">
+              <b-form-input id="weightInput" min="0.5" max="70" v-model="modalData.weight" required></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group label="Edad:" label-for="age">
+              <b-form-input type="number" id="ageInput" min="1" max="30" v-model="modalData.age" required></b-form-input>
+            </b-form-group>
+            <b-form-group label="Color:" label-for="color">
+              <b-form-input id="colorInput" v-model="modalData.color" required></b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
+
+        <b-form-group label="Esterilizado:" label-for="sterilized">
+          <b-form-checkbox id="sterilized" v-model="modalData.sterilized" switch>
+            Sí</b-form-checkbox>
+        </b-form-group>
+        <b-form-group label="Descripción:" label-for="description">
+          <b-form-textarea id="description" v-model="modalData.description" required /> </b-form-group>
+        <b-form-file id="imageFiles" v-model="imageFiles" multiple accept="image/*" @change="validateImageFiles"
+          required :class="{ 'is-invalid': !imageFilesState }" />
       </b-form>
+      <b-button type="submit" variant="primary" @click="onUpdateAnimal">Guardar</b-button>
+        <b-button variant="secondary" @click="closeImageUploadModal">Cancelar</b-button>
     </b-modal>
   </b-container>
 </template>
@@ -189,12 +169,59 @@ export default {
         weight: "",
         age: "",
         color: "",
-        sterilized: "",
+        sterilized: false,
         description: "",
         images: [],
         approvalStatus: "",
         moderatorComment: "",
+        register: ""
       },
+      sexOptions: [
+        { value: "", text: "Seleccionar" },
+        { value: "macho", text: "Macho" },
+        { value: "hembra", text: "Hembra" },
+      ],
+      sizes: [
+        { value: "", text: "Seleccionar" },
+        { value: "chico", text: "Chico" },
+        { value: "mediano", text: "Mediano" },
+        { value: "grande", text: "Grande" },
+      ],
+      locations: [
+        { value: "", text: "Seleccionar" },
+        { value: "aguascalientes", text: "Aguascalientes" },
+        { value: "baja_california", text: "Baja California" },
+        { value: "baja_california_sur", text: "Baja California Sur" },
+        { value: "campeche", text: "Campeche" },
+        { value: "coahuila", text: "Coahuila" },
+        { value: "colima", text: "Colima" },
+        { value: "chiapas", text: "Chiapas" },
+        { value: "chihuahua", text: "Chihuahua" },
+        { value: "cdmx", text: "Ciudad de México" },
+        { value: "durango", text: "Durango" },
+        { value: "guanajuato", text: "Guanajuato" },
+        { value: "guerrero", text: "Guerrero" },
+        { value: "hidalgo", text: "Hidalgo" },
+        { value: "jalisco", text: "Jalisco" },
+        { value: "mexico", text: "Estado de México" },
+        { value: "michoacan", text: "Michoacán" },
+        { value: "morelos", text: "Morelos" },
+        { value: "nayarit", text: "Nayarit" },
+        { value: "nuevo_leon", text: "Nuevo León" },
+        { value: "oaxaca", text: "Oaxaca" },
+        { value: "puebla", text: "Puebla" },
+        { value: "queretaro", text: "Querétaro" },
+        { value: "quintana_roo", text: "Quintana Roo" },
+        { value: "san_luis_potosi", text: "San Luis Potosí" },
+        { value: "sinaloa", text: "Sinaloa" },
+        { value: "sonora", text: "Sonora" },
+        { value: "tabasco", text: "Tabasco" },
+        { value: "tamaulipas", text: "Tamaulipas" },
+        { value: "tlaxcala", text: "Tlaxcala" },
+        { value: "veracruz", text: "Veracruz" },
+        { value: "yucatan", text: "Yucatán" },
+        { value: "zacatecas", text: "Zacatecas" },
+      ],
       animal: null,
       description: "",
       imageFiles: [],
@@ -205,13 +232,16 @@ export default {
       creationDate: "",
       status: "",
       selectedAnimalId: "",
-      race: [],
       typePets: [],
+      races: [],
       personalities: [],
     };
   },
   mounted() {
     this.onGetAllAni();
+    this.onGetAllType();
+    this.onGetAllRace();
+    this.onGetAllPersonality();
   },
   methods: {
     async onGetAllAni() {
@@ -221,11 +251,9 @@ export default {
           const currentUserData = JSON.parse(userId);
           const response = await service.onGetAllAnimals();
           console.log("Animales obtenidos:", response);
-
           if (!response.error) {
             const userRegisterId = currentUserData.user.id;
             console.log("ID de usuario que inició sesión:", userRegisterId);
-
             this.animalApproval = response.filter((animal) => {
               if (userRegisterId && animal.register.id) {
                 console.log("ID de registro del animal:", animal.register.id);
@@ -241,6 +269,7 @@ export default {
             });
           }
         }
+        this.sterilized = false;
       } catch (error) {
         console.error("Error al obtener los datos:", error);
         Swal.fire({
@@ -250,62 +279,73 @@ export default {
         });
       }
     },
-    async submitForm() {
-      const minDescriptionLength = 10;
-      const maxDescriptionLength = 500;
-      if (
-        this.description.trim() === "" ||
-        this.description.length < minDescriptionLength ||
-        this.description.length > maxDescriptionLength
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: `La descripción debe tener entre ${minDescriptionLength} y ${maxDescriptionLength} caracteres.`,
-        });
-        return;
-      }
-      const selectedAnimal = this.animalApproval.find(
-        (animal) => animal.id === this.selectedAnimalId
-      );
-
-      if (!selectedAnimal) {
-        console.error("Animal seleccionado no encontrado en la lista.");
-        return;
-      }
-      const userId = localStorage.getItem("authUser");
-
-      const adoptionDto = {
-        animal: selectedAnimal.id,
-        adopter: sessionStorage.getItem("userId"),
-        description: this.description,
-        creationDate: new Date().toISOString().replace(/\.\d{3}Z$/, ""),
-        imageFiles: this.imageFiles,
-        status: false,
-      };
-      if (userId) {
-        const currentUserData = JSON.parse(userId);
-        adoptionDto.adopter = currentUserData.user.id;
-        console.log("id: " + currentUserData.user.id);
-      }
+    async onUpdateAnimal() {
       try {
-        const insertedAdoption = await adopService.insertAdoption(
-          adoptionDto,
-          this.imageFiles
-        );
-        Swal.fire({
-          icon: "success",
-          text: "Solicitud de adopción registrada correctamente",
-        });
-        this.closeImageUploadModal();
+        console.log("Datos de animal a actualizar:", this.modalData);
+        const animalId = this.modalData.id;
+        const animalDto = {
+          id: animalId,
+          namePet: this.modalData.namePet,
+          location: this.modalData.location,
+          typePet: this.modalData.typePet,
+          race: this.modalData.race,
+          personality: this.modalData.personality,
+          sex: this.modalData.sex,
+          size: this.modalData.size,
+          weight: this.modalData.weight,
+          age: this.modalData.age,
+          color: this.modalData.color,
+          sterilized: this.modalData.sterilized,
+          description: this.modalData.description,
+          images: this.modalData.images.map(image => ({ url: image.url, name: image.name })),
+          approvalStatus: this.modalData.approvalStatus,
+          moderatorComment: this.modalData.moderatorComment,
+          register: this.modalData.register.id,
+        };
+        const response = await service.onUpdateAnimal(animalId, animalDto, this.imageFiles);
+        console.log("Animal actualizado:", response);
+        this.$refs.imageUploadModal.hide();
       } catch (error) {
-        console.error("Error al insertar adopción:", error);
+        console.error("Error al actualizar el animal:", error);
       }
     },
-    openImageUploadModal() {
-      this.description = "";
+    async onGetAllType() {
+      try {
+        const types = await servicesPet.onGetAllTypeRegister();
+        this.typePets = types;
+      } catch (error) {
+        console.error("Error al obtener tipos:", error);
+      }
+    },
+    async onGetAllRace() {
+      try {
+        const race = await servicesPet.onGetAllRaceRegister();
+        this.races = race;
+      } catch (error) {
+        console.error("Error al obtener tipos:", error);
+      }
+    },
+    async onGetAllPersonality() {
+      try {
+        const personality = await servicesPet.onGetAllPersonalityRegister();
+        this.personalities = personality;
+      } catch (error) {
+        console.error("Error al obtener tipos:", error);
+      }
+    },
+    async loadData() {
+      try {
+        await this.onGetAllType();
+        await this.onGetAllRace();
+        await this.onGetAllPersonality();
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      }
+    },
+    openImageUploadModal(animal) {
       this.imageFiles = [];
       this.imageFilesState = null;
+      this.modalData = { ...animal };
       this.$refs.imageUploadModal.show();
     },
     closeImageUploadModal() {
@@ -316,7 +356,6 @@ export default {
     },
     openModal(animal) {
       this.modalData = { ...animal };
-      this.selectedAnimalId = animal.id;
       this.$refs.myModalRef.show();
     },
     closeModal() {
@@ -332,6 +371,19 @@ export default {
           return "Rechazado";
         default:
           return "Desconocido";
+      }
+    },
+    getStatusFooter(approvalStatus) {
+      return 'Estado: ' + this.getStatusTranslation(approvalStatus);
+    },
+    getFooterColor(approvalStatus) {
+      switch (approvalStatus) {
+        case "PENDING":
+          return "warning"; // Amarillo
+        case "APPROVED":
+          return "success"; // Verde
+        default:
+          return "light"; // Otros colores o ninguno
       }
     },
     validateImageFiles() {
@@ -382,16 +434,12 @@ export default {
   height: 50px;
   display: grid;
   color: #f0bb00;
-  background: radial-gradient(
-    farthest-side,
-    currentColor calc(100% - 6px),
-    #0000 calc(100% - 5px) 0
-  );
-  -webkit-mask: radial-gradient(
-    farthest-side,
-    #0000 calc(100% - 13px),
-    #000 calc(100% - 12px)
-  );
+  background: radial-gradient(farthest-side,
+      currentColor calc(100% - 6px),
+      #0000 calc(100% - 5px) 0);
+  -webkit-mask: radial-gradient(farthest-side,
+      #0000 calc(100% - 13px),
+      #000 calc(100% - 12px));
   border-radius: 50%;
   animation: s9 2s infinite linear;
 }

@@ -22,7 +22,7 @@
             v-if="isLoggedIn && isCliente"
               :to="{ name: 'my-adoption' }"
               @click="selectOption('my-adoption')"
-              >Mis adopciones</b-nav-item
+              >Mis registros</b-nav-item
             >
             <b-nav-item-dropdown :to="{ name: '' }" text="Recomendaciones" right>
                 <b-dropdown-item :to="{ name: 'Responsable' }"

@@ -115,14 +115,25 @@ const onInsertAnimal = async (animalDto, imageFiles) => {
 }
 
 
-const onUpdateAnimal = async (id, animalDto) => {
+const onUpdateAnimal = async (id, animalDto, imageFiles) => {
     try {
-        const response = await axios.put(`${url_api_animals}${id}`, animalDto);
-        return response.data.data;
+        const formData = new FormData();
+        formData.append("animalDto", JSON.stringify(animalDto));
+        imageFiles.forEach((file) => {
+            formData.append("imageFiles", file);
+        });
+
+        const response = await axios.put(`${url_api_animals}${id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return response.data;
     } catch (error) {
         throw error;
     }
-}
+};
+
 
 const onApproveOrRejectAnimal = async (id, approvalStatus, moderatorComment) => {
     try {

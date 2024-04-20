@@ -152,7 +152,6 @@ export default {
             if (confirmAction) {
                 this.approveOrRejectAdoption(this.modalData.id, 'APPROVED', this.modalData.moderatorComment);
                 this.closeModal();
-                this.isLoading = true;
             }
         },
         async rejectAnimal() {

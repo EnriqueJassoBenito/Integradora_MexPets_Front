@@ -5,193 +5,83 @@
     </div>
     <div title="Registro de Animales" style="width: 100%; max-width: 900px">
       <h1>Dar en adopción</h1>
-      <h3>Datos</h3>
       <b-form>
         <b-row>
           <b-col md="6">
-            <b-form-group
-              label="Nombre de la mascota"
-              label-for="namePet"
+            <b-form-group label="Nombre de la mascota" label-for="namePet"
               invalid-feedback="El nombre debe contener al menos 4 letras y no debe contener caracteres especiales"
-              :state="namePetState"
-            >
-              <b-form-input
-                id="namePet"
-                v-model="namePet"
-                required
-                @input="validateNamePet"
-              />
+              :state="namePetState">
+              <b-form-input id="namePet" v-model="namePet" required @input="validateNamePet" />
             </b-form-group>
-            <b-form-group
-              label="Localización"
-              label-for="location"
+            <b-form-group label="Localización" label-for="location"
               invalid-feedback="Por favor, selecciona un estado existente en la lista desplegable."
-              :state="locationState"
-            >
-              <b-form-select
-                id="location"
-                v-model="location"
-                :options="locations"
-                required
-              />
+              :state="locationState">
+              <b-form-select id="location" v-model="location" :options="locations" required />
             </b-form-group>
-            <b-form-group
-              label="Tipo de mascota"
-              label-for="typePet"
+            <b-form-group label="Tipo de mascota" label-for="typePet"
               invalid-feedback="Por favor, selecciona un tipo de mascota existente en la lista desplegable."
-              :state="typePetState"
-            >
-              <b-form-select
-                id="typePet"
-                v-model="typePet"
-                :options="
-                  typePets.map((type) => ({ value: type.id, text: type.name }))
-                "
-                required
-              />
+              :state="typePetState">
+              <b-form-select id="typePet" v-model="typePet" :options="typePets.map((type) => ({ value: type.id, text: type.name }))
+                " required />
             </b-form-group>
-            <b-form-group
-              label="Raza"
-              label-for="race"
-              invalid-feedback="Por favor, selecciona una raza existente en la lista desplegable."
-              :state="raceState"
-            >
-              <b-form-select
-                id="race"
-                v-model="race"
-                :options="
-                  races.map((race) => ({ value: race.id, text: race.name }))
-                "
-                required
-              />
+            <b-form-group label="Raza" label-for="race"
+              invalid-feedback="Por favor, selecciona una raza existente en la lista desplegable." :state="raceState">
+              <b-form-select id="race" v-model="race" :options="races.map((race) => ({ value: race.id, text: race.name }))
+                " required />
             </b-form-group>
-            <b-form-group
-              label="Personalidad"
-              label-for="personality"
+            <b-form-group label="Personalidad" label-for="personality"
               invalid-feedback="Por favor, selecciona una personalidad existente en la lista desplegable."
-              :state="personalityState"
-            >
-              <b-form-select
-                id="personality"
-                v-model="personality"
-                :options="
-                  personalities.map((personality) => ({
-                    value: personality.id,
-                    text: personality.name,
-                  }))
-                "
-                required
-              />
+              :state="personalityState">
+              <b-form-select id="personality" v-model="personality" :options="personalities.map((personality) => ({
+                value: personality.id,
+                text: personality.name,
+              }))
+                " required />
             </b-form-group>
-            <b-form-group
-              label="Sexo"
-              label-for="sex"
-              invalid-feedback="Por favor, selecciona un sexo existente en la lista desplegable."
-              :state="sexState"
-              required
-            >
-              <b-form-select
-                id="sex"
-                v-model="sex"
-                :options="sexOptions"
-                required
-              />
+            <b-form-group label="Sexo" label-for="sex"
+              invalid-feedback="Por favor, selecciona un sexo existente en la lista desplegable." :state="sexState"
+              required>
+              <b-form-select id="sex" v-model="sex" :options="sexOptions" required />
             </b-form-group>
           </b-col>
           <b-col md="6">
-            <b-form-group
-              label="Tamaño"
-              label-for="size"
-              invalid-feedback="Por favor, selecciona un tamaño existente en la lista desplegable."
-              :state="sizeState"
-            >
-              <b-form-select
-                id="size"
-                v-model="size"
-                :options="sizes"
-                required
-              />
+            <b-form-group label="Tamaño" label-for="size"
+              invalid-feedback="Por favor, selecciona un tamaño existente en la lista desplegable." :state="sizeState">
+              <b-form-select id="size" v-model="size" :options="sizes" required />
             </b-form-group>
-            <b-form-group
-              label="Peso"
-              label-for="weight"
+            <b-form-group label="Peso" label-for="weight"
               invalid-feedback="El peso del animal debe ser mayor o igual a 0.5 y menor o igual a 70 kg."
-              :state="weightState"
-            >
-              <b-form-input
-                id="weight"
-                type="number"
-                v-model="weight"
-                min="0.5"
-                max="70"
-                required
-              />
+              :state="weightState">
+              <b-form-input id="weight" type="number" v-model="weight" min="0.5" max="70" required />
             </b-form-group>
-            <b-form-group
-              label="Edad"
-              label-for="age"
-              invalid-feedback="La edad debe ser mayor o igual a 1 y menor o igual a 30."
-              :state="ageState"
-            >
-              <b-form-input
-                id="age"
-                type="number"
-                v-model="age"
-                min="1"
-                max="30"
-                required
-                @input="validateAge"
-              />
+            <b-form-group label="Edad" label-for="age"
+              invalid-feedback="La edad debe ser mayor o igual a 1 y menor o igual a 30." :state="ageState">
+              <b-form-input id="age" type="number" v-model="age" min="1" max="30" required @input="validateAge" />
             </b-form-group>
-            <b-form-group
-              label="Color"
-              label-for="color"
-              invalid-feedback="El color no debe contener caracteres especiales."
-              :state="colorState"
-            >
+            <b-form-group label="Color" label-for="color"
+              invalid-feedback="El color no debe contener caracteres especiales." :state="colorState">
               <b-form-input id="color" v-model="color" required />
             </b-form-group>
-            <b-form-group
-              label="Esterilizado"
-              label-for="sterilized"
-              invalid-feedback="Debes seleccionar si está esterilizado o no."
-              :state="sterilizedState"
-            >
+            <b-form-group label="Esterilizado" label-for="sterilized"
+              invalid-feedback="Debes seleccionar si está esterilizado o no." :state="sterilizedState">
               <b-form-checkbox id="sterilized" v-model="sterilized" switch>
                 Sí
               </b-form-checkbox>
             </b-form-group>
-            <b-form-group
-              label="Descripción"
-              label-for="description"
+            <b-form-group label="Descripción" label-for="description"
               invalid-feedback="La descripción debe contar con un mínimo de 50 palabras y un máximo de 250."
-              :state="descriptionState"
-            >
-              <b-form-textarea
-                id="description"
-                v-model="description"
-                required
-              />
+              :state="descriptionState">
+              <b-form-textarea id="description" v-model="description" required />
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col md="12">
-            <b-form-group
-              label="Imágenes"
-              label-for="imageFiles"
+            <b-form-group label="Imágenes" label-for="imageFiles"
               invalid-feedback="Debe insertar un mínimo de 3 imágenes y un máximo de 5, y los archivos no deberán ser mayores a 10 MB."
-              :state="imageFilesState"
-            >
-              <b-form-file
-                id="imageFiles"
-                v-model="imageFiles"
-                multiple
-                accept="image/*"
-                @change="validateImageFiles"
-                required
-                :class="{ 'is-invalid': !imageFilesState }"
-              />
+              :state="imageFilesState">
+              <b-form-file id="imageFiles" v-model="imageFiles" multiple accept="image/*" @change="validateImageFiles"
+                required :class="{ 'is-invalid': !imageFilesState }" />
             </b-form-group>
           </b-col>
         </b-row>
@@ -257,8 +147,8 @@ export default {
       personality: "",
       sex: "",
       size: "",
-      weight: "",
-      age: "",
+      weight: '',
+      age: '',
       color: "",
       sterilized: false,
       description: "",
@@ -335,43 +225,43 @@ export default {
     },
     async onSubmit() {
       const userId = localStorage.getItem("authUser");
-  if (!userId) {
-    Swal.fire({
-      icon: "warning",
-      title: "Inicia Sesión o Regístrate",
-      text: "Debes iniciar sesión o crear una cuenta para registrar animales.",
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ir a Iniciar Sesión',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        this.$router.push({ name: 'login' });
+      if (!userId) {
+        Swal.fire({
+          icon: "warning",
+          title: "Inicia Sesión o Regístrate",
+          text: "Debes iniciar sesión o crear una cuenta para registrar animales.",
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ir a Iniciar Sesión',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({ name: 'login' });
+          }
+        });
+        return;
       }
-    });
-    return;
-  }
 
-  const currentUserData = JSON.parse(userId);
-  console.log("Usuario actual ID: " + currentUserData.user.id);
+      const currentUserData = JSON.parse(userId);
+      console.log("Usuario actual ID: " + currentUserData.user.id);
 
-  if (currentUserData.user.rol.nrol !== "CLIENTE") {
-    Swal.fire({
-      icon: "error",
-      title: "Acceso denegado",
-      text: "Solo los usuarios con rol de cliente pueden registrar animales.",
-    });
-    return;
-  }
-  if (!this.namePet || !this.location || !this.typePet || !this.race || !this.personality || !this.sex || !this.size || !this.weight || !this.age || !this.color || !this.description) {
-    Swal.fire({
-      icon: "warning",
-      title: "Campos Vacíos",
-      text: "Por favor completa todos los campos para registrar la mascota.",
-    });
-    return;
-  }
+      if (currentUserData.user.rol.nrol !== "CLIENTE") {
+        Swal.fire({
+          icon: "error",
+          title: "Acceso denegado",
+          text: "Solo los usuarios con rol de cliente pueden registrar animales.",
+        });
+        return;
+      }
+      if (!this.namePet || !this.location || !this.typePet || !this.race || !this.personality || !this.sex || !this.size || !this.weight || !this.age || !this.color || !this.description) {
+        Swal.fire({
+          icon: "warning",
+          title: "Campos Vacíos",
+          text: "Por favor completa todos los campos para registrar la mascota.",
+        });
+        return;
+      }
       try {
         this.isLoading = true;
         console.log("id: " + this.typePet);
@@ -405,18 +295,18 @@ export default {
           this.imageFiles
         );
         this.namePet = "";
-    this.location = "";
-    this.typePet = "";
-    this.race = "";
-    this.personality = "";
-    this.sex = "";
-    this.size = "";
-    this.weight = "";
-    this.age = "";
-    this.color = "";
-    this.sterilized = false;
-    this.description = "";
-    this.imageFiles = [];
+        this.location = "";
+        this.typePet = "";
+        this.race = "";
+        this.personality = "";
+        this.sex = "";
+        this.size = "";
+        this.weight = "";
+        this.age = "";
+        this.color = "";
+        this.sterilized = false;
+        this.description = "";
+        this.imageFiles = [];
         Swal.fire({
           icon: "success",
           title: "Éxito",
@@ -429,7 +319,7 @@ export default {
           title: "Error",
           text: "Error al registrar mascota: ",
         });
-      }finally {
+      } finally {
         this.isLoading = false;
       }
     },
@@ -486,21 +376,20 @@ export default {
       this.descriptionState = isValid;
     },
     validateImageFiles() {
-  const fileCount = this.imageFiles.length;
-  const fileSizesValid = this.imageFiles.every(
-    (file) => file.size <= 10 * 1024 * 1024
-  );
-  const fileTypesValid = this.imageFiles.every(
-    (file) => file.type.startsWith('image/')
-  );
-  this.imageFilesState = fileCount >= 3 && fileCount <= 5 && fileSizesValid && fileTypesValid;
-},
+      const fileCount = this.imageFiles.length;
+      const fileSizesValid = this.imageFiles.every(
+        (file) => file.size <= 10 * 1024 * 1024
+      );
+      const fileTypesValid = this.imageFiles.every(
+        (file) => file.type.startsWith('image/')
+      );
+      this.imageFilesState = fileCount >= 3 && fileCount <= 5 && fileSizesValid && fileTypesValid;
+    },
   },
 };
 </script>
 
 <style scoped>
-
 .loading-overlay {
   display: none;
   background: rgba(255, 255, 255, 0.708);
@@ -523,16 +412,12 @@ export default {
   height: 50px;
   display: grid;
   color: #f0bb00;
-  background: radial-gradient(
-    farthest-side,
-    currentColor calc(100% - 6px),
-    #0000 calc(100% - 5px) 0
-  );
-  -webkit-mask: radial-gradient(
-    farthest-side,
-    #0000 calc(100% - 13px),
-    #000 calc(100% - 12px)
-  );
+  background: radial-gradient(farthest-side,
+      currentColor calc(100% - 6px),
+      #0000 calc(100% - 5px) 0);
+  -webkit-mask: radial-gradient(farthest-side,
+      #0000 calc(100% - 13px),
+      #000 calc(100% - 12px));
   border-radius: 50%;
   animation: s9 2s infinite linear;
 }
